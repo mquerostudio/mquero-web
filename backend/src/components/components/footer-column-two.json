@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_components_footer_column_twos",
+  "info": {
+    "displayName": "Footer Column Two",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string"
+    }
+  }
+}
