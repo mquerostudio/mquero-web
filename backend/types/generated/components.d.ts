@@ -1,5 +1,17 @@
 import type { Struct, Schema } from '@strapi/strapi';
 
+export interface LayoutSkillSection extends Struct.ComponentSchema {
+  collectionName: 'components_layout_skill_sections';
+  info: {
+    displayName: 'Skills Section';
+    description: '';
+  };
+  attributes: {
+    skill: Schema.Attribute.Component<'components.skill', true>;
+    heading: Schema.Attribute.String;
+  };
+}
+
 export interface LayoutHeroSection extends Struct.ComponentSchema {
   collectionName: 'components_layout_hero_sections';
   info: {
@@ -52,11 +64,12 @@ export interface ComponentsSkill extends Struct.ComponentSchema {
   info: {
     displayName: 'Skill';
     icon: '';
+    description: '';
   };
   attributes: {
     heading: Schema.Attribute.String;
     subHeading: Schema.Attribute.Text;
-    icon: Schema.Attribute.Media<'images'>;
+    icon: Schema.Attribute.String;
   };
 }
 
@@ -124,6 +137,7 @@ export interface ComponentsFooterCol1 extends Struct.ComponentSchema {
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
+      'layout.skill-section': LayoutSkillSection;
       'layout.hero-section': LayoutHeroSection;
       'layout.header': LayoutHeader;
       'layout.footer': LayoutFooter;

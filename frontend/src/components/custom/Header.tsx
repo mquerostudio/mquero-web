@@ -53,7 +53,7 @@ export function Header({ data }: Readonly<HeaderProps>) {
     return (
         <div className="sticky top-0 z-50 w-full px-2 py-2 border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
 
-            <div className="flex justify-between items-center max-w-[1740px] mx-auto">
+            <div className="flex justify-between items-center max-w-[1544px] mx-auto">
                 <div className="md:flex mr-4">
                     <Logo
                         pageSrc="/"

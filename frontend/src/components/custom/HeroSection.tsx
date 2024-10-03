@@ -33,26 +33,26 @@ export function HeroSection({ data }: { readonly data: HeroSectionProps }) {
 
     return (
         <header className="py-[96px] px-2">
-            <div className="max-w-[1544px] w-full flex flex-col lg:flex-row justify-between items-center mx-auto space-y-4 lg:space-y-0 lg:space-x-[24px]">
+            <div className="max-w-[1348px] w-full flex flex-col lg:flex-row justify-between items-center mx-auto space-y-4 lg:space-y-0 lg:space-x-[24px] h-auto">
 
-            <div className="rounded-[80px] overflow-hidden">
-                <StrapiImage
-                src={image.url}
-                alt={image.alternativeText}
-                height={368}
-                width={368}
-                />
-            </div>
+                <div className="rounded-[80px] overflow-hidden">
+                    <StrapiImage
+                        src={image.url}
+                        alt={image.alternativeText}
+                        height={270}
+                        width={270}
+                    />
+                </div>
 
-            <div className="flex flex-col items-center justify-center max-w-[1152px] w-full text-center space-y-4">
-                <h1 className="text-4xl font-bold">{heading}</h1>
-                <p className="text-xl">{subHeading}</p>
-                <Link href={link.url}>
-                <Button className="text-lg font-medium h-10">
-                    {link.text}
-                </Button>
-                </Link>
-            </div>
+                <div className="flex flex-col items-center justify-center w-full text-center space-y-[24px] max-w-[1054px]">
+                    <h1 className="text-[40px] font-bold">{heading}</h1>
+                    <p className="text-xl">{subHeading}</p>
+                    <Link href={link.url}>
+                        <Button className="text-lg font-medium h-10">
+                            {link.text}
+                        </Button>
+                    </Link>
+                </div>
 
             </div>
         </header>

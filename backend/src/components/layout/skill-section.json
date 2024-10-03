@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_layout_skill_sections",
+  "info": {
+    "displayName": "Skills Section",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "skill": {
+      "type": "component",
+      "repeatable": true,
+      "component": "components.skill"
+    },
+    "heading": {
+      "type": "string"
+    }
+  }
+}

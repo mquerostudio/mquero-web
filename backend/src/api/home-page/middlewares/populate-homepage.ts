@@ -17,6 +17,9 @@ const populate = {
               populate: true
             }
           },
+        },
+        'layout.skill-section': {
+          populate: "*",
         }
       }
     }

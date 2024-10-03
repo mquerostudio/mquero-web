@@ -1,23 +1,26 @@
+import { ArticlesSection } from "@/components/custom/ArticlesSection";
 import { HeroSection } from "@/components/custom/HeroSection";
-import { getHomePageData } from "@/data/loaders";
-
-function blockRenderer(block: any) {
-  switch (block.__component) {
-    case "layout.hero-section":
-      return <HeroSection key={block.id} data={block} />;
-    // case "layout.skills-section":
-    //   return <SkillsSection key={block.id} data={block} />;
-    default:
-      return null;
-  }
-}
-
+import { ProjectsSection } from "@/components/custom/ProjectsSection";
+import { SkillsSection } from "@/components/custom/SkillsSection";
+import { getHomePageData, getLatestArticlesData, getLatestProjectsData } from "@/data/loaders";
 
 export default async function Home() {
   const homeData = await getHomePageData();
+  const latestProjectsData = await getLatestProjectsData();
+  const latestArticlesData = await getLatestArticlesData();
 
   const { blocks } = homeData.data;
   if (!blocks) return <div>No blocks found</div>
 
-  return <main>{blocks.map(blockRenderer)}</main>;
+  // console.dir(latestArticlesData, { depth: null });
+
+  return (
+    <main>
+      <HeroSection data={blocks.find((block: { __component: string }) => block.__component === 'layout.hero-section')} />
+      <ProjectsSection project={latestProjectsData.data} />
+      <ArticlesSection article={latestArticlesData.data} />
+      <SkillsSection data={blocks.find((block: { __component: string }) => block.__component === 'layout.skill-section')} />
+    </main>
+  );
 }
+
