@@ -1,3 +1,4 @@
+import { Logo } from "./Logo";
 import { StrapiImage } from "./StrapiImage";
 
 interface ImageProps {
@@ -63,24 +64,24 @@ export async function Footer({ data, headerLink }: Readonly<FooterProps>) {
     const { footerColumnOne, footerColumnTwo, footerColumnThree } = data;
 
     return (
-        <div className="w-full bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 min-w-[1152] mx-auto">
-                <div>
-                    <h2>{footerColumnOne.heading}</h2>
+        <div className="dark bg-gray-900 text-white py-8">
+            <div className="container mx-auto px-4 md:px-6 flex flex-col md:flex-row items-center justify-between space-y-11 md:space-y-0">
+
+                <div className="flex flex-col items-center space-y-5">
+                    <h2 className="font-bold text-base">{footerColumnOne.heading}</h2>
                     <p>{footerColumnOne.text}</p>
-                    <div className="h-[49px] w-[119px] flex items-center justify-center">
-                        <StrapiImage
-                            alt={footerColumnOne.logo.image.alternativeText}
-                            src={footerColumnOne.logo.image.url}
-                            height={footerColumnOne.logo.image.height}
-                            width={footerColumnOne.logo.image.width}
-                        />
-                    </div>
+                    <Logo
+                        pageSrc="/"
+                        imgSrc={footerColumnOne.logo.image.url}
+                        alt={footerColumnOne.logo.image.alternativeText}
+                        height={footerColumnOne.logo.image.height}
+                        width={footerColumnOne.logo.image.width}
+                    />
                 </div>
 
-                <div>
-                    <h2>{footerColumnTwo.heading}</h2>
-                    <ul>
+                <div className="flex flex-col items-center space-y-5">
+                    <h2 className="font-bold text-base">{footerColumnTwo.heading}</h2>
+                    <ul className="text-center">
                         {headerLink.map((link) => (
                             <li key={link.id}>
                                 <a
@@ -94,16 +95,16 @@ export async function Footer({ data, headerLink }: Readonly<FooterProps>) {
                     </ul>
                 </div>
 
-                <div>
-                    <h2>{footerColumnThree.heading}</h2>
-                    <ul>
+                <div className="flex flex-col items-center space-y-5">
+                    <h2 className="font-bold text-base">{footerColumnThree.heading}</h2>
+                    <ul className="flex flex-col items-center space-y-2">
                         {footerColumnThree.socialMedia.map((social) => (
-                            <li key={social.id}>
+                            <li key={social.id} className="w-full">
                                 <a
                                     href={social.url}
                                     target={social.isExternal ? "_blank" : "_self"}
                                     rel={social.isExternal ? "noopener noreferrer" : ""}
-                                    className="flex items-center space-x-2 text-lg font-medium text-gray-300 hover:text-gray-400"
+                                    className="flex items-center justify-center space-x-2 text-lg font-medium text-gray-300 hover:text-gray-400"
                                 >
                                     <StrapiImage
                                         alt={social.image.alternativeText}

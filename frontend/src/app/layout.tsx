@@ -24,12 +24,14 @@ export default async function RootLayout({
   const globalData = await getGlobalPageData();
   return (
     <html lang="en">
-      <body className={palanquin.className}>
-        <Header data={globalData?.data?.header} />
+      <body className={`${palanquin.className} min-h-screen antialiased`}>
         <div>
-          {children}
+          <Header data={globalData?.data?.header} />
+          <div>
+            {children}
+          </div>
+          <Footer data={globalData?.data.footer} headerLink={globalData?.data?.header?.headerLink} />
         </div>
-        <Footer data={globalData?.data.footer} headerLink={globalData?.data?.header?.headerLink} />
       </body>
     </html>
   );

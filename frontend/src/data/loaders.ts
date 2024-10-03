@@ -28,3 +28,10 @@ export async function getGlobalPageData() {
 
     return await fetchData(url.href);
 }
+
+export async function getHomePageData() {
+    const url = new URL("/api/home-page", baseUrl);
+
+    return await fetchData(url.href);
+}
+
