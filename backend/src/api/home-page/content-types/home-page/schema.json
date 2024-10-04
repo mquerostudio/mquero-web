@@ -22,7 +22,9 @@
       "type": "dynamiczone",
       "components": [
         "layout.hero-section",
-        "layout.skill-section"
+        "layout.skill-section",
+        "layout.latest-projects",
+        "layout.latest-articles-section"
       ]
     }
   }

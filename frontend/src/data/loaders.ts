@@ -5,7 +5,14 @@ import qs from "qs";
 const baseUrl = getStrapiURL();
 
 async function fetchData(url: string) {
-    const authToken = await getAuthToken();
+    let authToken = await getAuthToken();
+    if (!authToken) {
+        const strapiUrlToken = process.env.STRAPI_TOKEN;
+        if (!strapiUrlToken) {
+            throw new Error("STRAPI_URL is not defined in the environment variables");
+        }
+        authToken = strapiUrlToken;
+    }
     const headers = {
         method: "GET",
         headers: {
@@ -27,11 +34,53 @@ async function fetchData(url: string) {
 export async function getGlobalPageData() {
     const url = new URL("/api/global", baseUrl);
 
+    const query = qs.stringify({
+        populate: [
+            "header.logo.image",
+            "header.headerLink",
+            "footer.footerColumnOne.logo.image",
+            "footer.footerColumnTwo",
+            "footer.footerColumnThree.socialMedia.image"
+        ]
+    });
+
+    url.search = query;
+
     return await fetchData(url.href);
 }
 
 export async function getHomePageData() {
     const url = new URL("/api/home-page", baseUrl);
+
+    const query = qs.stringify({
+        populate: {
+            blocks: {
+                on: {
+                    'layout.hero-section': {
+                        populate: {
+                            image: {
+                                fields: ["url", "alternativeText", "height", "width"]
+                            },
+                            button: {
+                                populate: true
+                            }
+                        },
+                    },
+                    'layout.latest-projects': {
+                        populate: "*",
+                    },
+                    'layout.latest-articles-section': {
+                        populate: "*",
+                    },
+                    'layout.skill-section': {
+                        populate: "*",
+                    }
+                }
+            }
+        }
+    });
+
+    url.search = query;
 
     return await fetchData(url.href);
 }
@@ -39,12 +88,29 @@ export async function getHomePageData() {
 export async function getLatestProjectsData() {
     const url = new URL("/api/projects", baseUrl);
 
-    url.search = "?sort[0][publishedAt]=desc&pagination[page]=1&pagination[pageSize]=2&populate[image][fields][0]=id&populate[image][fields][1]=documentId&populate[image][fields][2]=url&populate[image][fields][3]=alternativeText&populate[image][fields][4]=width&populate[image][fields][5]=height";
+    const query = qs.stringify({
+        sort: [
+            {
+                publishedAt: "desc"
+            }
+        ],
+        pagination: {
+            page: 1,
+            pageSize: 2
+        },
+        populate: {
+            image: {
+                fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
+            }
+        }
+    });
+
+    url.search = query;
+
     return await fetchData(url.href);
 }
 
-export async function getLatestArticlesData() {
-    const PAGE_SIZE = 4;
+export async function getLatestArticlesData( PAGE_SIZE: number) {
 
     const query = qs.stringify({
         sort: [
@@ -56,7 +122,7 @@ export async function getLatestArticlesData() {
             page: 1,
             pageSize: PAGE_SIZE
         },
-        fields: ["id", "title", "description", "publishedAt"],
+        fields: ["id", "title", "description", "publishedAt", "slug"],
         populate: {
             image: {
                 fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
@@ -65,6 +131,38 @@ export async function getLatestArticlesData() {
     });
 
     const url = new URL("/api/articles", baseUrl);
+    url.search = query;
+
+    return await fetchData(url.href);
+}
+
+export async function getProjectData(slug: string) {
+    const url = new URL("/api/projects", baseUrl);
+
+    const query = qs.stringify({
+        filters: {
+            slug: {
+                $eq: slug
+            },
+        },
+    });
+
+    url.search = query;
+
+    return await fetchData(url.href);
+}
+
+export async function getArticleData(slug: string) {
+    const url = new URL("/api/articles", baseUrl);
+
+    const query = qs.stringify({
+        filters: {
+            slug: {
+                $eq: slug
+            },
+        },
+    });
+
     url.search = query;
 
     return await fetchData(url.href);

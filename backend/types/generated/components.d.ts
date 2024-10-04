@@ -12,16 +12,40 @@ export interface LayoutSkillSection extends Struct.ComponentSchema {
   };
 }
 
+export interface LayoutLatestProjects extends Struct.ComponentSchema {
+  collectionName: 'components_layout_latest_projects';
+  info: {
+    displayName: 'Latest Projects Section';
+    description: '';
+  };
+  attributes: {
+    heading: Schema.Attribute.String;
+    button: Schema.Attribute.Component<'components.link', false>;
+  };
+}
+
+export interface LayoutLatestArticlesSection extends Struct.ComponentSchema {
+  collectionName: 'components_layout_latest_articles_sections';
+  info: {
+    displayName: 'Latest Articles Section';
+  };
+  attributes: {
+    heading: Schema.Attribute.String;
+    button: Schema.Attribute.Component<'components.link', false>;
+  };
+}
+
 export interface LayoutHeroSection extends Struct.ComponentSchema {
   collectionName: 'components_layout_hero_sections';
   info: {
     displayName: 'Hero Section';
+    description: '';
   };
   attributes: {
     heading: Schema.Attribute.String;
     subHeading: Schema.Attribute.Text;
     image: Schema.Attribute.Media<'images'>;
-    link: Schema.Attribute.Component<'components.link', false>;
+    button: Schema.Attribute.Component<'components.link', false>;
   };
 }
 
@@ -138,6 +162,8 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'layout.skill-section': LayoutSkillSection;
+      'layout.latest-projects': LayoutLatestProjects;
+      'layout.latest-articles-section': LayoutLatestArticlesSection;
       'layout.hero-section': LayoutHeroSection;
       'layout.header': LayoutHeader;
       'layout.footer': LayoutFooter;

@@ -24,12 +24,12 @@ interface HeroSectionProps {
     heading: string;
     subHeading: string;
     image: Image;
-    link: Link;
+    button: Link;
 }
 
 export function HeroSection({ data }: { readonly data: HeroSectionProps }) {
 
-    const { heading, subHeading, image, link } = data;
+    const { heading, subHeading, image, button } = data;
 
     return (
         <header className="py-[96px] px-2">
@@ -47,9 +47,9 @@ export function HeroSection({ data }: { readonly data: HeroSectionProps }) {
                 <div className="flex flex-col items-center justify-center w-full text-center space-y-[24px] max-w-[1054px]">
                     <h1 className="text-[40px] font-bold">{heading}</h1>
                     <p className="text-xl">{subHeading}</p>
-                    <Link href={link.url}>
+                    <Link href={button.url}>
                         <Button className="text-lg font-medium h-10">
-                            {link.text}
+                            {button.text}
                         </Button>
                     </Link>
                 </div>

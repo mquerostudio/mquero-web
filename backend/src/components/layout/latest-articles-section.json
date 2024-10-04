@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_layout_latest_articles_sections",
+  "info": {
+    "displayName": "Latest Articles Section"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string"
+    },
+    "button": {
+      "type": "component",
+      "repeatable": false,
+      "component": "components.link"
+    }
+  }
+}

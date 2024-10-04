@@ -25,13 +25,13 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${palanquin.className} min-h-screen antialiased`}>
+
+        <Header data={globalData?.data?.header} />
         <div>
-          <Header data={globalData?.data?.header} />
-          <div>
-            {children}
-          </div>
-          <Footer data={globalData?.data.footer} headerLink={globalData?.data?.header?.headerLink} />
+          {children}
         </div>
+        <Footer data={globalData?.data.footer} headerLink={globalData?.data?.header?.headerLink} />
+
       </body>
     </html>
   );

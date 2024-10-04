@@ -5,21 +5,35 @@ import { SkillsSection } from "@/components/custom/SkillsSection";
 import { getHomePageData, getLatestArticlesData, getLatestProjectsData } from "@/data/loaders";
 
 export default async function Home() {
+
+  const numOfArticles = 3;
+
   const homeData = await getHomePageData();
   const latestProjectsData = await getLatestProjectsData();
-  const latestArticlesData = await getLatestArticlesData();
+  const latestArticlesData = await getLatestArticlesData(numOfArticles);
 
   const { blocks } = homeData.data;
   if (!blocks) return <div>No blocks found</div>
 
-  // console.dir(latestArticlesData, { depth: null });
-
   return (
     <main>
-      <HeroSection data={blocks.find((block: { __component: string }) => block.__component === 'layout.hero-section')} />
-      <ProjectsSection project={latestProjectsData.data} />
-      <ArticlesSection article={latestArticlesData.data} />
-      <SkillsSection data={blocks.find((block: { __component: string }) => block.__component === 'layout.skill-section')} />
+      <HeroSection
+        data={blocks.find((block: { __component: string }) => block.__component === 'layout.hero-section')}
+      />
+
+      <ProjectsSection
+        project={latestProjectsData.data}
+        data={blocks.find((block: { __component: string }) => block.__component === 'layout.latest-projects')}
+      />
+
+      <ArticlesSection
+        article={latestArticlesData.data}
+        data={blocks.find((block: { __component: string }) => block.__component === 'layout.latest-articles-section')}
+      />
+
+      <SkillsSection
+        data={blocks.find((block: { __component: string }) => block.__component === 'layout.skill-section')}
+      />
     </main>
   );
 }

@@ -497,10 +497,11 @@ export interface ApiArticleArticle extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    title: Schema.Attribute.String;
-    description: Schema.Attribute.Text;
-    image: Schema.Attribute.Media<'images'>;
+    title: Schema.Attribute.String & Schema.Attribute.Required;
+    description: Schema.Attribute.Text & Schema.Attribute.Required;
+    image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     mainText: Schema.Attribute.Blocks;
+    slug: Schema.Attribute.UID & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -559,7 +560,12 @@ export interface ApiHomePageHomePage extends Struct.SingleTypeSchema {
     title: Schema.Attribute.String;
     description: Schema.Attribute.Text;
     blocks: Schema.Attribute.DynamicZone<
-      ['layout.hero-section', 'layout.skill-section']
+      [
+        'layout.hero-section',
+        'layout.skill-section',
+        'layout.latest-projects',
+        'layout.latest-articles-section',
+      ]
     >;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
@@ -592,6 +598,7 @@ export interface ApiProjectProject extends Struct.CollectionTypeSchema {
     description: Schema.Attribute.Text;
     image: Schema.Attribute.Media<'images'>;
     mainText: Schema.Attribute.Blocks;
+    slug: Schema.Attribute.UID & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
