@@ -110,7 +110,7 @@ export async function getLatestProjectsData() {
     return await fetchData(url.href);
 }
 
-export async function getLatestArticlesData( PAGE_SIZE: number) {
+export async function getArticlesData() {
 
     const query = qs.stringify({
         sort: [
@@ -118,14 +118,16 @@ export async function getLatestArticlesData( PAGE_SIZE: number) {
                 publishedAt: "desc"
             }
         ],
-        pagination: {
-            page: 1,
-            pageSize: PAGE_SIZE
-        },
         fields: ["id", "title", "description", "publishedAt", "slug"],
         populate: {
             image: {
                 fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
+            },
+            tags: {
+                fields: ["id", "documentId", "tag"]
+            },
+            project: {
+                fields: ["id", "documentId", "title", "description", "slug"]
             }
         }
     });
@@ -161,6 +163,43 @@ export async function getArticleData(slug: string) {
                 $eq: slug
             },
         },
+        populate: {
+            image: {
+                fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
+            },
+            tags: {
+                fields: ["id", "documentId", "tag"]
+            },
+            project: {
+                fields: ["id", "documentId", "title", "description", "slug"]
+            },
+            
+        }
+
+    });
+
+    url.search = query;
+
+    return await fetchData(url.href);
+}
+
+export async function getTagsData() {
+    const url = new URL("/api/tags", baseUrl);
+
+    const query = qs.stringify({
+        fields: ["id", "documentId", "tag"]
+    });
+
+    url.search = query;
+
+    return await fetchData(url.href);
+}
+
+export async function getProjectsNames() {
+    const url = new URL("/api/projects", baseUrl);
+
+    const query = qs.stringify({
+        fields: ["title", "slug"]
     });
 
     url.search = query;

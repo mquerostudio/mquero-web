@@ -53,7 +53,7 @@ export function ArticlesSection({ article, data }: ArticlesSectionProps & { data
 
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 w-full mt-8">
 
-                    {article.map((art) => (
+                    {article.slice(0, 3).map((art) => (
                         <Link href={`/blog/${art.slug}`} key={art.id}>
                             <div
                                 key={art.id}

@@ -24,10 +24,10 @@ export default async function RootLayout({
   const globalData = await getGlobalPageData();
   return (
     <html lang="en">
-      <body className={`${palanquin.className} min-h-screen antialiased`}>
+      <body className={`${palanquin.className} min-h-screen antialiased bg-gray-100`}>
 
         <Header data={globalData?.data?.header} />
-        <div>
+        <div className="px-10 min-h-screen">
           {children}
         </div>
         <Footer data={globalData?.data.footer} headerLink={globalData?.data?.header?.headerLink} />
