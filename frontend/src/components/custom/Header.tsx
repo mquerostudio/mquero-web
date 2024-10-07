@@ -61,7 +61,7 @@ export function Header({ data }: Readonly<HeaderProps>) {
                 alt={logo.image.alternativeText}
                 height={logo.image.height}
                 width={logo.image.width}
-                classname="h-5"
+                classname="h-8"
                 />
             </div>
 

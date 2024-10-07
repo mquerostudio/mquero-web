@@ -182,7 +182,6 @@ export async function getArticleData(slug: string) {
                 }
             }
         }
-
     });
 
     url.search = query;
@@ -211,5 +210,28 @@ export async function getProjectsNames() {
 
     url.search = query;
 
+    return await fetchData(url.href);
+}
+
+export async function getArticlesInProject(projectSlug: string) {
+    const url = new URL("/api/articles", baseUrl);
+
+    const query = qs.stringify({
+        filters: {
+            project: {
+                slug: {
+                    $eq: "mq-one"
+                }
+            }
+        },
+        fields: ["title", "description"],
+        populate: {
+            image: {
+                fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
+            }
+        }
+    });
+
+    url.search = query;
     return await fetchData(url.href);
 }
