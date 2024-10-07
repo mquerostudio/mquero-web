@@ -472,6 +472,7 @@ export interface PluginUsersPermissionsUser
     articles: Schema.Attribute.Relation<'manyToMany', 'api::article.article'>;
     name: Schema.Attribute.String;
     surname: Schema.Attribute.String;
+    profileImg: Schema.Attribute.Media<'images'>;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;

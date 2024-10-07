@@ -76,6 +76,13 @@
     },
     "surname": {
       "type": "string"
+    },
+    "profileImg": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false
     }
   }
 }

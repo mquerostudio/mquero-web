@@ -173,7 +173,14 @@ export async function getArticleData(slug: string) {
             project: {
                 fields: ["id", "documentId", "title", "description", "slug"]
             },
-            
+            users_permissions_users: {
+                fields: ["id", "name", "surname", "username"],
+                populate: {
+                    profileImg: {
+                        fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
+                    },
+                }
+            }
         }
 
     });

@@ -1,6 +1,8 @@
 import { BlogArticlesList } from "@/components/custom/BlogArticlesList";
 import { StrapiImage } from "@/components/custom/StrapiImage";
+import { Button } from "@/components/ui/button";
 import { getArticlesData, getTagsData, getProjectsNames } from "@/data/loaders";
+import Link from "next/link";
 
 export default async function Blog() {
 
@@ -32,9 +34,11 @@ export default async function Blog() {
                         <h2 className="text-2xl font-bold mb-2">{articles.data[0].title}</h2>
                         <p className="text-gray-700 mb-2">{articles.data[0].description}</p>
                         <p className="text-gray-500 mb-4">{new Date(articles.data[0].publishedAt).toLocaleDateString()}</p>
-                        <button className="px-4 py-2 bg-blue-500 text-white rounded-lg">
-                            Read More
-                        </button>
+                        <Link href={`/blog/${articles.data[0].slug}`}>
+                            <Button className="text-lg font-medium h-10">
+                                Read More
+                            </Button>
+                        </Link>
                     </div>
 
                     <div className="relative w-full h-[300px] overflow-hidden">
@@ -50,7 +54,7 @@ export default async function Blog() {
                 </div>
             </div>
 
-            <BlogArticlesList articles={articles} projects = {projectsData} tags = {tagsData}/>
+            <BlogArticlesList articles={articles} projects={projectsData} tags={tagsData} />
 
         </main>
     );

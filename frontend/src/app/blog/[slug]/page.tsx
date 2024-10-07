@@ -7,16 +7,16 @@ export default async function ArticlePage({ params }: { params: { slug: string }
     const { slug } = params;
     const projectData = await getArticleData(slug);
 
-    const { title, description, mainText, publishedAt, updatedAt, image, tags, project } = projectData.data[0];
+    const { title, description, mainText, publishedAt, updatedAt, image, tags, project, users_permissions_users } = projectData.data[0];
 
     return (
         <main className="max-w-[1152px] w-full mx-auto py-8">
             {/* Back Button */}
             <div className="mb-6">
                 <Link href="/blog">
-                    <Button className="text-lg font-medium">
+                    <button className="text-lg font-medium">
                         &larr; Back
-                    </Button>
+                    </button>
                 </Link>
             </div>
 
@@ -25,24 +25,35 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                 {project?.title} | {new Date(publishedAt).toLocaleDateString()}
             </div>
 
+            {/* Author Section */}
+            <div className="flex items-center mb-8">
+                <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
+                    <StrapiImage
+                        src={users_permissions_users[0].profileImg.url}
+                        alt={users_permissions_users[0].profileImg.alternativeText}
+                        width={users_permissions_users[0].profileImg.width}
+                        height={users_permissions_users[0].profileImg.height}
+                        className="object-cover rounded-full"
+                    />
+                </div>
+                <div className="ml-4">
+                    <p className="font-bold">
+                        {users_permissions_users[0].name}&nbsp;
+                        {users_permissions_users[0].surname}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                        @{users_permissions_users[0].username}
+                    </p>
+                </div>
+            </div>
+
             {/* Article Title */}
             <h1 className="text-4xl font-bold mb-6">
                 {title}
             </h1>
 
-            {/* Author Section */}
-            <div className="flex items-center mb-8">
-                <div className="w-12 h-12 rounded-full bg-gray-300 flex items-center justify-center">
-                    <span className="text-2xl">👤</span>
-                </div>
-                <div className="ml-4">
-                    <p className="font-bold">Name Lastname</p>
-                    <p className="text-sm text-gray-500">Position at Company</p>
-                </div>
-            </div>
-
             {/* Article Image */}
-            <div className="w-full h-72 bg-gray-200 mb-8">
+            <div className="w-full h-80 bg-gray-200 mb-8">
                 <StrapiImage
                     src={image?.url}
                     alt={image?.alternativeText}

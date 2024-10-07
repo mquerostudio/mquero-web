@@ -51,61 +51,62 @@ export function Header({ data }: Readonly<HeaderProps>) {
     const [isDropdown, setIsDropdown] = useState(false);
 
     return (
-        <div className="sticky top-0 z-50 w-full px-2 py-2 border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="sticky top-0 z-50 w-full h-14  backdrop-blur ">
 
-            <div className="flex justify-between items-center max-w-[1544px] mx-auto">
-                <div className="md:flex mr-4">
-                    <Logo
-                        pageSrc="/"
-                        imgSrc={logo.image.url}
-                        alt={logo.image.alternativeText}
-                        height={logo.image.height}
-                        width={logo.image.width}
-                    />
-                </div>
+            <div className="flex justify-between items-center max-w-[1544px] mx-auto h-full">
+            <div className="md:flex mr-4 items-center">
+                <Logo
+                pageSrc="/"
+                imgSrc={logo.image.url}
+                alt={logo.image.alternativeText}
+                height={logo.image.height}
+                width={logo.image.width}
+                classname="h-5"
+                />
+            </div>
 
-                <div className="hidden sm:flex links-container items-center flex-1 justify-between space-x-10 sm:justify-end">
+            <div className="hidden sm:flex links-container items-center flex-1 justify-between space-x-10 sm:justify-end h-full">
+                {headerLink.map((link) => (
+                link.url === "/about-me" ? (
+                    <Link href={link.url} key={link.id}>
+                    <Button className="text-lg font-medium h-8">
+                        {link.text}
+                    </Button>
+                    </Link>
+                ) : (
+                    <a
+                    key={link.id}
+                    href={link.url}
+                    className="text-lg font-medium text-gray-800 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400"
+                    >
+                    {link.text}
+                    </a>
+                )
+                ))}
+            </div>
+
+            <div className="sm:hidden flex items-center h-full">
+                <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="outline">
+                    <div className="space-y-1">
+                        <div className="w-6 h-0.5 bg-black dark:bg-white"></div>
+                        <div className="w-6 h-0.5 bg-black dark:bg-white"></div>
+                        <div className="w-6 h-0.5 bg-black dark:bg-white"></div>
+                    </div>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56">
                     {headerLink.map((link) => (
-                        link.url === "/about-me" ? (
-                            <Link href={link.url} key={link.id}>
-                                <Button className="text-lg font-medium">
-                                    {link.text}
-                                </Button>
-                            </Link>
-                        ) : (
-                            <a
-                                key={link.id}
-                                href={link.url}
-                                className="text-lg font-medium text-gray-800 dark:text-gray-200 hover:text-gray-600 dark:hover:text-gray-400"
-                            >
-                                {link.text}
-                            </a>
-                        )
+                    <DropdownMenuItem key={link.id}>
+                        <Link href={link.url}>
+                        {link.text}
+                        </Link>
+                    </DropdownMenuItem>
                     ))}
-                </div>
-
-                <div className="sm:hidden">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="outline">
-                                <div className="space-y-1">
-                                    <div className="w-6 h-0.5 bg-black dark:bg-white"></div>
-                                    <div className="w-6 h-0.5 bg-black dark:bg-white"></div>
-                                    <div className="w-6 h-0.5 bg-black dark:bg-white"></div>
-                                </div>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56">
-                            {headerLink.map((link) => (
-                                <DropdownMenuItem key={link.id}>
-                                    <Link href={link.url}>
-                                        {link.text}
-                                    </Link>
-                                </DropdownMenuItem>
-                            ))}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
+                </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
             </div>
 
         </div>

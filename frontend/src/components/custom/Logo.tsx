@@ -7,6 +7,7 @@ interface LogoProps {
     alt: string;
     height: number;
     width: number;
+    classname?: string;
 }
 
 export function Logo({
@@ -15,6 +16,7 @@ export function Logo({
     alt,
     height,
     width,
+    classname
 }: Readonly<LogoProps>) {
     return (
         <Link className="flex items-center gap-2" href={pageSrc}>
@@ -23,6 +25,7 @@ export function Logo({
                 src={imgSrc}
                 height={height}
                 width={width}
+                className={classname}
             />
         </Link>
 
