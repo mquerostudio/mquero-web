@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Palanquin } from "next/font/google";
 import "./globals.css";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { getGlobalPageData } from "@/data/loaders";
 import { Header } from "../components/custom/Header";
@@ -29,6 +30,7 @@ export default async function RootLayout({
         <Header data={globalData?.data?.header} />
         <div className="px-10 min-h-screen">
           {children}
+          <SpeedInsights />
         </div>
         <Footer data={globalData?.data.footer} headerLink={globalData?.data?.header?.headerLink} />
 
