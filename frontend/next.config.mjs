@@ -14,7 +14,7 @@ const nextConfig = {
         },
         {
           protocol: "https",
-          hostname: "stable-leader-451d052f52.media.strapiapp.com"
+          hostname: "optimistic-kindness-c344eba2ae.media.strapiapp.com"
         },
       ],
     },
