@@ -150,7 +150,7 @@ export function BlogArticlesList({ articles, projects, tags }: { readonly articl
                                     {selectedTags.map(tagId => {
                                         const tag = tags.find(t => t.documentId === tagId);
                                         return tag ? (
-                                            <div key={tag.documentId} className="p-2 bg-yellow-100 rounded-lg">
+                                            <div key={tag.documentId} className="p-2 bg-[#ffbd3a] rounded-lg">
                                                 {tag.tag}
                                             </div>
                                         ) : null;

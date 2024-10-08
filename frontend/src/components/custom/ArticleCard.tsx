@@ -44,8 +44,8 @@ export function ArticleCard({
                             </div>
                             <div className="flex-col mx-auto">
                                 <div className="text-2xl font-semibold">{title}</div>
-                                <div className="text-lg mt-2">{description}</div>
-                                <div className="text-sm mt-4 text-gray-500">{new Date(publishedAt).toISOString().split('T')[0]}</div>
+                                <div className="text-lg mt-2 text-start">{description}</div>
+                                <div className="text-sm mt-4 text-gray-500">{publishedAt ? new Date(publishedAt).toLocaleDateString() : 'N/A'}</div>
                             </div>
                         </div>
                     </Link>

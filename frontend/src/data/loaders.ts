@@ -153,7 +153,7 @@ export async function getProjectsData() {
                 fields: ["id", "documentId", "tag"]
             },
             articles: {
-                fields: ["id", "documentId", "title", "description", "slug"],
+                fields: ["id", "documentId", "title", "description", "slug", "publishedAt"],
                 populate:{
                     image: {
                         fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
@@ -298,6 +298,17 @@ export async function getBlogPageData() {
 
     const query = qs.stringify({
         fields: ["title", "description", "heading1", "heading2"],
+    });
+
+    url.search = query;
+    return await fetchData(url.href);
+}
+
+export async function getProjectPageData() {
+    const url = new URL("/api/project-page", baseUrl);
+
+    const query = qs.stringify({
+        fields: ["title", "description"],
     });
 
     url.search = query;
