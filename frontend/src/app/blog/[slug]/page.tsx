@@ -79,7 +79,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
 
             </div>
 
-            <ArticlesInProject projectName={project?.title} />
+            {/* <ArticlesInProject projectName={project?.title} /> */}
         </main>
     );
 }
