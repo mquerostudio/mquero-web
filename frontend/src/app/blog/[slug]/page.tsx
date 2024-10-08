@@ -2,7 +2,6 @@ import { getArticleData } from "@/data/loaders";
 import { StrapiImage } from "@/components/custom/StrapiImage";
 import Link from 'next/link';
 import { BlocksRenderer, type BlocksContent } from "@strapi/blocks-react-renderer";
-import ArticlesInProject from "@/components/custom/ArticlesInProject";
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
     const { slug } = params;
