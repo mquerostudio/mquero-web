@@ -30,7 +30,7 @@ export function SkillsSection({ data }: { readonly data: SkillsSectionProps }) {
                     {heading}
                 </h2>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full relative">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 w-full relative bg-white rounded-3xl shadow-sm">
                     {skill.map(({ id, heading, subHeading, icon }) => (
                         <div
                             key={id}

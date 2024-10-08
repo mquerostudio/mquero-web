@@ -22,7 +22,7 @@ interface ProjectProps {
 export function ProjectCard({ project }: { project?: ProjectProps }) {
     return (
         <div
-            className="border rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105 w-full h-auto"
+            className="border rounded-lg overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105 w-full h-auto bg-white"
         >
             {project && Object.keys(project).length > 0 ? (
                 <Link href={`/projects/${project.slug}`}>
@@ -41,7 +41,7 @@ export function ProjectCard({ project }: { project?: ProjectProps }) {
                     </div>
                 </Link>
             ) : (
-            <div className="animate-pulse">
+            <div className="animate-pulse bg-white">
                 <div className="relative w-full h-52 overflow-hidden">
                     <StrapiImage
                         src={"/uploads/img_placeholder_9590864e93.png"}
@@ -51,7 +51,7 @@ export function ProjectCard({ project }: { project?: ProjectProps }) {
                         className="absolute inset-0 w-full h-full object-cover"
                     />
                 </div>
-                <div className="flex flex-col mx-auto justify-center p-5 h-52">
+                <div className="flex flex-col mx-auto justify-center p-5 h-30">
                     <div className="h-6 bg-gray-300 mb-2 w-3/4"></div>
                     <div className="h-4 bg-gray-300 mb-2 w-full"></div>
                     <div className="h-4 bg-gray-300 mb-4 w-5/6"></div>

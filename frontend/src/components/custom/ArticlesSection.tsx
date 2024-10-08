@@ -50,7 +50,15 @@ export function ArticlesSection({ article, data }: ArticlesSectionProps & { data
                 <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 w-full mt-8">
                     {article && article.length > 0 ? (
                         article.slice(0, 3).map((art) => (
-                            <ArticleCard key={art.id} article={art} />
+                            <ArticleCard 
+                                key={art.documetId} 
+                                id={art.id}
+                                title={art.title}
+                                slug={art.slug}
+                                description={art.description}
+                                publishedAt={art.publishedAt}
+                                image={art.image}
+                            />
                         ))
                     ) : (
                         Array.from({ length: 3 }).map((_, index) => (

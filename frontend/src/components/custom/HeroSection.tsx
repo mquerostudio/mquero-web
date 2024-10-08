@@ -34,8 +34,8 @@ export function HeroSection({ data }: { readonly data: HeroSectionProps }) {
     const highlightedHeading = heading.replace(/(Manuel Quero|electronics and firmware)/g, '<span style="color: #ffaa00ff;">$1</span>');
 
     return (
-        <header className="py-[96px] px-2">
-            <div className="max-w-[1348px] w-full flex flex-col lg:flex-row justify-between items-center mx-auto space-y-4 lg:space-y-0 lg:space-x-[24px] h-auto border-4 border-gray-300 rounded-[40px] p-8">
+        <header className="py-24">
+            <div className="max-w-[1348px] w-full flex flex-col lg:flex-row justify-between items-center mx-auto space-y-4 lg:space-y-0 lg:space-x-6 h-auto border-4 border-gray-300 rounded-3xl p-8 bg-white">
 
                 <div className="rounded-[80px] overflow-hidden">
                     <StrapiImage

@@ -51,7 +51,7 @@ export function Header({ data }: Readonly<HeaderProps>) {
     const [isDropdown, setIsDropdown] = useState(false);
 
     return (
-        <div className="sticky top-0 z-50 w-full h-14  backdrop-blur ">
+        <div className="sticky top-0 z-50 w-full h-14 backdrop-blur">
 
             <div className="flex justify-between items-center max-w-[1544px] mx-auto h-full">
             <div className="md:flex mr-4 items-center">

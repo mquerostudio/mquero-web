@@ -2,7 +2,7 @@ import { ArticlesSection } from "@/components/custom/ArticlesSection";
 import { HeroSection } from "@/components/custom/HeroSection";
 import { ProjectsSection } from "@/components/custom/ProjectsSection";
 import { SkillsSection } from "@/components/custom/SkillsSection";
-import { getHomePageData, getArticlesData, getLatestProjectsData } from "@/data/loaders";
+import { getHomePageData, getLatestProjectsData, getLatestArticlesData } from "@/data/loaders";
 
 export default async function Home() {
 
@@ -10,7 +10,7 @@ export default async function Home() {
 
   const homeData = await getHomePageData();
   const latestProjectsData = await getLatestProjectsData();
-  const latestArticlesData = await getArticlesData();
+  const latestArticlesData = await getLatestArticlesData();
 
   const { blocks } = homeData.data;
   if (!blocks) return <div>No blocks found</div>

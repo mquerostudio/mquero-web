@@ -110,6 +110,63 @@ export async function getLatestProjectsData() {
     return await fetchData(url.href);
 }
 
+export async function getLatestArticlesData() {
+    const url = new URL("/api/articles", baseUrl);
+
+    const query = qs.stringify({
+        sort: [
+            {
+                publishedAt: "desc"
+            }
+        ],
+        pagination: {
+            page: 1,
+            pageSize: 3
+        },
+        fields: ["id", "title", "description", "publishedAt", "slug"],
+        populate: {
+            image: {
+                fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
+            },
+        }
+    });
+
+    url.search = query;
+    return await fetchData(url.href);
+}
+
+export async function getProjectsData() {
+    const url = new URL("/api/projects", baseUrl);
+
+    const query = qs.stringify({
+        sort: [
+            {
+                publishedAt: "desc"
+            }
+        ],
+        fields: ["id", "title", "description", "publishedAt", "slug"],
+        populate: {
+            image: {
+                fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
+            },
+            tags: {
+                fields: ["id", "documentId", "tag"]
+            },
+            articles: {
+                fields: ["id", "documentId", "title", "description", "slug"],
+                populate:{
+                    image: {
+                        fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
+                    },
+                }
+            }
+        }
+    });
+
+    url.search = query;
+    return await fetchData(url.href);
+}
+
 export async function getArticlesData() {
 
     const query = qs.stringify({
@@ -230,6 +287,17 @@ export async function getArticlesInProject(projectSlug: string) {
                 fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
             }
         }
+    });
+
+    url.search = query;
+    return await fetchData(url.href);
+}
+
+export async function getBlogPageData() {
+    const url = new URL("/api/blog-page", baseUrl);
+
+    const query = qs.stringify({
+        fields: ["title", "description", "heading1", "heading2"],
     });
 
     url.search = query;
