@@ -17,6 +17,7 @@ const palanquin = Palanquin({
 export const metadata: Metadata = {
   title: "MQuero.",
   description: "Engineering, Design, and Development",
+  manifest: "/manifest.webmanifest",
 };
 
 export default async function RootLayout({
@@ -28,7 +29,6 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${palanquin.className} min-h-screen antialiased bg-gray-100`}>
-
         <Header data={globalData?.data?.header} />
         <div className="px-10 min-h-screen">
           {children}
