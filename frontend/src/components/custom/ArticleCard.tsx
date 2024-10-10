@@ -53,7 +53,7 @@ export function ArticleCard({
                     <div className="animate-pulse">
                         <div className="relative w-full h-52 overflow-hidden">
                             <StrapiImage
-                                src={"/uploads/img_placeholder_9590864e93.png"}
+                                src={"img_placeholder_9590864e93.png"}
                                 alt={"Placeholder image"}
                                 width={1200}
                                 height={800}
