@@ -51,12 +51,12 @@ export default async function Projects() {
     return (
         <main>
 
-            <header className="py-24">
-                <div className="max-w-[1348px] w-full flex flex-col justify-between items-start mx-auto space-y-4  h-auto">
-                    <h1 className="text-4xl font-bold">
+            <header className="py-12">
+                <div className="max-w-[1348px] w-full flex flex-col justify-between items-start mx-auto space-y-4 h-auto">
+                    <h1 className="text-2xl sm:text-4xl font-bold">
                         {title}
                     </h1>
-                    <p className="text-2xl">
+                    <p className="text-base sm:text-xl">
                         {description}
                     </p>
                 </div>

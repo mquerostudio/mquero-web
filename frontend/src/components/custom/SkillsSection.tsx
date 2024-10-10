@@ -45,11 +45,11 @@ export function SkillsSection({ data }: { readonly data: SkillsSectionProps }) {
                                 {icon === "FaRobot" && <FaRobot className="mr-2" />}
                                 {icon === "RiNextjsFill" && <RiNextjsFill className="mr-2" />}
 
-                                <h3 className="text-lg sm:text-xl font-bold">
+                                <h3 className="text-lg sm:text-2xl font-bold">
                                     {heading}
                                 </h3>
                             </div>
-                            <p className="text-base">{subHeading}</p>
+                            <p className="text-base sm:text-lg">{subHeading}</p>
                         </div>
                     ))}
                 </div>

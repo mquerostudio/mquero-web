@@ -42,7 +42,7 @@ export function ArticlesSection({ article, data }: ArticlesSectionProps & { data
 
     return (
         <div className="pb-12">
-            <div className="max-w-[1348px] w-full flex flex-col justify-between items-center mx-auto space-y-6">
+            <div className="max-w-[1348px] w-full flex flex-col justify-between items-center mx-auto gap-8">
                 <h2 className="text-2xl sm:text-4xl font-bold w-full">
                     {heading}
                 </h2>

@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { ArticleCard } from "./ArticleCard";
 import { StrapiImage } from "./StrapiImage";
+import { Button } from "../ui/button";
 
 interface Image {
     id: number;
@@ -62,23 +64,38 @@ export function ProjectBigCard({
                 {id && title && description && slug && image && tags ? (
 
                     <div className="p-6 flex flex-col mx-auto gap-4">
-                        <div className="flex flex-col lg:flex-row justify-center items-start space-y-4 lg:space-y-0">
-                            <div className="flex flex-col justify-between gap-2 w-full min-h-72 mx-auto">
-                                <h2 className="text-4xl font-bold mb-2">
-                                    {title}
-                                </h2>
-                                <p className="text-lg font-normal h-full">
-                                    {description}
-                                </p>
+                        <div className="flex flex-col lg:flex-row justify-center items-start space-y-4 lg:space-y-0 gap-4">
+                            <div className="flex flex-col justify-between w-full min-h-72 mx-auto">
 
-                                <div className="flex flex-row gap-2">
-                                    {tags.map((tag) => (
-                                        <p key={tag.documentId} className="p-2 bg-gray-50 rounded-xl border-2 text-justify">{tag.tag}</p>
-                                    ))}
+                                <Link href={`/projects/${slug}`}>
+                                    <h2 className="text-2xl sm:text-4xl font-bold mb-4">
+                                        {title}
+                                    </h2>
+                                    <p className="text-base sm:text-xl h-full">
+                                        {description}
+                                    </p>
+                                </Link>
+
+
+                                <div className="flex justify-between">
+                                    <Link href={`/projects/${slug}`} className="items-end flex">
+                                        <Button className="text-base sm:text-xl font-medium bg-gray-800 text-white hover:bg-[#ffaa00ff] hover:text-black">
+                                            ir al proyecto
+                                        </Button>
+                                    </Link>
+                                    <div>
+                                        <div className="flex flex-row gap-2 justify-end">
+                                            {tags.map((tag) => (
+                                                <p key={tag.documentId} className="p-2 bg-gray-50 rounded-xl border-2 text-justify">{tag.tag}</p>
+                                            ))}
+                                        </div>
+                                        <p className="text-gray-500 text-sm mt-2 text-end">
+                                            Published on: {publishedAt ? new Date(publishedAt).toLocaleDateString() : 'N/A'}
+                                        </p>
+                                    </div>
                                 </div>
-
-                                <p className="text-gray-500 text-sm mt-2">Published on: {publishedAt ? new Date(publishedAt).toLocaleDateString() : 'N/A'}</p>
                             </div>
+
                             <div className="relative w-full h-72 overflow-hidden">
                                 <StrapiImage
                                     src={image.url}
@@ -137,6 +154,6 @@ export function ProjectBigCard({
                 )}
 
             </div>
-        </div>
+        </div >
     );
 }

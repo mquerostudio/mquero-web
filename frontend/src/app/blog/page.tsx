@@ -57,12 +57,6 @@ export default async function Blog() {
                     </div>
                 ) : (
                     <div className="animate-pulse max-w-[1348px] w-full flex flex-col lg:flex-row justify-between items-center mx-auto space-y-4 lg:space-y-0 lg:space-x-6 h-auto p-8 bg-white shadow-lg rounded-3xl">
-
-                        <div className="flex flex-col items-center text-center lg:items-start lg:text-left w-full">
-                            <div className="h-8 w-3/4 bg-gray-300 mb-2 rounded"></div>
-                            <div className="h-6 w-2/3 bg-gray-300 mb-2 rounded"></div>
-                            <div className="h-4 w-1/2 bg-gray-300 mb-4 rounded"></div>
-                        </div>
                         <div className="relative w-full h-52 overflow-hidden">
                             <StrapiImage
                                 src={"https://optimistic-kindness-c344eba2ae.media.strapiapp.com/img_placeholder_9590864e93.png"}
@@ -71,6 +65,12 @@ export default async function Blog() {
                                 height={800}
                                 className="absolute inset-0 w-full h-full object-cover"
                             />
+                        </div>
+
+                        <div className="flex flex-col items-center text-center lg:items-start lg:text-left w-full">
+                            <div className="h-8 w-3/4 bg-gray-300 mb-2 rounded"></div>
+                            <div className="h-6 w-2/3 bg-gray-300 mb-2 rounded"></div>
+                            <div className="h-4 w-1/2 bg-gray-300 mb-4 rounded"></div>
                         </div>
                     </div>
                 )}

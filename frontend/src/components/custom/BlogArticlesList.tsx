@@ -97,14 +97,14 @@ export function BlogArticlesList({ articles, projects, tags }: { readonly articl
                 <div className='flex flex-col lg:flex-row lg:space-x-16 lg:space-y-0'>
                     {/* Filter by Projects */}
                     <div className="lg:flex-row">
-                        <div className="mb-4">Filter by Projects</div>
+                        <div className="mb-4">Filtrar por Proyectos</div>
                         <div className="flex flex-wrap gap-4">
                             {/* Button to reset filter to show all projects */}
                             <div
                                 className={`p-2 bg-white rounded-xl cursor-pointer hover:bg-gray-100 border-2 ${!selectedProject ? 'shadow-[0_0px_6px_1px_#ffaa00ff]' : ''}`}
                                 onClick={() => setSelectedProject(null)}
                             >
-                                All projects
+                                Todos los proyectos
                             </div>
                             {/* List all projects as filter options */}
                             {projects.map((project) => (
@@ -121,14 +121,14 @@ export function BlogArticlesList({ articles, projects, tags }: { readonly articl
 
                     {/* Filter by Tags */}
                     <div className="mt-6 lg:flex-row">
-                        <div className="mb-4">Filter by Tags</div>
+                        <div className="mb-4">Filtrar por Tags</div>
                         <div className="flex flex-wrap gap-4">
                             {/* Button to reset filter to show all tags */}
                             <div
                                 className={`p-2 bg-white rounded-xl cursor-pointer hover:bg-gray-100 border-2 ${selectedTags.length === 0 ? 'shadow-[0_0px_6px_1px_#ffaa00ff]' : ''}`}
                                 onClick={() => setSelectedTags([])}
                             >
-                                All tags
+                                Todos los tags
                             </div>
                             {/* List all tags as filter options */}
                             {tags.map((tag) => (
