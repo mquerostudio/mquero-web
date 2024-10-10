@@ -30,7 +30,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${palanquin.className} min-h-screen antialiased bg-gray-100`}>
         <Header data={globalData?.data?.header} />
-        <div className="px-10 min-h-screen">
+        <div className="px-5 min-h-screen">
           {children}
           <SpeedInsights />
           <Analytics />

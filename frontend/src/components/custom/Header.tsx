@@ -69,7 +69,7 @@ export function Header({ data }: Readonly<HeaderProps>) {
                 {headerLink.map((link) => (
                 link.url === "/about-me" ? (
                     <Link href={link.url} key={link.id}>
-                    <Button className="text-lg font-medium h-8">
+                    <Button className="text-lg font-medium h-8 bg-gray-800 text-white hover:bg-[#ffaa00ff] hover:text-black">
                         {link.text}
                     </Button>
                     </Link>

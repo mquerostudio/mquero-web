@@ -41,13 +41,13 @@ export function ArticlesSection({ article, data }: ArticlesSectionProps & { data
     const { heading, button } = data;
 
     return (
-        <div className="pb-[96px] px-2">
-            <div className="max-w-[1348px] w-full flex flex-col justify-between items-center mx-auto space-y-8">
-                <h2 className="text-4xl font-bold w-full">
+        <div className="pb-12">
+            <div className="max-w-[1348px] w-full flex flex-col justify-between items-center mx-auto space-y-6">
+                <h2 className="text-2xl sm:text-4xl font-bold w-full">
                     {heading}
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 w-full mt-8">
+                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-6 w-full">
                     {article && article.length > 0 ? (
                         article.slice(0, 3).map((art) => (
                             <ArticleCard 
@@ -68,7 +68,7 @@ export function ArticlesSection({ article, data }: ArticlesSectionProps & { data
                 </div>
 
                 <Link href={button.url}>
-                    <Button className="text-lg font-medium h-10">
+                    <Button className="text-base sm:text-xl font-medium  bg-gray-800">
                         {button.text}
                     </Button>
                 </Link>
