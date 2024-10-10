@@ -19,10 +19,10 @@ export default async function Blog() {
         <main>
             <header className="py-24">
                 <div className="max-w-[1348px] w-full flex flex-col justify-between items-start mx-auto space-y-4 lg:space-y-0 h-auto">
-                    <h1 className="text-4xl font-bold">
+                    <h1 className="text-2xl sm:text-4xl font-bold w-full">
                         {title}
                     </h1>
-                    <p className="text-2xl">
+                    <p className="text-2xl sm:text-2xl">
                         {description}
                     </p>
                 </div>
