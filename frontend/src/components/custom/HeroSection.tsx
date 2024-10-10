@@ -37,7 +37,7 @@ export function HeroSection({ data }: { readonly data: HeroSectionProps }) {
         <header className="py-12">
             <div className="max-w-[1348px] w-full flex flex-col lg:flex-row justify-between items-center mx-auto space-y-4 lg:space-y-0 lg:space-x-6 h-auto border-4 border-gray-300 rounded-3xl p-4 sm:p-8 bg-white">
 
-                <div className="sm:rounded-[80px] rounded-[40px] overflow-hidden h-32 sm:h-64 sm:w-64 relative">
+                <div className="sm:rounded-[80px] rounded-[40px] overflow-hidden h-32 w-64 sm:h-64 sm:w-64 relative">
                     <StrapiImage
                         src={image.url}
                         alt={image.alternativeText}
