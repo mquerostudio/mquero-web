@@ -16,7 +16,7 @@ const palanquin = Palanquin({
 
 export const metadata: Metadata = {
   title: "MQuero.",
-  description: "Engineering, Design, and Development",
+  description: "Ingeniero, maker y autodidacta :)",
   manifest: "/manifest.webmanifest",
 };
 
