@@ -2,64 +2,51 @@ import { StrapiImage } from "@/components/custom/StrapiImage";
 import { getProjectData } from "@/data/loaders";
 import { BlocksContent, BlocksRenderer } from "@strapi/blocks-react-renderer";
 import Link from "next/link";
+import BlockRendererClient from "@/components/custom/BlockRendererClient";
 
-export default async function ProjectPage({ params }: {
-    params: { slug: string }
-}) {
-
+export default async function ProjectPage({ params }: { params: { slug: string } }) {
     const { slug } = params;
     const projectData = await getProjectData(slug);
 
+    const { title, description, updatedAt, publishedAt, image } = projectData.data[0];
 
-    const { title, description, mainText, updatedAt, publishedAt } = projectData.data[0];
+    const content: BlocksContent = projectData.data[0].mainText;
+
 
     return (
-        <main className="max-w-[1152px] w-full mx-auto py-8">
+        <main className="max-w-[760px] w-full mx-auto py-8">
 
             <header>
-                {/* Back Button */}
                 <div className="mb-6">
                     <Link href="/blog">
-                        <button className="text-lg font-medium">
-                            &larr; Back
-                        </button>
+                        <button className="text-lg font-medium">&larr; Back</button>
                     </Link>
                 </div>
 
-                {/* Category and Date */}
                 <div className="text-red-500 uppercase text-sm font-bold mb-2">
                     {title} | {new Date(publishedAt).toLocaleDateString()}
                 </div>
 
-                {/* Article Title */}
-                <h1 className="text-4xl font-bold mb-6">
-                    {title}
-                </h1>
-
-
-                {/* Article Image */}
-                {/* <div className="w-full h-80 bg-gray-200 mb-8">
-                    <StrapiImage
-                        src={image?.url}
-                        alt={image?.alternativeText}
-                        width={image?.width}
-                        height={image?.height}
-                        className="w-full h-full object-cover"
-                    />
-                </div> */}
+                <h1 className="text-4xl font-bold mb-6">{title}</h1>
             </header>
 
-            {/* Article Intro Text */}
-            <p className="font-bold text-lg mb-6">
-                {description}
-            </p>
+            <div className="flex md:flex-row gap-4 justify-center">
+                <p className="font-bold text-lg">{description}</p>
 
-            {/* Main Article Content */}
-            <div className="text-gray-800 leading-relaxed">
-                <BlocksRenderer content={mainText as BlocksContent} />
+                <div className="overflow-hidden w-[720px]">
+                    <StrapiImage
+                        src={image.url}
+                        alt={image.alternativeText}
+                        height={image.height}
+                        width={image.width}
+                        className="w-full h-full object-cover rounded-xl"
+                    />
+                </div>
             </div>
 
-
+            <div className="prose prose-lg mt-4 max-w-none">
+                <BlockRendererClient content={content} />
+            </div>
 
         </main>
     );

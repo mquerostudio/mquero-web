@@ -204,6 +204,11 @@ export async function getProjectData(slug: string) {
                 $eq: slug
             },
         },
+        populate: {
+            image: {
+                fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
+            },
+        }
     });
 
     url.search = query;
