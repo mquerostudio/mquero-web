@@ -1,3 +1,10 @@
+import { Metadata } from "next";
+
+
+export const metadata : Metadata = {
+    title: "About me",
+}
+
 export default function AboutMe() {
     return (
         <main>

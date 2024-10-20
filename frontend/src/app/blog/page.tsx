@@ -3,6 +3,12 @@ import { StrapiImage } from "@/components/custom/StrapiImage";
 import { Button } from "@/components/ui/button";
 import { getArticlesData, getTagsData, getProjectsNames, getBlogPageData } from "@/data/loaders";
 import Link from "next/link";
+import { Metadata } from "next";
+
+
+export const metadata : Metadata = {
+    title: "Blog",
+}
 
 export default async function Blog() {
 

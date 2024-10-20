@@ -15,9 +15,14 @@ const palanquin = Palanquin({
 });
 
 export const metadata: Metadata = {
-  title: "MQuero.",
-  description: "Ingeniero, maker y autodidacta :)",
-  manifest: "/manifest.webmanifest",
+  title:{
+    default: "MQuero.",
+    template: "%s - MQuero."
+  },
+  description: "Hola! Soy Manuel Quero y me dedico a diseñar electrónica, programar y fabricar cosas :)",
+  twitter: {
+    card: "summary_large_image"
+  }
 };
 
 export default async function RootLayout({
