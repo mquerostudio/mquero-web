@@ -3,8 +3,33 @@ import { getProjectData } from "@/data/loaders";
 import { BlocksContent, BlocksRenderer } from "@strapi/blocks-react-renderer";
 import Link from "next/link";
 import BlockRendererClient from "@/components/custom/BlockRendererClient";
+import { Metadata } from "next";
 
-export default async function ProjectPage({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: {params: { slug: string }}): Promise<Metadata> {
+
+    const { slug } = params;
+    const projectData = await getProjectData(slug);
+
+    return {
+        title: projectData.data[0].title,
+        description: projectData.data[0].description,
+        openGraph: {
+            images: [
+                {
+                    url: projectData.data[0].image.url,
+                    width: projectData.data[0].image.width,
+                    height: projectData.data[0].image.height,
+                    alt: projectData.data[0].image.alternativeText
+                }
+            ]
+        }
+    };
+}
+
+export default async function ProjectPage({ params }: {
+    params: { slug: string }
+}) {
+
     const { slug } = params;
     const projectData = await getProjectData(slug);
 
