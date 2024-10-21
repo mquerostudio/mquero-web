@@ -144,7 +144,7 @@ export async function getProjectsData() {
                 publishedAt: "desc"
             }
         ],
-        fields: ["id", "title", "description", "publishedAt", "slug"],
+        fields: ["id", "title", "description", "publishedAt", "slug", "updatedAt"],
         populate: {
             image: {
                 fields: ["id", "documentId", "url", "alternativeText", "width", "height"]

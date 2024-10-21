@@ -4,6 +4,7 @@ import { BlocksContent, BlocksRenderer } from "@strapi/blocks-react-renderer";
 import Link from "next/link";
 import BlockRendererClient from "@/components/custom/BlockRendererClient";
 import { Metadata } from "next";
+// import { ImageResponse } from "next/og";
 
 export async function generateMetadata({ params }: {params: { slug: string }}): Promise<Metadata> {
 
@@ -26,6 +27,24 @@ export async function generateMetadata({ params }: {params: { slug: string }}): 
     };
 }
 
+// export default async function textImage() {
+//     return new ImageResponse((
+//         <div
+//         style={{
+//           fontSize: 128,
+//           background: 'white',
+//           width: '100%',
+//           height: '100%',
+//           display: 'flex',
+//           alignItems: 'center',
+//           justifyContent: 'center',
+//         }}
+//       >
+//         About
+//       </div>
+//     ))
+// }
+
 export default async function ProjectPage({ params }: {
     params: { slug: string }
 }) {
@@ -43,7 +62,7 @@ export default async function ProjectPage({ params }: {
 
             <header>
                 <div className="mb-6">
-                    <Link href="/blog">
+                    <Link href="/projects">
                         <button className="text-lg font-medium">&larr; Back</button>
                     </Link>
                 </div>

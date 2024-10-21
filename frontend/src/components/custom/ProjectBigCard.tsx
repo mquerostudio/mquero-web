@@ -90,7 +90,7 @@ export function ProjectBigCard({
                                             ))}
                                         </div>
                                         <p className="text-gray-500 text-sm mt-2 text-end">
-                                            Published on: {publishedAt ? new Date(publishedAt).toLocaleDateString() : 'N/A'}
+                                            {publishedAt ? new Date(publishedAt).toLocaleDateString() : 'N/A'}
                                         </p>
                                     </div>
                                 </div>
