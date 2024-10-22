@@ -6,6 +6,8 @@ import { getGlobalPageData } from "@/data/loaders";
 import { Header } from "../components/custom/Header";
 import { Footer } from "@/components/custom/Footer";
 
+export const runtime = "edge";
+
 const palanquin = Palanquin({
   weight: ['100', '200', '300', '400', '500', '600', '700'],
   subsets: ["latin"]
