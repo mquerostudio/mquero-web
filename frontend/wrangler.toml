@@ -1,6 +1,0 @@
-name = "my-app"
-compatibility_date = "2024-07-29"
-compatibility_flags = ["nodejs_compat"]
-pages_build_output_dir = ".vercel/output/static"
-STRAPI_TOKEN = "d28c7cb0727f2e31cc83842b67d71e52f90aad6ca6eee4bd3fb8db2891a0d07a5547882f2a99443554722bff7f58f782faed5982ccabf96bd02d1710cde6411386dbcd88aacd6d3ba2976aa208e68c4bb103534859714f4272d7b7e9ebd9e324378c64cb312206ab45726394ae6ba5d9b7f70a8b28109b0118cef7ad84f63785"
-STRAPI_URL = "https://optimistic-kindness-c344eba2ae.strapiapp.com"
