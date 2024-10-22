@@ -6,6 +6,8 @@ import BlockRendererClient from "@/components/custom/BlockRendererClient";
 import { Metadata } from "next";
 // import { ImageResponse } from "next/og";
 
+export const runtime = 'edge';
+
 export async function generateMetadata({ params }: {params: { slug: string }}): Promise<Metadata> {
 
     const { slug } = params;

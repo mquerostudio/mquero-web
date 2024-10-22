@@ -5,6 +5,7 @@ import { getArticlesData, getTagsData, getProjectsNames, getBlogPageData } from 
 import Link from "next/link";
 import { Metadata } from "next";
 
+export const runtime = 'edge';
 
 export const metadata : Metadata = {
     title: "Blog",

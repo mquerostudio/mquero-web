@@ -2,6 +2,7 @@ import { ProjectBigCard } from "@/components/custom/ProjectBigCard";
 import { getProjectPageData, getProjectsData } from "@/data/loaders";
 import { Metadata } from "next";
 
+export const runtime = 'edge';
 
 export const metadata : Metadata = {
     title: "Projects",

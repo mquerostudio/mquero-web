@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 
+export const runtime = 'edge';
 
 export const metadata : Metadata = {
     title: "About me",

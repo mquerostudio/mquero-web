@@ -4,6 +4,8 @@ import { ProjectsSection } from "@/components/custom/ProjectsSection";
 import { SkillsSection } from "@/components/custom/SkillsSection";
 import { getHomePageData, getLatestProjectsData, getLatestArticlesData } from "@/data/loaders";
 
+export const runtime = 'edge';
+
 export default async function Home() {
 
   const numOfArticles = 3;
