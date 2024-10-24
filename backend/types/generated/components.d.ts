@@ -97,6 +97,17 @@ export interface ComponentsSkill extends Struct.ComponentSchema {
   };
 }
 
+export interface ComponentsSeo extends Struct.ComponentSchema {
+  collectionName: 'components_components_seos';
+  info: {
+    displayName: 'Seo';
+  };
+  attributes: {
+    MetaTitle: Schema.Attribute.String & Schema.Attribute.Required;
+    MetaDescription: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface ComponentsLogo extends Struct.ComponentSchema {
   collectionName: 'components_components_logos';
   info: {
@@ -158,6 +169,17 @@ export interface ComponentsFooterCol1 extends Struct.ComponentSchema {
   };
 }
 
+export interface ComponentsFilter extends Struct.ComponentSchema {
+  collectionName: 'components_components_filters';
+  info: {
+    displayName: 'filter';
+  };
+  attributes: {
+    heading: Schema.Attribute.String & Schema.Attribute.Required;
+    subheading: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
@@ -168,11 +190,13 @@ declare module '@strapi/strapi' {
       'layout.header': LayoutHeader;
       'layout.footer': LayoutFooter;
       'components.skill': ComponentsSkill;
+      'components.seo': ComponentsSeo;
       'components.logo': ComponentsLogo;
       'components.link': ComponentsLink;
       'components.footer-column-two': ComponentsFooterColumnTwo;
       'components.footer-column-three': ComponentsFooterColumnThree;
       'components.footer-col1': ComponentsFooterCol1;
+      'components.filter': ComponentsFilter;
     }
   }
 }

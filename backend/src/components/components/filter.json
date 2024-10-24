@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_components_filters",
+  "info": {
+    "displayName": "filter"
+  },
+  "options": {},
+  "attributes": {
+    "heading": {
+      "type": "string",
+      "required": true
+    },
+    "subheading": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
