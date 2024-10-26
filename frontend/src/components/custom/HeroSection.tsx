@@ -31,7 +31,7 @@ export function HeroSection({ data }: { readonly data: HeroSectionProps }) {
 
     const { heading, subHeading, image, button } = data;
 
-    const highlightedHeading = heading.replace(/(Manuel Quero|electrónica, programar y fabricar cosas)/g, '<span style="color: #ffaa00ff;">$1</span>');
+    const highlightedHeading = heading.replace(/(Manuel Quero|electrónica, programar y fabricar cosas|electronics, programming and making things)/g, '<span style="color: #ffaa00ff;">$1</span>');
 
     return (
         <header className="py-12">
