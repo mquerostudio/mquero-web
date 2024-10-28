@@ -67,6 +67,7 @@ export interface ComponentsLogo extends Struct.ComponentSchema {
   attributes: {
     image: Schema.Attribute.Media<'images'>;
     isExternal: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    text: Schema.Attribute.String;
     url: Schema.Attribute.String;
   };
 }
