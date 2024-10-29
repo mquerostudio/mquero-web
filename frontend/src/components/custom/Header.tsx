@@ -51,11 +51,11 @@ export function Header({ data }: Readonly<HeaderProps>) {
     const { logo, headerLink } = data;
     const [isDropdown, setIsDropdown] = useState(false);
 
-    const handleLanguageChange = (language: string) => {
-        const currentPath = window.location.pathname; // Captura la ruta actual
-        const newDomain = language === "en" ? "https://mquero.com" : "https://mquero.es";
-        window.location.href = `${newDomain}${currentPath}`; // Redirige manteniendo la ruta actual
-    };
+    // const handleLanguageChange = (language: string) => {
+    //     const currentPath = window.location.pathname; // Captura la ruta actual
+    //     const newDomain = language === "en" ? "https://mquero.com" : "https://mquero.es";
+    //     window.location.href = `${newDomain}${currentPath}`; // Redirige manteniendo la ruta actual
+    // };
 
 
     return (
@@ -79,14 +79,14 @@ export function Header({ data }: Readonly<HeaderProps>) {
                         <div className="text-lg font-medium text-gray-800 dark:text-gray-200">
                             <span
                                 className={`cursor-pointer ${window.location.href.includes('mquero.com') ? 'text-[#ffaa00ff]' : 'hover:text-gray-600 dark:hover:text-gray-400'}`}
-                                onClick={() => handleLanguageChange("en")}
+                                // onClick={() => handleLanguageChange("en")}
                             >
                                 en
                             </span>
                             <span><TbWorld className="inline mx-1 mb-0.5 align-middle" /></span>
                             <span
                                 className={`cursor-pointer ${window.location.href.includes('mquero.es') ? 'text-[#ffaa00ff]' : 'hover:text-gray-600 dark:hover:text-gray-400'}`}
-                                onClick={() => handleLanguageChange("es")}
+                                // onClick={() => handleLanguageChange("es")}
                             >
                                 es
                             </span>
@@ -117,14 +117,14 @@ export function Header({ data }: Readonly<HeaderProps>) {
                         <div className="text-lg font-medium text-gray-800 dark:text-gray-200">
                             <span
                                 className={`cursor-pointer ${window.location.href.includes('mquero.com') ? 'text-[#ffaa00ff]' : 'hover:text-gray-600 dark:hover:text-gray-400'}`}
-                                onClick={() => handleLanguageChange("en")}
+                                // onClick={() => handleLanguageChange("en")}
                             >
                                 en
                             </span>
                             <span><TbWorld className="inline mx-1 mb-0.5 align-middle" /></span>
                             <span
                                 className={`cursor-pointer ${window.location.href.includes('mquero.es') ? 'text-[#ffaa00ff]' : 'hover:text-gray-600 dark:hover:text-gray-400'}`}
-                                onClick={() => handleLanguageChange("es")}
+                                // onClick={() => handleLanguageChange("es")}
                             >
                                 es
                             </span>
