@@ -5,8 +5,7 @@ import "./globals.css";
 import { getGlobalPageData } from "@/data/loaders";
 import { Header } from "../components/custom/Header";
 import { Footer } from "@/components/custom/Footer";
-
-export const runtime = "edge";
+import { headers } from "next/headers"; // Import headers to access request headers
 
 const palanquin = Palanquin({
   weight: ['100', '200', '300', '400', '500', '600', '700'],
@@ -14,7 +13,7 @@ const palanquin = Palanquin({
 });
 
 export const metadata: Metadata = {
-  title:{
+  title: {
     default: "MQuero.",
     template: "%s - MQuero."
   },
@@ -29,17 +28,21 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const globalData = await getGlobalPageData("en");
+  // Use headers to determine if the request came from .es or .com
+  const host = headers().get("host") || "";
+  const locale = host.endsWith(".es") ? "es" : "en";
+
+  // Fetch global data based on the determined locale
+  const globalData = await getGlobalPageData(locale);
 
   return (
-    <html lang="en">
+    <html lang={locale}>
       <body className={`${palanquin.className} min-h-screen antialiased bg-gray-100`}>
         <Header data={globalData?.data?.header} />
         <div className="px-5 min-h-screen">
           {children}
         </div>
         <Footer data={globalData?.data.footer} headerLink={globalData?.data?.header?.headerLink} />
-
       </body>
     </html>
   );
