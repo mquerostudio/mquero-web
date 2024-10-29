@@ -10,9 +10,9 @@ export default async function Home() {
 
   const numOfArticles = 3;
 
-  const homeData = await getHomePageData();
-  const latestProjectsData = await getLatestProjectsData();
-  const latestArticlesData = await getLatestArticlesData();
+  const homeData = await getHomePageData("en");
+  const latestProjectsData = await getLatestProjectsData("en");
+  const latestArticlesData = await getLatestArticlesData("en");
 
   const { blocks } = homeData.data;
   if (!blocks) return <div>No blocks found</div>

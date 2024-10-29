@@ -4,7 +4,6 @@ import { FaTools } from "react-icons/fa";
 import { GrTest } from "react-icons/gr";
 import { FaRobot } from "react-icons/fa";
 import { RiNextjsFill } from "react-icons/ri";
-import { Separator } from "../ui/separator";
 
 interface SkillProps {
     id: number;

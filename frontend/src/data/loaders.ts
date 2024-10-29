@@ -31,7 +31,7 @@ async function fetchData(url: string) {
     }
 }
 
-export async function getGlobalPageData() {
+export async function getGlobalPageData(language: string = 'es') {
     const url = new URL("/api/global", baseUrl);
 
     const query = qs.stringify({
@@ -41,7 +41,8 @@ export async function getGlobalPageData() {
             "footer.footerColumnOne.logo.image",
             "footer.footerColumnTwo",
             "footer.footerColumnThree.socialMedia.image"
-        ]
+        ],
+        locale: language
     });
 
     url.search = query;
@@ -49,7 +50,7 @@ export async function getGlobalPageData() {
     return await fetchData(url.href);
 }
 
-export async function getHomePageData() {
+export async function getHomePageData(language: string = 'es') {
     const url = new URL("/api/home-page", baseUrl);
 
     const query = qs.stringify({
@@ -77,7 +78,8 @@ export async function getHomePageData() {
                     }
                 }
             }
-        }
+        },
+        locale: language
     });
 
     url.search = query;
@@ -85,7 +87,7 @@ export async function getHomePageData() {
     return await fetchData(url.href);
 }
 
-export async function getLatestProjectsData() {
+export async function getLatestProjectsData(language: string = 'es') {
     const url = new URL("/api/projects", baseUrl);
 
     const query = qs.stringify({
@@ -102,7 +104,8 @@ export async function getLatestProjectsData() {
             image: {
                 fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
             }
-        }
+        },
+        locale: language
     });
 
     url.search = query;
@@ -110,7 +113,7 @@ export async function getLatestProjectsData() {
     return await fetchData(url.href);
 }
 
-export async function getLatestArticlesData() {
+export async function getLatestArticlesData(language: string = 'es') {
     const url = new URL("/api/articles", baseUrl);
 
     const query = qs.stringify({
@@ -128,14 +131,15 @@ export async function getLatestArticlesData() {
             image: {
                 fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
             },
-        }
+        },
+        locale: language
     });
 
     url.search = query;
     return await fetchData(url.href);
 }
 
-export async function getProjectsData() {
+export async function getProjectsData(language: string = 'es') {
     const url = new URL("/api/projects", baseUrl);
 
     const query = qs.stringify({
@@ -160,14 +164,15 @@ export async function getProjectsData() {
                     },
                 }
             }
-        }
+        },
+        locale: language
     });
 
     url.search = query;
     return await fetchData(url.href);
 }
 
-export async function getArticlesData() {
+export async function getArticlesData(language: string = 'es') {
 
     const query = qs.stringify({
         sort: [
@@ -186,7 +191,8 @@ export async function getArticlesData() {
             project: {
                 fields: ["id", "documentId", "title", "description", "slug"]
             }
-        }
+        },
+        locale: language
     });
 
     const url = new URL("/api/articles", baseUrl);
@@ -195,7 +201,7 @@ export async function getArticlesData() {
     return await fetchData(url.href);
 }
 
-export async function getProjectData(slug: string) {
+export async function getProjectData(slug: string, language: string = 'es') {
     const url = new URL("/api/projects", baseUrl);
 
     const query = qs.stringify({
@@ -208,7 +214,8 @@ export async function getProjectData(slug: string) {
             image: {
                 fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
             },
-        }
+        },
+        locale: language
     });
 
     url.search = query;
@@ -216,7 +223,7 @@ export async function getProjectData(slug: string) {
     return await fetchData(url.href);
 }
 
-export async function getArticleData(slug: string) {
+export async function getArticleData(slug: string, language: string = 'es') {
     const url = new URL("/api/articles", baseUrl);
 
     const query = qs.stringify({
@@ -243,7 +250,8 @@ export async function getArticleData(slug: string) {
                     },
                 }
             }
-        }
+        },
+        locale: language
     });
 
     url.search = query;
@@ -251,11 +259,12 @@ export async function getArticleData(slug: string) {
     return await fetchData(url.href);
 }
 
-export async function getTagsData() {
+export async function getTagsData(language: string = 'es') {
     const url = new URL("/api/tags", baseUrl);
 
     const query = qs.stringify({
-        fields: ["id", "documentId", "tag"]
+        fields: ["id", "documentId", "tag"],
+        locale: language
     });
 
     url.search = query;
@@ -263,11 +272,12 @@ export async function getTagsData() {
     return await fetchData(url.href);
 }
 
-export async function getProjectsNames() {
+export async function getProjectsNames(language: string = 'es') {
     const url = new URL("/api/projects", baseUrl);
 
     const query = qs.stringify({
-        fields: ["title", "slug"]
+        fields: ["title", "slug"],
+        locale: language
     });
 
     url.search = query;
@@ -275,7 +285,7 @@ export async function getProjectsNames() {
     return await fetchData(url.href);
 }
 
-export async function getArticlesInProject(projectSlug: string) {
+export async function getArticlesInProject(projectSlug: string, language: string = 'es') {
     const url = new URL("/api/articles", baseUrl);
 
     const query = qs.stringify({
@@ -291,29 +301,32 @@ export async function getArticlesInProject(projectSlug: string) {
             image: {
                 fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
             }
-        }
+        },
+        locale: language
     });
 
     url.search = query;
     return await fetchData(url.href);
 }
 
-export async function getBlogPageData() {
+export async function getBlogPageData(language: string = 'es') {
     const url = new URL("/api/blog-page", baseUrl);
 
     const query = qs.stringify({
         fields: ["title", "description", "heading1", "heading2"],
+        locale: language
     });
 
     url.search = query;
     return await fetchData(url.href);
 }
 
-export async function getProjectPageData() {
+export async function getProjectPageData(language: string = 'es') {
     const url = new URL("/api/project-page", baseUrl);
 
     const query = qs.stringify({
         fields: ["title", "description"],
+        locale: language
     });
 
     url.search = query;

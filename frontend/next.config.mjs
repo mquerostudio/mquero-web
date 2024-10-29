@@ -20,6 +20,20 @@ const nextConfig = {
       },
     ],
   },
+  i18n: {
+    locales: ['en', 'es'],
+    defaultLocale: 'en',
+    domains: [
+      {
+        domain: 'mquero.com',
+        defaultLocale: 'en',
+      },
+      {
+        domain: 'mquero.es',
+        defaultLocale: 'es',
+      },
+    ],
+  },
 };
 
 if (process.env.NODE_ENV === 'development') {

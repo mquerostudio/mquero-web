@@ -29,7 +29,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const globalData = await getGlobalPageData();
+  const globalData = await getGlobalPageData("en");
+
   return (
     <html lang="en">
       <body className={`${palanquin.className} min-h-screen antialiased bg-gray-100`}>
