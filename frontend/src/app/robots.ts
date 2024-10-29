@@ -9,6 +9,9 @@ export default function robots(): MetadataRoute.Robots {
                 // disallow: ["/admin"]
             }
         ],
-        sitemap: "https://www.mquero.com/sitemap.xml"
+        sitemap: [
+            "https://www.mquero.com/sitemap.xml",
+            "https://www.mquero.es/sitemap.xml"
+        ]
     }
 }
