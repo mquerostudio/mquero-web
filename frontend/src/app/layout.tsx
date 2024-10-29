@@ -6,6 +6,8 @@ import { getGlobalPageData } from "@/data/loaders";
 import { Header } from "../components/custom/Header";
 import { Footer } from "@/components/custom/Footer";
 import { headers } from "next/headers"; // Import headers to access request headers
+import { getLocale } from "next-intl/server";
+import { getLocaleFromHost } from "@/lib/localeUtils";
 
 const palanquin = Palanquin({
   weight: ['100', '200', '300', '400', '500', '600', '700'],
@@ -29,14 +31,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   // Use headers to determine if the request came from .es or .com
-  const host = headers().get("host") || "";
-  const locale = host.endsWith(".es") ? "es" : "en";
+  const language = getLocaleFromHost();
 
   // Fetch global data based on the determined locale
-  const globalData = await getGlobalPageData(locale);
+  const globalData = await getGlobalPageData();
 
   return (
-    <html lang={locale}>
+    <html lang={language}>
       <body className={`${palanquin.className} min-h-screen antialiased bg-gray-100`}>
         <Header data={globalData?.data?.header} />
         <div className="px-5 min-h-screen">

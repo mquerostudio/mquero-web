@@ -1,6 +1,7 @@
 import { getStrapiURL } from "@/lib/utils";
 import { getAuthToken } from "./services/get-token";
 import qs from "qs";
+import { getLocaleFromHost } from "@/lib/localeUtils";
 
 const baseUrl = getStrapiURL();
 
@@ -31,8 +32,9 @@ async function fetchData(url: string) {
     }
 }
 
-export async function getGlobalPageData(language: string = 'es') {
+export async function getGlobalPageData() {
     const url = new URL("/api/global", baseUrl);
+    const language = getLocaleFromHost();
 
     const query = qs.stringify({
         populate: [
@@ -50,8 +52,9 @@ export async function getGlobalPageData(language: string = 'es') {
     return await fetchData(url.href);
 }
 
-export async function getHomePageData(language: string = 'es') {
+export async function getHomePageData() {
     const url = new URL("/api/home-page", baseUrl);
+    const language = getLocaleFromHost();
 
     const query = qs.stringify({
         populate: {
@@ -87,8 +90,9 @@ export async function getHomePageData(language: string = 'es') {
     return await fetchData(url.href);
 }
 
-export async function getLatestProjectsData(language: string = 'es') {
+export async function getLatestProjectsData() {
     const url = new URL("/api/projects", baseUrl);
+    const language = getLocaleFromHost();
 
     const query = qs.stringify({
         sort: [
@@ -113,8 +117,9 @@ export async function getLatestProjectsData(language: string = 'es') {
     return await fetchData(url.href);
 }
 
-export async function getLatestArticlesData(language: string = 'es') {
+export async function getLatestArticlesData() {
     const url = new URL("/api/articles", baseUrl);
+    const language = getLocaleFromHost();
 
     const query = qs.stringify({
         sort: [
@@ -139,8 +144,9 @@ export async function getLatestArticlesData(language: string = 'es') {
     return await fetchData(url.href);
 }
 
-export async function getProjectsData(language: string = 'es') {
+export async function getProjectsData() {
     const url = new URL("/api/projects", baseUrl);
+    const language = getLocaleFromHost();
 
     const query = qs.stringify({
         sort: [
@@ -172,7 +178,8 @@ export async function getProjectsData(language: string = 'es') {
     return await fetchData(url.href);
 }
 
-export async function getArticlesData(language: string = 'es') {
+export async function getArticlesData() {
+    const language = getLocaleFromHost();
 
     const query = qs.stringify({
         sort: [
@@ -201,8 +208,9 @@ export async function getArticlesData(language: string = 'es') {
     return await fetchData(url.href);
 }
 
-export async function getProjectData(slug: string, language: string = 'es') {
+export async function getProjectData(slug: string) {
     const url = new URL("/api/projects", baseUrl);
+    const language = getLocaleFromHost();
 
     const query = qs.stringify({
         filters: {
@@ -223,8 +231,9 @@ export async function getProjectData(slug: string, language: string = 'es') {
     return await fetchData(url.href);
 }
 
-export async function getArticleData(slug: string, language: string = 'es') {
+export async function getArticleData(slug: string) {
     const url = new URL("/api/articles", baseUrl);
+    const language = getLocaleFromHost();
 
     const query = qs.stringify({
         filters: {
@@ -259,8 +268,9 @@ export async function getArticleData(slug: string, language: string = 'es') {
     return await fetchData(url.href);
 }
 
-export async function getTagsData(language: string = 'es') {
+export async function getTagsData() {
     const url = new URL("/api/tags", baseUrl);
+    const language = getLocaleFromHost();
 
     const query = qs.stringify({
         fields: ["id", "documentId", "tag"],
@@ -272,8 +282,9 @@ export async function getTagsData(language: string = 'es') {
     return await fetchData(url.href);
 }
 
-export async function getProjectsNames(language: string = 'es') {
+export async function getProjectsNames() {
     const url = new URL("/api/projects", baseUrl);
+    const language = getLocaleFromHost();
 
     const query = qs.stringify({
         fields: ["title", "slug"],
@@ -285,8 +296,9 @@ export async function getProjectsNames(language: string = 'es') {
     return await fetchData(url.href);
 }
 
-export async function getArticlesInProject(projectSlug: string, language: string = 'es') {
+export async function getArticlesInProject(projectSlug: string) {
     const url = new URL("/api/articles", baseUrl);
+    const language = getLocaleFromHost();
 
     const query = qs.stringify({
         filters: {
@@ -309,8 +321,9 @@ export async function getArticlesInProject(projectSlug: string, language: string
     return await fetchData(url.href);
 }
 
-export async function getBlogPageData(language: string = 'es') {
+export async function getBlogPageData() {
     const url = new URL("/api/blog-page", baseUrl);
+    const language = getLocaleFromHost();
 
     const query = qs.stringify({
         fields: ["title", "description", "heading1", "heading2"],
@@ -321,8 +334,9 @@ export async function getBlogPageData(language: string = 'es') {
     return await fetchData(url.href);
 }
 
-export async function getProjectPageData(language: string = 'es') {
+export async function getProjectPageData() {
     const url = new URL("/api/project-page", baseUrl);
+    const language = getLocaleFromHost();
 
     const query = qs.stringify({
         fields: ["title", "description"],
