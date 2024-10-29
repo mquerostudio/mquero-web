@@ -1,19 +1,11 @@
-"use client"
+"use client";
 import Image from "next/image";
 import { StrapiImage } from "./StrapiImage";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { Logo } from "./Logo";
-import { useEffect, useState } from "react";
 import { TbWorld } from "react-icons/tb";
-
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { getLocaleFromHost } from "@/lib/localeUtils";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 interface ImageProps {
     documentId: string;
@@ -48,6 +40,17 @@ interface HeaderProps {
 export function Header({ data, language }: Readonly<HeaderProps>) {
     const { logo, headerLink } = data;
 
+    const handleLanguageClick = (selectedLanguage: "en" | "es") => {
+        const currentDomain = window.location.hostname;
+        const currentPath = window.location.pathname;
+
+        if (selectedLanguage === "en" && !currentDomain.endsWith(".com")) {
+            window.location.href = `https://mquero.com${currentPath}`;
+        } else if (selectedLanguage === "es" && !currentDomain.endsWith(".es")) {
+            window.location.href = `https://mquero.es${currentPath}`;
+        }
+    };
+
     return (
         <div className="sticky top-0 z-50 w-full h-14 backdrop-blur">
             <div className="flex justify-between items-center max-w-[1544px] mx-auto h-full px-4">
@@ -65,11 +68,17 @@ export function Header({ data, language }: Readonly<HeaderProps>) {
                 <div className="hidden md:flex links-container items-center flex-1 justify-between space-x-10 md:justify-end h-full">
                     <div className="flex items-center space-x-4">
                         <div className="text-lg font-medium text-gray-800 dark:text-gray-200">
-                            <span>
+                            <span
+                                className={language === "en" ? "text-[#ffaa00ff] cursor-pointer" : "cursor-pointer"}
+                                onClick={() => handleLanguageClick("en")}
+                            >
                                 en
                             </span>
                             <span><TbWorld className="inline mx-2 mb-0.5 align-middle" /></span>
-                            <span >
+                            <span
+                                className={language === "es" ? "text-[#ffaa00ff] cursor-pointer" : "cursor-pointer"}
+                                onClick={() => handleLanguageClick("es")}
+                            >
                                 es
                             </span>
                         </div>
@@ -96,11 +105,17 @@ export function Header({ data, language }: Readonly<HeaderProps>) {
                 <div className="md:hidden flex items-center h-full">
                     <div className="flex items-center space-x-4 mr-4">
                         <div className="text-lg font-medium text-gray-800 dark:text-gray-200">
-                            <span style={{ color: language === "en" ? "#ffaa00ff" : "inherit" }}>
+                            <span
+                                className={language === "en" ? "text-[#ffaa00ff] cursor-pointer" : "cursor-pointer"}
+                                onClick={() => handleLanguageClick("en")}
+                            >
                                 en
                             </span>
                             <span><TbWorld className="inline mx-2 mb-0.5 align-middle" /></span>
-                            <span style={{ color: language === "es" ? "#ffaa00ff" : "inherit" }}>
+                            <span
+                                className={language === "es" ? "text-[#ffaa00ff] cursor-pointer" : "cursor-pointer"}
+                                onClick={() => handleLanguageClick("es")}
+                            >
                                 es
                             </span>
                         </div>
