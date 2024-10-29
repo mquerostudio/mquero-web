@@ -13,6 +13,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { getLocaleFromHost } from "@/lib/localeUtils";
 
 interface ImageProps {
     documentId: string;
@@ -40,10 +41,11 @@ interface HeaderProps {
             image: ImageProps;
         }
         headerLink: HeaderLinkProps[];
-    }
+    },
+    language: "en" | "es";
 }
 
-export function Header({ data }: Readonly<HeaderProps>) {
+export function Header({ data, language }: Readonly<HeaderProps>) {
     const { logo, headerLink } = data;
 
     return (
@@ -66,7 +68,7 @@ export function Header({ data }: Readonly<HeaderProps>) {
                             <span>
                                 en
                             </span>
-                            <span><TbWorld className="inline mx-1 mb-0.5 align-middle" /></span>
+                            <span><TbWorld className="inline mx-2 mb-0.5 align-middle" /></span>
                             <span >
                                 es
                             </span>
@@ -92,6 +94,17 @@ export function Header({ data }: Readonly<HeaderProps>) {
                 </div>
 
                 <div className="md:hidden flex items-center h-full">
+                    <div className="flex items-center space-x-4 mr-4">
+                        <div className="text-lg font-medium text-gray-800 dark:text-gray-200">
+                            <span style={{ color: language === "en" ? "#ffaa00ff" : "inherit" }}>
+                                en
+                            </span>
+                            <span><TbWorld className="inline mx-2 mb-0.5 align-middle" /></span>
+                            <span style={{ color: language === "es" ? "#ffaa00ff" : "inherit" }}>
+                                es
+                            </span>
+                        </div>
+                    </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button variant="outline">
