@@ -1,6 +1,8 @@
 import { getProjectsData, getArticlesData } from "@/data/loaders";
 import { MetadataRoute } from "next";
 
+export const runtime = 'edge';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap > {
 
     const projects = await getProjectsData();
