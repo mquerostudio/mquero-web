@@ -47,8 +47,8 @@ export default async function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={`${palanquin.className} min-h-screen antialiased bg-gray-100`}>
-        <Header data={globalData?.data?.header} language={language} />
-        <div className="px-5 min-h-screen">
+        <Header data={globalData?.data?.header} language={language}/>
+        <div className="min-h-screen px-4">
           {children}
         </div>
         <Footer data={globalData?.data.footer} headerLink={globalData?.data?.header?.headerLink} />

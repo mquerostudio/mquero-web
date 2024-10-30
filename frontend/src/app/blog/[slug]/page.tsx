@@ -13,7 +13,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
     const content: BlocksContent = mainText;
 
     return (
-        <main className="max-w-[1152px] w-full mx-auto py-8">
+        <main className="max-w-[760px] w-full mx-auto py-8">
 
             <div>
 
@@ -81,7 +81,6 @@ export default async function ArticlePage({ params }: { params: { slug: string }
 
             </div>
 
-            {/* <ArticlesInProject projectName={project?.title} /> */}
         </main>
     );
 }

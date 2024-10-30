@@ -52,18 +52,16 @@ export function Header({ data, language }: Readonly<HeaderProps>) {
     };
 
     return (
-        <div className="sticky top-0 z-50 w-full h-14 backdrop-blur">
-            <div className="flex justify-between items-center max-w-[1544px] mx-auto h-full px-4">
-                <div className="md:flex mr-4 items-center">
-                    <Logo
-                        pageSrc="/"
-                        imgSrc={logo.image.url}
-                        alt={logo.image.alternativeText}
-                        height={logo.image.height}
-                        width={logo.image.width}
-                        classname="h-8"
-                    />
-                </div>
+        <div className="sticky top-0 z-50 w-full h-14 backdrop-blur  px-4">
+            <div className="flex justify-between items-center max-w-[1342px] mx-auto h-full">
+                <Logo
+                    pageSrc="/"
+                    imgSrc={logo.image.url}
+                    alt={logo.image.alternativeText}
+                    height={logo.image.height}
+                    width={logo.image.width}
+                    classname="h-8 w-auto"
+                />
 
                 <div className="hidden md:flex links-container items-center flex-1 justify-between space-x-10 md:justify-end h-full">
                     <div className="flex items-center space-x-4">
