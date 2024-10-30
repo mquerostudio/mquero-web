@@ -2,12 +2,15 @@ import { getArticleData } from "@/data/loaders";
 import { StrapiImage } from "@/components/custom/StrapiImage";
 import Link from 'next/link';
 import { BlocksRenderer, type BlocksContent } from "@strapi/blocks-react-renderer";
+import BlockRendererClient from "@/components/custom/BlockRendererClient";
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
     const { slug } = params;
     const projectData = await getArticleData(slug);
 
     const { title, description, mainText, publishedAt, updatedAt, image, tags, project, users_permissions_users } = projectData.data[0];
+
+    const content: BlocksContent = mainText;
 
     return (
         <main className="max-w-[1152px] w-full mx-auto py-8">
@@ -72,8 +75,8 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                 </p>
 
                 {/* Main Article Content */}
-                <div className="text-gray-800 leading-relaxed">
-                    <BlocksRenderer content={mainText as BlocksContent} />
+                <div className="prose prose-lg mt-4 max-w-none">
+                    <BlockRendererClient content={content}/>
                 </div>
 
             </div>
