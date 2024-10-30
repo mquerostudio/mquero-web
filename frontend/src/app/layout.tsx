@@ -46,8 +46,8 @@ export default async function RootLayout({
         <meta name="apple-mobile-web-app-title" content="MyWebSite" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-
-      <body className={`${palanquin.className} min-h-screen antialiased bg-[#FFFAF5]`}>
+      
+      <body className={`${palanquin.className} min-h-screen antialiased bg-gray-50`}>
         <Header data={globalData?.data?.header} language={language}/>
         <div className="min-h-screen px-4">
           {children}
