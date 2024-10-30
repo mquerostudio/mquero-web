@@ -4,7 +4,7 @@ export const runtime = 'edge';
 
 export default function ArticleLayout({ children }: { children: ReactNode }) {
     return (
-        <div className="min-h-screen flex flex-col items-center px-10">
+        <div className="max-w-[1342px] w-full mx-auto py-8">
             {children}
         </div>
     );
