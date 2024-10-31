@@ -71,7 +71,7 @@ export function ProjectBigCard({
                                     <h2 className="text-2xl sm:text-4xl font-bold mb-4">
                                         {title}
                                     </h2>
-                                    <p className="text-base sm:text-xl h-full">
+                                    <p className="text-base sm:text-xl h-full text-justify">
                                         {description}
                                     </p>
                                 </Link>

@@ -13,7 +13,7 @@ interface Image {
 
 interface ArticleProps {
     id: number;
-    documetId: string;
+    documentId: string;
     title: string;
     slug: string;
     description: string;
@@ -47,11 +47,11 @@ export function ArticlesSection({ article, data }: ArticlesSectionProps & { data
                     {heading}
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-6 w-full">
+                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6 w-full">
                     {article && article.length > 0 ? (
                         article.slice(0, 3).map((art) => (
                             <ArticleCard 
-                                key={art.documetId} 
+                                key={art.documentId} 
                                 id={art.id}
                                 title={art.title}
                                 slug={art.slug}

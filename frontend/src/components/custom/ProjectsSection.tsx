@@ -49,7 +49,7 @@ export function ProjectsSection({ project, data }: ProjectsSectionProps & { data
                     {heading}
                 </h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 w-full">
                     {project && project.length > 0 ? (
                         project.map((proj) => (
                             <ProjectCard key={proj.id} project={proj} />

@@ -29,7 +29,7 @@ export default async function Blog() {
                     <h1 className="text-2xl sm:text-4xl font-bold w-full">
                         {title}
                     </h1>
-                    <p className="text-2xl sm:text-2xl">
+                    <p className="text-base sm:text-2xl">
                         {description}
                     </p>
                 </div>
@@ -37,14 +37,18 @@ export default async function Blog() {
 
 
             <div className="pb-24 max-w-[1348px] w-full mx-auto">
-                <h2 className="pb-6 text-3xl font-bold w-full">{heading1}</h2>
+                <h2 className="pb-6 text-2xl sm:text-4xl font-bold w-full">{heading1}</h2>
                 {articles.data.length > 0 ? (
                     <div className="flex flex-col lg:flex-row justify-between items-center mx-auto space-y-4 lg:space-y-0 lg:space-x-6 h-auto p-8 bg-white shadow-lg rounded-3xl">
 
-                        <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
-                            <h2 className="text-2xl font-bold mb-2">{articles.data[0].title}</h2>
+                        <div className="flex flex-col items-center w-full">
+
+                            <h2 className="text-2xl sm:text-4xl font-bold mb-2">{articles.data[0].title}</h2>
+
                             <p className="text-gray-700 mb-2">{articles.data[0].description}</p>
+
                             <p className="text-gray-500 mb-4">{new Date(articles.data[0].publishedAt).toLocaleDateString()}</p>
+
                             <Link href={`/blog/${articles.data[0].slug}`}>
                                 <Button className="text-lg font-medium h-10">
                                     Read More
@@ -52,13 +56,13 @@ export default async function Blog() {
                             </Link>
                         </div>
 
-                        <div className="relative w-full h-80 overflow-hidden">
+                        <div className="w-full h-[200px] content-center">
                             <StrapiImage
                                 src={articles.data[0].image.url}
                                 alt={articles.data[0].image.alternativeText}
                                 width={articles.data[0].image.width}
                                 height={articles.data[0].image.height}
-                                className="absolute inset-0 w-full h-full object-cover rounded-xl"
+                                className="w-full h-full object-scale-down rounded-xl"
                             />
                         </div>
                     </div>
@@ -83,7 +87,7 @@ export default async function Blog() {
                 )}
             </div>
 
-            <h2 className="max-w-[1348px] w-full mx-auto pb-6 text-3xl font-bold">{heading2}</h2>
+            <h2 className="max-w-[1348px] w-full mx-auto pb-6 text-2xl sm:text-4xl font-bold">{heading2}</h2>
             <BlogArticlesList articles={articles} projects={projectsData} tags={tagsData} />
 
         </main >

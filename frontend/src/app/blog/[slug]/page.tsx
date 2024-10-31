@@ -16,17 +16,9 @@ export default async function ArticlePage({ params }: { params: { slug: string }
         <main>
 
             <div className="max-w-[1152px] w-full mx-auto mb-8">
-                {/* Back Button
-                <div className="mb-6">
-                    <Link href="/blog">
-                        <button className="text-lg font-medium">
-                            &larr; Back
-                        </button>
-                    </Link>
-                </div> */}
 
                 {/* Article Image */}
-                <div className="w-full h-aut mb-8">
+                <div className="w-full h-auto mb-8">
                     <StrapiImage
                         src={image?.url}
                         alt={image?.alternativeText}
@@ -38,16 +30,16 @@ export default async function ArticlePage({ params }: { params: { slug: string }
 
                 <div className="max-w-[956px] w-full mx-auto">
                     {/* Article Title */}
-                    <h1 className="text-5xl font-bold text-center">
+                    <h1 className="md:text-5xl text-4xl font-bold text-center mb-4">
                         {title}
                     </h1>
 
                     {/* Article Description */}
-                    <p className="font-normal text-3xl mb-6 text-center text-gray-700">
+                    <p className="font-medium md:text-3xl text-xl mb-6 text-center text-gray-700">
                         {description}
                     </p>
 
-                    <div className="flex items-center justify-center gap-4">
+                    <div className="flex items-center justify-center md:gap-4 gap-2 mb-10">
 
                         {/* Author Section */}
                         <div className="flex items-center">
@@ -80,11 +72,9 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             </div>
 
             {/* Main Article Content */}
-            <div className="prose prose-lg mt-4 max-w-[760px] w-full mx-auto">
+            <div className="prose prose-lg max-w-[760px] w-full mx-auto text-justify">
                 <BlockRendererClient content={content} />
             </div>
-
-
 
         </main>
     );

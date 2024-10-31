@@ -26,18 +26,18 @@ export function ProjectCard({ project }: { project?: ProjectProps }) {
         >
             {project && Object.keys(project).length > 0 ? (
                 <div >
-                    <div className="relative w-full h-52 overflow-hidden">
+                    <div className="w-full h-[200px] overflow-hidden">
                         <StrapiImage
                             src={project.image.url}
                             alt={project.image.alternativeText}
                             width={project.image.width}
                             height={project.image.height}
-                            className="absolute inset-0 w-full h-full object-cover"
+                            className="w-full h-auto object-scale-down"
                         />
                     </div>
-                    <div className="flex flex-col items-start p-4">
-                        <div className="text-2xl font-semibold">{project.title}</div>
-                        <div className="text-lg mb-4">{project.description}</div>
+                    <div className="flex-col mx-auto p-4">
+                        <div className="sm:text-2xl text-xl font-semibold">{project.title}</div>
+                        <div className="sm:text-lg text-base mt-2 text-justify mb-4">{project.description}</div>
 
                         <Link href={`/projects/${project.slug}`}>
                             <Button className="text-base sm:text-xl font-medium bg-gray-800 text-white hover:bg-[#ffaa00ff] hover:text-black">
