@@ -48,7 +48,7 @@ export function SkillsSection({ data }: { readonly data: SkillsSectionProps }) {
                                     {heading}
                                 </h3>
                             </div>
-                            <p className="text-base sm:text-lg">{subHeading}</p>
+                            <p className="text-base sm:text-lg text-justify">{subHeading}</p>
                         </div>
                     ))}
                 </div>
