@@ -4,7 +4,6 @@ import { BlocksContent, BlocksRenderer } from "@strapi/blocks-react-renderer";
 import Link from "next/link";
 import BlockRendererClient from "@/components/custom/BlockRendererClient";
 import { Metadata } from "next";
-// import { ImageResponse } from "next/og";
 
 export const runtime = 'edge';
 
@@ -29,24 +28,6 @@ export async function generateMetadata({ params }: {params: { slug: string }}): 
     };
 }
 
-// export default async function textImage() {
-//     return new ImageResponse((
-//         <div
-//         style={{
-//           fontSize: 128,
-//           background: 'white',
-//           width: '100%',
-//           height: '100%',
-//           display: 'flex',
-//           alignItems: 'center',
-//           justifyContent: 'center',
-//         }}
-//       >
-//         About
-//       </div>
-//     ))
-// }
-
 export default async function ProjectPage({ params }: {
     params: { slug: string }
 }) {
@@ -57,7 +38,6 @@ export default async function ProjectPage({ params }: {
     const { title, description, updatedAt, publishedAt, image } = projectData.data[0];
 
     const content: BlocksContent = projectData.data[0].mainText;
-
 
     return (
         <main className="max-w-[760px] w-full mx-auto py-8">

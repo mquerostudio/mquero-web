@@ -5,8 +5,6 @@ import "./globals.css";
 import { getGlobalPageData } from "@/data/loaders";
 import { Header } from "../components/custom/Header";
 import { Footer } from "@/components/custom/Footer";
-import { headers } from "next/headers"; // Import headers to access request headers
-import { getLocale } from "next-intl/server";
 import { getLocaleFromHost } from "@/lib/localeUtils";
 
 const palanquin = Palanquin({
@@ -14,23 +12,39 @@ const palanquin = Palanquin({
   subsets: ["latin"]
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "MQuero.",
-    template: "%s - MQuero."
-  },
-  description: "Hola! Soy Manuel Quero y me dedico a diseñar electrónica, programar y fabricar cosas :)",
-  twitter: {
-    card: "summary_large_image"
-  }
-};
+// Dynamically generate metadata
+export async function generateMetadata(): Promise<Metadata> {
+  const globalData = await getGlobalPageData();
+  const metaData = globalData?.data?.seo || {};
+
+  return {
+    title: {
+      default: metaData.MetaTitle || "MQuero.",
+      template: `%s - ${metaData.MetaTitle || "MQuero."}`
+    },
+    description: metaData.MetaDescription || "Hola! Soy Manuel Quero y me dedico a diseñar electrónica, programar y fabricar cosas :)",
+    openGraph: {
+      images: [
+        {
+          url: "/opengraph-image.png", // path to the Open Graph image
+          width: 1200, // recommended Open Graph image dimensions
+          height: 630,
+          alt: "MQuero OpenGraph Image" // alternative text for the image
+        }
+      ]
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: "/opengraph-image.png" // include for Twitter cards as well
+    }
+  };
+}
 
 export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // Use headers to determine if the request came from .es or .com
   const language = getLocaleFromHost();
 
   // Fetch global data based on the determined locale
@@ -48,7 +62,7 @@ export default async function RootLayout({
       </head>
       
       <body className={`${palanquin.className} min-h-screen antialiased bg-gray-50`}>
-        <Header data={globalData?.data?.header} language={language}/>
+        <Header data={globalData?.data?.header} language={language} />
         <div className="min-h-screen px-4">
           {children}
         </div>

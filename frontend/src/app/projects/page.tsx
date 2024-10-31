@@ -4,8 +4,15 @@ import { Metadata } from "next";
 
 export const runtime = 'edge';
 
-export const metadata : Metadata = {
-    title: "Projects",
+// Dynamically generate metadata
+export async function generateMetadata(): Promise<Metadata> {
+    const projectPage = await getProjectPageData();
+    const metaData = projectPage.data.seo || {};
+
+    return {
+        title: metaData.MetaTitle || "Projects",
+        description: metaData.MetaDescription || "List and repository of projects created by Manuel Quero."
+    };
 }
 
 interface Image {
@@ -47,17 +54,13 @@ interface ProjectProps {
 }
 
 export default async function Projects() {
-
     const projectPage = await getProjectPageData();
     const projects = await getProjectsData();
-
     const { title, description } = projectPage.data;
     const projectsData = projects.data;
-    const projectsMeta = projects.meta;
 
     return (
         <main>
-
             <header className="py-12">
                 <div className="max-w-[1348px] w-full flex flex-col justify-between items-start mx-auto space-y-4 h-auto">
                     <h1 className="text-2xl sm:text-4xl font-bold">
@@ -74,8 +77,8 @@ export default async function Projects() {
                     {projectsData && projectsData.length > 0 ? (
                         projectsData.map((proj: ProjectProps) => (
                             <ProjectBigCard
-                            key={proj.documentId}
-                            {...proj}
+                                key={proj.documentId}
+                                {...proj}
                             />
                         ))
                     ) : (

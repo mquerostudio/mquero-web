@@ -42,7 +42,8 @@ export async function getGlobalPageData() {
             "header.headerLink",
             "footer.footerColumnOne.logo.image",
             "footer.footerColumnTwo",
-            "footer.footerColumnThree.socialMedia.image"
+            "footer.footerColumnThree.socialMedia.image",
+            "seo"
         ],
         locale: language
     });
@@ -327,6 +328,14 @@ export async function getBlogPageData() {
 
     const query = qs.stringify({
         fields: ["title", "description", "heading1", "heading2"],
+        populate: {
+            filterBy: {
+                populate: "*"
+            },
+            seo: {
+                populate: "*"
+            }
+        },
         locale: language
     });
 
@@ -340,6 +349,11 @@ export async function getProjectPageData() {
 
     const query = qs.stringify({
         fields: ["title", "description"],
+        populate: {
+            seo: {
+                populate: "*"
+            }
+        },
         locale: language
     });
 

@@ -53,9 +53,6 @@ export function ProjectBigCard({
     tags,
     articles
 }: ProjectProps) {
-
-    console.log('ProjectBigCard', { id, title, description, publishedAt, slug, updatedAt, image, tags, articles });
-
     return (
         <div>
             <div
@@ -79,8 +76,8 @@ export function ProjectBigCard({
 
                                 <div className="flex justify-between">
                                     <Link href={`/projects/${slug}`} className="items-end flex">
-                                        <Button className="text-base sm:text-xl font-medium bg-gray-800 text-white hover:bg-[#ffaa00ff] hover:text-black">
-                                            ir al proyecto
+                                        <Button className="text-2xl font-medium bg-gray-800 text-white hover:bg-[#ffaa00ff] hover:text-black pb-3.5 w-16">
+                                            {'>'}
                                         </Button>
                                     </Link>
                                     <div>

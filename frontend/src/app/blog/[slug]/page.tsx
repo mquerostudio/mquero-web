@@ -1,22 +1,44 @@
 import { getArticleData } from "@/data/loaders";
 import { StrapiImage } from "@/components/custom/StrapiImage";
 import Link from 'next/link';
-import { BlocksRenderer, type BlocksContent } from "@strapi/blocks-react-renderer";
+import { BlocksContent } from "@strapi/blocks-react-renderer";
 import BlockRendererClient from "@/components/custom/BlockRendererClient";
+import { Metadata } from "next";
+
+export const runtime = 'edge';
+
+// Dynamically generate metadata for the article page
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+    const { slug } = params;
+    const articleData = await getArticleData(slug);
+    const { title, description, image } = articleData.data[0];
+
+    return {
+        title,
+        description,
+        openGraph: {
+            images: [
+                {
+                    url: image.url,
+                    width: image.width,
+                    height: image.height,
+                    alt: image.alternativeText,
+                }
+            ]
+        }
+    };
+}
 
 export default async function ArticlePage({ params }: { params: { slug: string } }) {
     const { slug } = params;
-    const projectData = await getArticleData(slug);
+    const articleData = await getArticleData(slug);
 
-    const { title, description, mainText, publishedAt, updatedAt, image, tags, project, users_permissions_users } = projectData.data[0];
-
+    const { title, description, mainText, publishedAt, updatedAt, image, tags, project, users_permissions_users } = articleData.data[0];
     const content: BlocksContent = mainText;
 
     return (
         <main>
-
             <div className="max-w-[1152px] w-full mx-auto mb-8">
-
                 {/* Article Image */}
                 <div className="w-full h-auto mb-8">
                     <StrapiImage
@@ -40,7 +62,6 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                     </p>
 
                     <div className="flex items-center justify-center md:gap-4 gap-2 mb-10">
-
                         {/* Author Section */}
                         <div className="flex items-center">
                             <div className="w-12 h-auto rounded-full flex items-center justify-center">
@@ -66,16 +87,13 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                             {new Date(publishedAt).toLocaleDateString()}
                         </div>
                     </div>
-
                 </div>
-
             </div>
 
             {/* Main Article Content */}
             <div className="prose prose-lg max-w-[760px] w-full mx-auto text-justify">
                 <BlockRendererClient content={content} />
             </div>
-
         </main>
     );
 }

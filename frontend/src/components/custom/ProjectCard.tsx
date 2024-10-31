@@ -39,9 +39,9 @@ export function ProjectCard({ project }: { project?: ProjectProps }) {
                         <div className="sm:text-2xl text-xl font-semibold">{project.title}</div>
                         <div className="sm:text-lg text-base mt-2 text-justify mb-4">{project.description}</div>
 
-                        <Link href={`/projects/${project.slug}`}>
-                            <Button className="text-base sm:text-xl font-medium bg-gray-800 text-white hover:bg-[#ffaa00ff] hover:text-black">
-                                ir al proyecto
+                        <Link href={`/projects/${project.slug}`} className="flex w-full justify-end">
+                            <Button className="text-2xl font-bold bg-gray-800 text-white hover:bg-[#ffaa00ff] hover:text-black pb-3.5 w-16">
+                                {'>'}
                             </Button>
                         </Link>
                     </div>

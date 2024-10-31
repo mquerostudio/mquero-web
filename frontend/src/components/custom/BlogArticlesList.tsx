@@ -64,8 +64,13 @@ interface ProjectsProps {
     slug: string;
 }
 
+interface FilterByProps {
+    heading: string;
+    subheading: string;
+};
+
 // Main component to list blog articles
-export function BlogArticlesList({ articles, projects, tags }: { readonly articles: ArticleProps, readonly projects: ProjectsProps[], readonly tags: TagsProps[] }) {
+export function BlogArticlesList({ articles, projects, tags, filterBy }: { readonly articles: ArticleProps, readonly projects: ProjectsProps[], readonly tags: TagsProps[], readonly filterBy: FilterByProps[] }) {
     // State to keep track of the selected project and tags for filtering articles
     const [selectedProject, setSelectedProject] = useState<string | null>(null);
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -97,14 +102,14 @@ export function BlogArticlesList({ articles, projects, tags }: { readonly articl
                 <div className='flex flex-col lg:flex-row lg:space-x-16 lg:space-y-0'>
                     {/* Filter by Projects */}
                     <div className="lg:flex-row">
-                        <div className="mb-4">Filtrar por Proyectos</div>
+                        <div className="mb-4">{filterBy[0].heading}</div>
                         <div className="flex flex-wrap gap-4">
                             {/* Button to reset filter to show all projects */}
                             <div
                                 className={`p-2 bg-white rounded-xl cursor-pointer hover:bg-gray-100 border-2 ${!selectedProject ? 'shadow-[0_0px_6px_1px_#ffaa00ff]' : ''}`}
                                 onClick={() => setSelectedProject(null)}
                             >
-                                Todos los proyectos
+                                {filterBy[0].subheading}
                             </div>
                             {/* List all projects as filter options */}
                             {projects.map((project) => (
@@ -121,14 +126,14 @@ export function BlogArticlesList({ articles, projects, tags }: { readonly articl
 
                     {/* Filter by Tags */}
                     <div className="mt-6 lg:flex-row">
-                        <div className="mb-4">Filtrar por Tags</div>
+                        <div className="mb-4">{filterBy[1].heading}</div>
                         <div className="flex flex-wrap gap-4">
                             {/* Button to reset filter to show all tags */}
                             <div
                                 className={`p-2 bg-white rounded-xl cursor-pointer hover:bg-gray-100 border-2 ${selectedTags.length === 0 ? 'shadow-[0_0px_6px_1px_#ffaa00ff]' : ''}`}
                                 onClick={() => setSelectedTags([])}
                             >
-                                Todos los tags
+                                {filterBy[1].subheading}
                             </div>
                             {/* List all tags as filter options */}
                             {tags.map((tag) => (
