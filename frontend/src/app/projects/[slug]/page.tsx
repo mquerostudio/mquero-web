@@ -99,7 +99,7 @@ export default async function ProjectPage({ params }: {
             </header>
 
             {/* Main Article Content */}
-            <div className="prose prose-xl max-w-[760px] w-full mx-auto text-justify">
+            <div className="prose prose-xl prose-img:mx-auto max-w-[760px] w-full mx-auto text-justify">
                 <BlockRendererClient content={content} />
             </div>
 

@@ -92,7 +92,7 @@ export default async function ArticlePage({ params }: { params: { slug: string }
             </header>
 
             {/* Main Article Content */}
-            <div className="prose prose-xl max-w-[760px] w-full mx-auto text-justify">
+            <div className="prose prose-xl max-w-[760px] w-full mx-auto text-justify prose-img:mx-auto">
                 <BlockRendererClient content={content} />
             </div>
         </main>
