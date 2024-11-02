@@ -38,7 +38,8 @@ export default async function ArticlePage({ params }: { params: { slug: string }
 
     return (
         <main>
-            <div className="max-w-[1152px] w-full mx-auto mb-8">
+            <header className="max-w-[1152px] w-full mx-auto mb-8">
+
                 {/* Article Image */}
                 <div className="w-full h-auto mb-8">
                     <StrapiImage
@@ -57,9 +58,9 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                     </h1>
 
                     {/* Article Description */}
-                    <p className="font-medium md:text-3xl text-xl mb-6 text-center text-gray-700">
+                    <h2 className="font-medium md:text-3xl text-xl mb-6 text-center text-gray-700">
                         {description}
-                    </p>
+                    </h2>
 
                     <div className="flex items-center justify-center md:gap-4 gap-2 mb-10">
                         {/* Author Section */}
@@ -88,10 +89,10 @@ export default async function ArticlePage({ params }: { params: { slug: string }
                         </div>
                     </div>
                 </div>
-            </div>
+            </header>
 
             {/* Main Article Content */}
-            <div className="prose prose-lg max-w-[760px] w-full mx-auto text-justify">
+            <div className="prose prose-xl max-w-[760px] w-full mx-auto text-justify">
                 <BlockRendererClient content={content} />
             </div>
         </main>

@@ -223,11 +223,21 @@ export async function getProjectData(slug: string) {
             image: {
                 fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
             },
+            // users_permissions_users: {
+            //     fields: ["id", "name", "surname", "username"],
+            //     populate: {
+            //         profileImg: {
+            //             fields: ["id", "documentId", "url", "alternativeText", "width", "height"]
+            //         },
+            //     }
+            // }
         },
         locale: language
     });
 
     url.search = query;
+
+    // console.log(url.search);
 
     return await fetchData(url.href);
 }
