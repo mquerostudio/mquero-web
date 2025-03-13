@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@directus/sdk": "^19.0.1",
     "next": "15.2.2",
     "next-intl": "^4.0.1",
     "react": "^19.0.0",
