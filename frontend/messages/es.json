@@ -1,6 +1,68 @@
 {
+    "Common": {
+        "navigation": {
+            "home": "Inicio",
+            "about": "Nosotros",
+            "contact": "Contacto"
+        },
+        "buttons": {
+            "readMore": "Leer Más",
+            "submit": "Enviar",
+            "send": "Enviar"
+        },
+        "footer": {
+            "copyright": "© 2024 Tu Empresa. Todos los derechos reservados.",
+            "privacyPolicy": "Política de Privacidad",
+            "termsOfService": "Términos de Servicio"
+        }
+    },
     "HomePage": {
-        "title": "Hello world!",
-        "about": "Go to the about page"
+        "title": "Bienvenido a Tu Sitio Web",
+        "subtitle": "Tu aplicación web moderna e internacionalizada",
+        "about": "Conoce más sobre nosotros",
+        "features": {
+            "title": "Nuestras Características",
+            "feature1": {
+                "title": "Característica 1",
+                "description": "Descripción de la característica 1"
+            },
+            "feature2": {
+                "title": "Característica 2",
+                "description": "Descripción de la característica 2"
+            },
+            "feature3": {
+                "title": "Característica 3",
+                "description": "Descripción de la característica 3"
+            }
+        }
+    },
+    "AboutPage": {
+        "title": "Sobre Nosotros",
+        "description": "Conoce más sobre nuestra empresa y misión",
+        "mission": {
+            "title": "Nuestra Misión",
+            "description": "Descripción de la misión de tu empresa"
+        },
+        "team": {
+            "title": "Nuestro Equipo",
+            "description": "Conoce a las personas detrás de nuestro éxito"
+        }
+    },
+    "ContactPage": {
+        "title": "Contáctanos",
+        "description": "Ponte en contacto con nuestro equipo",
+        "form": {
+            "name": "Nombre",
+            "email": "Correo Electrónico",
+            "message": "Mensaje",
+            "submit": "Enviar Mensaje",
+            "success": "¡Tu mensaje ha sido enviado con éxito!",
+            "error": "Hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo."
+        },
+        "info": {
+            "address": "Calle Nombre 123, Ciudad, País",
+            "phone": "+1 234 567 890",
+            "email": "info@tuempresa.com"
+        }
     }
 }

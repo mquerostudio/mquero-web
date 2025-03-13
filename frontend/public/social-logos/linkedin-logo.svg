@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
+
+<svg
+   width="800"
+   height="727.27271"
+   viewBox="0 -2 44 39.999999"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <title
+     id="title1">LinkedIn-color</title>
+  <desc
+     id="desc1">Created with Sketch.</desc>
+  <defs
+     id="defs1" />
+  <g
+     id="Icons"
+     stroke="none"
+     stroke-width="1"
+     fill="none"
+     fill-rule="evenodd"
+     transform="translate(0,-2)">
+    <g
+       id="Color-"
+       transform="translate(-702,-265)"
+       fill="#007ebb">
+      <path
+         d="m 746,305 h -9.7246 v -14.0616 c 0,-3.6806 -1.52117,-6.19325 -4.86618,-6.19325 -2.55856,0 -3.98142,1.69559 -4.6437,3.3297 -0.24835,0.58655 -0.20955,1.4036 -0.20955,2.22066 V 305 h -9.63405 c 0,0 0.12418,-24.90875 0,-27.17295 h 9.63405 v 4.26458 c 0.56915,-1.86463 3.6477,-4.52584 8.56045,-4.52584 6.09501,0 10.88358,3.90856 10.88358,12.32503 z m -38.82079,-30.57181 h -0.0621 C 704.0127,274.42819 702,272.35096 702,269.71794 702,267.03368 704.0722,265 707.23871,265 c 3.16392,0 5.10936,2.02856 5.17145,4.71025 0,2.63303 -2.00753,4.71794 -5.23095,4.71794 z m -4.06938,3.39886 h 8.57596 V 305 h -8.57596 z"
+         id="LinkedIn" />
+    </g>
+  </g>
+</svg>

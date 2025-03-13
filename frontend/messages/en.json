@@ -1,6 +1,72 @@
 {
+    "Common": {
+        "navigation": {
+            "projects": "projects",
+            "blog": "blog",
+            "links": "links",
+            "about": "about me"
+        },
+        "buttons": {
+            "readMore": "Read More",
+            "submit": "Submit",
+            "send": "Send"
+        },
+        "footer": {
+            "location": "Location",
+            "basedInSpain": "Based in Spain",
+            "pages": "Pages",
+            "projects": "projects",
+            "blog": "blog",
+            "links": "links",
+            "about": "about me",
+            "followMe": "Follow Me"
+        }
+    },
     "HomePage": {
-        "title": "Hello world!",
-        "about": "Go to the about page"
+        "title": "Hello! I'm Manuel Quero and I specialize in design embedded electronics and firmware.",
+        "subtitle": "I hold a Bachelor's Degree in Industrial Electronics and Automation Engineering, with over 2 years of experience in designing embedded hardware and developing embedded firmware.",
+        "about": "know more about me",
+        "projects": "projects",
+        "blog": "articles",
+        "skills": "what do I do?"
+    },
+    "BlogPage": {
+        "title": "Blog",
+        "readNow": "read now",
+        "relatedArticles": "Related Articles",
+        "backToBlog": "Back to all articles"
+    },
+    "ProjectsPage": {
+        "title": "Projects",
+        "viewProject": "View Project",
+        "relatedArticles": "Related Articles",
+        "backToProjects": "Back to all projects"
+    },
+    "LinksPage": {
+        "title": "Links",
+        "subtitle": "Connect with me on various platforms"
+    },
+    "AboutPage": {
+        "title": "About Me",
+        "aboutMe": "Who I Am",
+        "skills": "Skills & Expertise",
+        "educationAndExperience": "Education & Experience",
+        "education": "Education",
+        "experience": "Professional Experience",
+        "contactMe": "Get In Touch",
+        "contactDescription": "Have a project in mind or want to collaborate? Feel free to reach out using the form below.",
+        "formName": "Your Name",
+        "formEmail": "Your Email",
+        "formSubject": "Subject",
+        "formSelectSubject": "Select a subject",
+        "formSubjectProject": "Project Inquiry",
+        "formSubjectCollaboration": "Collaboration Opportunity",
+        "formSubjectQuestion": "Technical Question",
+        "formSubjectOther": "Other",
+        "formMessage": "Your Message",
+        "formSubmit": "Send Message",
+        "formSubmitting": "Sending...",
+        "messageSent": "Thank you! Your message has been sent successfully. I'll get back to you as soon as possible.",
+        "messageError": "There was an error sending your message. Please try again later."
     }
 }
