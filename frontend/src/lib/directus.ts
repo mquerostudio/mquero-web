@@ -1,10 +1,7 @@
 import { createDirectus, rest } from '@directus/sdk';
 
-// Use the provided Directus API endpoint
-const apiUrl = typeof window !== 'undefined' 
-  ? process.env.NEXT_PUBLIC_DIRECTUS_API_ENDPOINT || 'https://tardis.mquero.com' 
-  : process.env.DIRECTUS_API_ENDPOINT || 'https://tardis.mquero.com';
+export interface ItemsQuery {
+  fields?: Array<string>;
+}
 
-const directus = createDirectus(apiUrl).with(rest());
-
-export default directus; 
+export const directus = createDirectus('https://tardis.mquero.com/').with(rest());

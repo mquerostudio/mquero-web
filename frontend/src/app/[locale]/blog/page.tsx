@@ -5,49 +5,30 @@ import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
 import BlogPostCard from '../../components/custom/BlogPostCard';
-import { getAllBlogPosts, getFeaturedPost, getAllCategories, BlogPost, BlogCategory } from '@/lib/blogService';
 
-export default function BlogPage() {
+import { getPosts } from '@/lib/posts';
+
+export default async function BlogPage() {
   const t = useTranslations('BlogPage');
+  const [posts, setPosts] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>(['all']);
-  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
-  const [categories, setCategories] = useState<BlogCategory[]>([]);
-  const [featuredArticle, setFeaturedArticle] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [featuredPost, setFeaturedPost] = useState(null);
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setLoading(true);
-        
-        // Fetch blog posts, categories, and featured post in parallel
-        const [posts, cats, featured] = await Promise.all([
-          getAllBlogPosts(),
-          getAllCategories(),
-          getFeaturedPost()
-        ]);
-        
-        setBlogPosts(posts);
-        
-        // Add "All articles" category
-        setCategories([
-          { id: 'all', name: 'All articles', slug: 'all' },
-          ...cats
-        ]);
-        
-        setFeaturedArticle(featured);
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching blog data:', err);
-        setError('Failed to load blog content. Please try again later.');
-      } finally {
-        setLoading(false);
-      }
-    }
-    
-    fetchData();
-  }, []);
+  const featuredPosts = await getPosts({
+    fields: ['title', 'slug']
+  });
+
+  console.log('featuredPosts', featuredPosts);
+
+  // Categories - hardcoded for now, can be fetched from API later
+  const categories = [
+    { id: 'all', name: 'All articles', slug: 'all' },
+    { id: 'pcb-design', name: 'PCB Design', slug: 'pcb-design' },
+    { id: 'embedded-systems', name: 'Embedded Systems', slug: 'embedded-systems' },
+    { id: 'firmware', name: 'Firmware', slug: 'firmware' }
+  ];
 
   const toggleCategory = (categoryId: string) => {
     if (categoryId === 'all') {
@@ -67,8 +48,8 @@ export default function BlogPage() {
 
   // Filter posts based on selected categories
   const filteredPosts = selectedCategories.includes('all')
-    ? blogPosts
-    : blogPosts.filter(post => 
+    ? posts
+    : posts.filter(post => 
         post.categories.some(category => selectedCategories.includes(category.id))
       );
 
@@ -108,12 +89,12 @@ export default function BlogPage() {
         <h1 className="text-4xl font-bold mb-8">{t('title')}</h1>
 
         {/* Featured Article */}
-        {featuredArticle && (
+        {featuredPost && (
           <div className="mb-12">
             <div className="flex flex-col md:flex-row bg-gray-100 rounded-lg overflow-hidden">
               <div className="md:w-1/2 p-8">
                 <div className="flex flex-wrap gap-1 mb-2">
-                  {featuredArticle.categories.map((category, index) => (
+                  {featuredPost.categories.map((category, index) => (
                     <span 
                       key={index} 
                       className="text-xs font-semibold text-purple-600 bg-purple-100 px-2 py-1 rounded"
@@ -122,10 +103,10 @@ export default function BlogPage() {
                     </span>
                   ))}
                 </div>
-                <h2 className="text-2xl font-bold mb-4">{featuredArticle.title}</h2>
-                <p className="text-gray-700 mb-6">{featuredArticle.description}</p>
+                <h2 className="text-2xl font-bold mb-4">{featuredPost.title}</h2>
+                <p className="text-gray-700 mb-6">{featuredPost.description}</p>
                 <Link 
-                  href={`/blog/${featuredArticle.slug}`}
+                  href={`/blog/${featuredPost.slug}`}
                   className="bg-black text-white px-6 py-2 rounded-md inline-block hover:bg-gray-800 transition-colors"
                 >
                   {t('readNow')}
@@ -133,8 +114,8 @@ export default function BlogPage() {
               </div>
               <div className="md:w-1/2 h-64 md:h-auto relative">
                 <Image
-                  src={featuredArticle.featuredImage}
-                  alt={featuredArticle.title}
+                  src={featuredPost.featuredImage}
+                  alt={featuredPost.title}
                   fill
                   className="object-cover"
                 />
