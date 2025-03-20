@@ -1,47 +1,11 @@
 'use client';
 
-import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 
 export default function AboutPage() {
   const t = useTranslations('AboutPage');
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-  const [formStatus, setFormStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setFormStatus('submitting');
-    
-    // Simulate form submission
-    try {
-      // In a real application, you would send the form data to your backend or a form service
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setFormStatus('success');
-      setFormData({
-        name: '',
-        email: '',
-        subject: '',
-        message: ''
-      });
-    } catch (error) {
-      setFormStatus('error');
-    }
-  };
 
   return (
     <div className="w-full py-12">
@@ -135,98 +99,91 @@ export default function AboutPage() {
           </div>
         </div>
         
-        {/* Contact Form */}
+        {/* Contact Information Section */}
         <div className="bg-gray-50 rounded-lg p-8">
           <h2 className="text-2xl font-bold mb-6">{t('contactMe')}</h2>
-          <p className="mb-6">{t('contactDescription')}</p>
           
-          {formStatus === 'success' ? (
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-6">
-              <p>{t('messageSent')}</p>
-            </div>
-          ) : formStatus === 'error' ? (
-            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
-              <p>{t('messageError')}</p>
-            </div>
-          ) : null}
-          
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('formName')}
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('formEmail')}
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-                />
-              </div>
-            </div>
+          <div className="text-center">
+            <p className="text-lg mb-6">
+              Feel free to reach out to me for collaborations, project inquiries, or just to connect!
+            </p>
             
-            <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">
-                {t('formSubject')}
-              </label>
-              <select
-                id="subject"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
+            <div className="mb-8">
+              <h3 className="text-xl font-semibold mb-2">Email</h3>
+              <a 
+                href="mailto:mquerostudio@gmail.com" 
+                className="text-blue-600 hover:underline text-lg"
               >
-                <option value="">{t('formSelectSubject')}</option>
-                <option value="project">{t('formSubjectProject')}</option>
-                <option value="collaboration">{t('formSubjectCollaboration')}</option>
-                <option value="question">{t('formSubjectQuestion')}</option>
-                <option value="other">{t('formSubjectOther')}</option>
-              </select>
+                mquerostudio@gmail.com
+              </a>
             </div>
             
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                {t('formMessage')}
-              </label>
-              <textarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                required
-                rows={5}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-black"
-              ></textarea>
+              <h3 className="text-xl font-semibold mb-4">Social Media</h3>
+              <div className="flex justify-center space-x-6">
+                <a 
+                  href="https://www.instagram.com/mquerostudio" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center hover:opacity-80"
+                  aria-label="Instagram"
+                >
+                  <Image 
+                    src="/social-logos/instagram-logo.svg" 
+                    alt="Instagram" 
+                    width={40} 
+                    height={40} 
+                  />
+                </a>
+                <a 
+                  href="https://www.tiktok.com/@mquerostudio" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center hover:opacity-80"
+                  aria-label="TikTok"
+                >
+                  <Image 
+                    src="/social-logos/tiktok-logo.svg" 
+                    alt="TikTok" 
+                    width={40} 
+                    height={40} 
+                  />
+                </a>
+                <a 
+                  href="https://x.com/mquerostudio" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center hover:opacity-80"
+                  aria-label="X"
+                >
+                  <Image 
+                    src="/social-logos/x-logo-black.svg" 
+                    alt="X" 
+                    width={40} 
+                    height={40} 
+                  />
+                </a>
+                <a 
+                  href="https://www.linkedin.com/in/manuelquero" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center hover:opacity-80"
+                  aria-label="LinkedIn"
+                >
+                  <Image 
+                    src="/social-logos/linkedin-logo.svg" 
+                    alt="LinkedIn" 
+                    width={40} 
+                    height={40} 
+                  />
+                </a>
+              </div>
             </div>
             
-            <div>
-              <button
-                type="submit"
-                disabled={formStatus === 'submitting'}
-                className="bg-black text-white px-6 py-3 rounded-md hover:bg-gray-800 transition-colors disabled:bg-gray-400"
-              >
-                {formStatus === 'submitting' ? t('formSubmitting') : t('formSubmit')}
-              </button>
-            </div>
-          </form>
+            <p className="mt-8 text-gray-600">
+              I'll get back to you as soon as possible!
+            </p>
+          </div>
         </div>
       </div>
     </div>

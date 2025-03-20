@@ -15,6 +15,7 @@ interface BlogPostCardProps {
   imageSrc: string;
   imageAlt?: string;
   link: string;
+  date?: string;
 }
 
 const BlogPostCard = ({
@@ -23,37 +24,46 @@ const BlogPostCard = ({
   categoryLabels,
   imageSrc,
   imageAlt = 'Blog post image',
-  link
+  link,
+  date
 }: BlogPostCardProps) => {
   return (
-    <div className="flex flex-col h-full relative border border-gray-200 rounded-lg overflow-hidden">
-      <div className="h-48 relative overflow-hidden">
-        <Image
-          src={imageSrc}
-          alt={imageAlt}
-          fill
-          className="object-cover transition-transform duration-500 ease-in-out hover:scale-110"
-        />
-      </div>
-      <div className="p-4 flex flex-col flex-grow">
-        <div className="flex flex-wrap gap-1 mb-1">
-          {categoryLabels.map((label, index) => (
-            <span 
-              key={index} 
-              className="text-xs font-semibold text-purple-600 bg-purple-100 px-2 py-1 rounded"
-            >
-              {label}
-            </span>
-          ))}
+    <Link href={link} className="block h-full">
+      <div className="flex flex-col h-full relative border border-gray-200 rounded-lg overflow-hidden transition-all duration-300 group">
+        <div className="h-48 relative overflow-hidden">
+          <Image
+            src={imageSrc}
+            alt={imageAlt}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-110 w-full h-full"
+          />
         </div>
-        <h3 className="text-lg font-bold">{title}</h3>
-        
-        <div className="flex justify-between items-end mt-auto pt-4">
-          <p className="text-sm text-gray-600 pr-4 line-clamp-2">{description}</p>
+        <div className="p-4 flex flex-col flex-grow">
+          <h3 className="text-lg font-bold mb-2">{title}</h3>
+          <p className="text-sm text-gray-600 mb-4 line-clamp-2">{description}</p>
           
-          {/* Arrow button positioned at the bottom right */}
-          <Link href={link} className="block flex-shrink-0">
-            <div className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white transition-all duration-300 hover:bg-[#ffaa00] hover:text-gray-800 hover:translate-x-1 group">
+          <div className="flex justify-between items-center mt-auto">
+            <div className="flex flex-col">
+              <div className="flex flex-wrap gap-1 mb-1">
+                {categoryLabels.slice(0, 3).map((label, index) => (
+                  <span 
+                    key={index} 
+                    className="text-xs font-semibold text-purple-600 bg-purple-100 px-2 py-1 rounded"
+                  >
+                    {label}
+                  </span>
+                ))}
+              </div>
+              
+              {date && (
+                <span className="text-xs text-gray-500">
+                  {date}
+                </span>
+              )}
+            </div>
+            
+            <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white transition-all duration-300 group-hover:bg-[#ffaa00] group-hover:text-gray-800 group-hover:translate-x-1">
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
                 fill="none" 
@@ -69,10 +79,10 @@ const BlogPostCard = ({
                 />
               </svg>
             </div>
-          </Link>
+          </div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

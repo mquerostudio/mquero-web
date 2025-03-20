@@ -17,7 +17,7 @@ const Footer = () => {
             <p className="text-base text-white mb-4">{t('basedInSpain')}</p>
             <div className="w-24 h-24 relative">
               <Image 
-                src="/logo.svg" 
+                src="/mq-logo.svg" 
                 alt="Logo" 
                 fill
                 style={{ objectFit: 'contain' }}

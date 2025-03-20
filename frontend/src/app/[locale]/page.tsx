@@ -1,55 +1,96 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
 import Card from '../components/custom/Card';
 import SkillCard from '../components/custom/SkillCard';
+import { getDirectusImageUrl, ImagePresets } from '@/utils/imageUtils';
+import { formatDate } from '@/utils/formatDate';
 
 export default function HomePage() {
   const t = useTranslations('HomePage');
   const commonT = useTranslations('Common');
 
-  // Sample project data
-  const projects = [
-    {
-      id: 1,
-      title: "Article name - Headline for article",
-      description: "Lorem ipsum dolor amet, consectetur adipiscing elit. Elementum non donec cursu.",
-      imageSrc: "/placeholder.png",
-      link: "/projects/1"
-    },
-    {
-      id: 2,
-      title: "Article name - Headline for article",
-      description: "Lorem ipsum dolor amet, consectetur adipiscing elit. Elementum non donec cursu.",
-      imageSrc: "/placeholder.png",
-      link: "/projects/2"
-    }
-  ];
+  const [projects, setProjects] = useState<any[]>([]);
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Sample blog articles data
-  const blogArticles = [
-    {
-      id: 1,
-      title: "Blog Post Title 1",
-      description: "Short description of the blog post content. This gives readers a preview of what to expect.",
-      imageSrc: "/placeholder.png",
-      link: "/blog/1"
-    },
-    {
-      id: 2,
-      title: "Blog Post Title 2",
-      description: "Short description of the blog post content. This gives readers a preview of what to expect.",
-      imageSrc: "/placeholder.png",
-      link: "/blog/2"
-    },
-    {
-      id: 3,
-      title: "Blog Post Title 3",
-      description: "Short description of the blog post content. This gives readers a preview of what to expect.",
-      imageSrc: "/placeholder.png",
-      link: "/blog/3"
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        
+        // Fetch projects
+        const projectsResponse = await fetch('/api/projects');
+        if (!projectsResponse.ok) {
+          throw new Error('Failed to fetch projects');
+        }
+        const projectsData = await projectsResponse.json();
+        
+        // Fetch blog posts
+        const postsResponse = await fetch('/api/posts');
+        if (!postsResponse.ok) {
+          throw new Error('Failed to fetch posts');
+        }
+        const postsData = await postsResponse.json();
+        
+        // Process and set projects (limit to 2 most recent)
+        const processedProjects = projectsData.projects
+          .slice(0, 2)
+          .map((project: any) => ({
+            id: project.slug,
+            title: project.title || '',
+            description: project.summary || '',
+            imageSrc: getDirectusImageUrl(project.cover, ImagePresets.thumbnail),
+            link: `/projects/${project.slug}`
+          }));
+
+        // Process and set blog posts (limit to 3 most recent)
+        const processedPosts = postsData.posts
+          .slice(0, 3)
+          .map((post: any) => {
+            // Strip HTML for description
+            const description = post.body 
+              ? stripHtml(post.body).substring(0, 120) + '...'
+              : post.summary || '';
+              
+            return {
+              id: post.slug,
+              title: post.title || '',
+              description,
+              imageSrc: getDirectusImageUrl(post.cover, ImagePresets.thumbnail),
+              link: `/blog/${post.slug}`
+            };
+          });
+        
+        setProjects(processedProjects);
+        setBlogPosts(processedPosts);
+      } catch (err) {
+        console.error('Error fetching data for homepage:', err);
+        setError('Failed to load data');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, []);
+  
+  // Helper function to strip HTML tags
+  const stripHtml = (html: string) => {
+    if (typeof window === 'undefined') {
+      // Server-side or during SSR
+      return html.replace(/<[^>]+>/g, '');
+    } else {
+      // Client-side with DOM available
+      const tmp = document.createElement('DIV');
+      tmp.innerHTML = html;
+      return tmp.textContent || tmp.innerText || '';
     }
-  ];
+  };
 
   // SVG Icons
   const schematicIcon = (
@@ -149,8 +190,34 @@ export default function HomePage() {
       <section className="w-full">
         <div className="max-w-6xl w-full mx-auto">
           <h2 className="text-3xl font-bold mb-6">{t('projects')}</h2>
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {[1, 2].map((item) => (
+                <div key={item} className="animate-pulse bg-white rounded-lg overflow-hidden shadow-md">
+                  <div className="h-48 bg-gray-200"></div>
+                  <div className="p-4">
+                    <div className="h-6 bg-gray-200 rounded w-3/4 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-full mb-1"></div>
+                    <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : error ? (
+            <div className="bg-red-50 p-6 rounded-lg text-center">
+              <p className="text-red-600">{error}</p>
+              <button 
+                onClick={() => window.location.reload()}
+                className="mt-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors"
+              >
+                Retry
+              </button>
+            </div>
+          ) : (
+            <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {projects.map(project => (
+                {projects.length > 0 ? (
+                  projects.map(project => (
               <Card
                 key={project.id}
                 title={project.title}
@@ -158,7 +225,10 @@ export default function HomePage() {
                 imageSrc={project.imageSrc}
                 link={project.link}
               />
-            ))}
+                  ))
+                ) : (
+                  <p className="col-span-2 text-center text-gray-500 py-8">No projects found</p>
+                )}
           </div>
 
           {/* See All Projects Button */}
@@ -170,6 +240,8 @@ export default function HomePage() {
               see all projects :)
             </Link>
           </div>
+            </>
+          )}
         </div>
       </section>
 
@@ -177,8 +249,28 @@ export default function HomePage() {
       <section className="w-full">
         <div className="max-w-6xl w-full mx-auto">
           <h2 className="text-3xl font-bold mb-6">{t('blog')}</h2>
+          {isLoading ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {[1, 2, 3].map((item) => (
+                <div key={item} className="animate-pulse bg-white rounded-lg overflow-hidden shadow-md">
+                  <div className="h-40 bg-gray-200"></div>
+                  <div className="p-4">
+                    <div className="h-6 bg-gray-200 rounded w-3/4 mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded w-full mb-1"></div>
+                    <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : error ? (
+            <div className="bg-red-50 p-6 rounded-lg text-center">
+              <p className="text-red-600">{error}</p>
+            </div>
+          ) : (
+            <>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {blogArticles.map(article => (
+                {blogPosts.length > 0 ? (
+                  blogPosts.map(article => (
               <Card
                 key={article.id}
                 title={article.title}
@@ -186,7 +278,10 @@ export default function HomePage() {
                 imageSrc={article.imageSrc}
                 link={article.link}
               />
-            ))}
+                  ))
+                ) : (
+                  <p className="col-span-3 text-center text-gray-500 py-8">No blog posts found</p>
+                )}
           </div>
 
           {/* See All Blog Posts Button */}
@@ -198,6 +293,8 @@ export default function HomePage() {
               read more articles :)
             </Link>
           </div>
+            </>
+          )}
         </div>
       </section>
 

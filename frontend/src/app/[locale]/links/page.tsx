@@ -1,110 +1,101 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import { getDirectusImageUrl, ImagePresets } from '@/utils/imageUtils';
 
 interface LinkItem {
-  id: string;
+  id: number;
   title: string;
-  description?: string;
   url: string;
   icon: string;
+  position: string;
   color: string;
-  featured?: boolean;
-  newTab?: boolean;
+  featured: boolean | null;
+  description: string | null;
 }
 
 export default function LinksPage() {
   const t = useTranslations('LinksPage');
-  
-  // Links data
-  const links: LinkItem[] = [
-    {
-      id: 'github',
-      title: 'GitHub',
-      description: 'Check out my open-source projects and contributions',
-      url: 'https://github.com/username',
-      icon: '/icons/github.svg',
-      color: 'bg-gray-900',
-      featured: true,
-      newTab: true
-    },
-    {
-      id: 'linkedin',
-      title: 'LinkedIn',
-      description: 'Connect with me professionally',
-      url: 'https://linkedin.com/in/username',
-      icon: '/icons/linkedin.svg',
-      color: 'bg-blue-700',
-      featured: true,
-      newTab: true
-    },
-    {
-      id: 'twitter',
-      title: 'Twitter',
-      description: 'Follow me for updates on embedded systems and electronics',
-      url: 'https://twitter.com/username',
-      icon: '/icons/twitter.svg',
-      color: 'bg-blue-400',
-      newTab: true
-    },
-    {
-      id: 'youtube',
-      title: 'YouTube',
-      description: 'Watch my tutorials and project demonstrations',
-      url: 'https://youtube.com/c/username',
-      icon: '/icons/youtube.svg',
-      color: 'bg-red-600',
-      newTab: true
-    },
-    {
-      id: 'blog',
-      title: 'Blog',
-      description: 'Read my articles on electronics and embedded systems',
-      url: '/blog',
-      icon: '/icons/blog.svg',
-      color: 'bg-purple-600'
-    },
-    {
-      id: 'projects',
-      title: 'Projects',
-      description: 'Explore my portfolio of electronics and firmware projects',
-      url: '/projects',
-      icon: '/icons/projects.svg',
-      color: 'bg-green-600'
-    },
-    {
-      id: 'hackaday',
-      title: 'Hackaday.io',
-      description: 'See my hardware projects on Hackaday',
-      url: 'https://hackaday.io/username',
-      icon: '/icons/hackaday.svg',
-      color: 'bg-black',
-      newTab: true
-    },
-    {
-      id: 'instructables',
-      title: 'Instructables',
-      description: 'Step-by-step guides for my DIY electronics projects',
-      url: 'https://www.instructables.com/member/username',
-      icon: '/icons/instructables.svg',
-      color: 'bg-blue-500',
-      newTab: true
-    },
-    {
-      id: 'contact',
-      title: 'Contact Me',
-      description: 'Get in touch for collaborations or questions',
-      url: 'mailto:email@example.com',
-      icon: '/icons/email.svg',
-      color: 'bg-yellow-500'
-    }
-  ];
+  const [links, setLinks] = useState<LinkItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchLinks = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch('/api/links');
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch links');
+        }
+        
+        const data = await response.json();
+        setLinks(data.data || []);
+      } catch (err) {
+        console.error('Error fetching links:', err);
+        setError('Failed to load links');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchLinks();
+  }, []);
 
   // Separate featured links
   const featuredLinks = links.filter(link => link.featured);
   const regularLinks = links.filter(link => !link.featured);
+
+  if (isLoading) {
+    return (
+      <div className="w-full py-12">
+        <div className="max-w-4xl w-full mx-auto">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 bg-gray-200 animate-pulse"></div>
+            <div className="h-8 bg-gray-200 rounded w-48 mx-auto mb-2 animate-pulse"></div>
+            <div className="h-4 bg-gray-200 rounded w-64 mx-auto mb-4 animate-pulse"></div>
+            <div className="h-16 bg-gray-200 rounded max-w-lg mx-auto animate-pulse"></div>
+          </div>
+
+          {/* Featured Links (skeleton) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            {[1, 2].map((_, index) => (
+              <div key={index} className="h-40 bg-gray-200 rounded-xl animate-pulse"></div>
+            ))}
+          </div>
+
+          {/* Regular Links Grid (skeleton) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            {[1, 2, 3, 4, 5, 6].map((_, index) => (
+              <div key={index} className="h-32 bg-gray-200 rounded-xl animate-pulse"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full py-12">
+        <div className="max-w-4xl w-full mx-auto text-center">
+          <h1 className="text-2xl font-bold mb-4">Error</h1>
+          <p className="text-red-500 mb-4">{error}</p>
+          <button 
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+          >
+            Try Again
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full py-12">
@@ -156,17 +147,22 @@ export default function LinksPage() {
 
 // Link Card Component
 function LinkCard({ link, featured = false }: { link: LinkItem, featured?: boolean }) {
-  const LinkComponent = link.url.startsWith('http') || link.url.startsWith('mailto') 
-    ? 'a' 
-    : Link;
+  const isExternalLink = link.url.startsWith('http') || link.url.startsWith('mailto');
   
-  const linkProps = link.url.startsWith('http') || link.url.startsWith('mailto')
+  const LinkComponent = isExternalLink ? 'a' : Link;
+  
+  const linkProps = isExternalLink
     ? { 
         href: link.url,
-        target: link.newTab ? '_blank' : undefined,
-        rel: link.newTab ? 'noopener noreferrer' : undefined
+        target: '_blank',
+        rel: 'noopener noreferrer'
       }
     : { href: link.url };
+
+  // Format color for CSS (if it's a hex code, keep it as is; otherwise, use a bg-color class)
+  const colorStyle = link.color.startsWith('#') 
+    ? { backgroundColor: link.color } 
+    : { backgroundColor: link.color };
 
   return (
     <LinkComponent
@@ -175,11 +171,11 @@ function LinkCard({ link, featured = false }: { link: LinkItem, featured?: boole
         featured ? 'h-40' : 'h-32'
       }`}
     >
-      <div className={`w-full h-full ${link.color} text-white p-6 flex flex-col`}>
+      <div className={`w-full h-full text-white p-6 flex flex-col`} style={colorStyle}>
         <div className="flex items-center mb-2">
           <div className="w-8 h-8 mr-3 relative">
             <Image
-              src={link.icon}
+              src={getDirectusImageUrl(link.icon)}
               alt={`${link.title} icon`}
               fill
               className="object-contain"
@@ -188,7 +184,7 @@ function LinkCard({ link, featured = false }: { link: LinkItem, featured?: boole
           <h2 className="text-xl font-bold">{link.title}</h2>
         </div>
         {link.description && (
-          <p className="text-sm opacity-90 line-clamp-2">{link.description}</p>
+          <p className="text-md opacity-90 line-clamp-2">{link.description}</p>
         )}
         <div className="mt-auto flex justify-end">
           <svg 

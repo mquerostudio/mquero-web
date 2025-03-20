@@ -5,10 +5,14 @@ const nextConfig: NextConfig = {
     images: {
         remotePatterns: [
             {
-             protocol: 'https',
-             hostname: String(process.env.DIRECTUS_API_ENDPOINT)?.replace('https://', ''),
+                protocol: 'https',
+                hostname: 'tardis.mquero.com',
+                pathname: '/assets/**',
             }
-        ]
+        ],
+        dangerouslyAllowSVG: true,
+        contentDispositionType: 'attachment',
+        contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;"
     }
 };
 

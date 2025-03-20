@@ -28,7 +28,7 @@ const Header = () => {
           <div className="flex-shrink-0">
             <Link href="/">
               <Image 
-                src="/logo.svg" 
+                src="/mq-logo.svg" 
                 alt="Logo" 
                 width={100} 
                 height={32}
@@ -148,37 +148,48 @@ const Header = () => {
         <div className="md:hidden">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200">
             <Link 
-              href="/" 
+              href="/projects" 
               className={`block px-3 py-2 rounded-md text-base font-medium ${
-                pathname === '/' 
-                  ? 'text-blue-600 bg-blue-50' 
-                  : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                pathname === '/projects' 
+                  ? 'text-[#ffaa00ff] bg-amber-50' 
+                  : 'text-gray-700 hover:text-[#ffaa00ff] hover:bg-amber-50'
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              {t('home')}
+              {t('projects')}
+            </Link>
+            <Link 
+              href="/blog" 
+              className={`block px-3 py-2 rounded-md text-base font-medium ${
+                pathname === '/blog' 
+                  ? 'text-[#ffaa00ff] bg-amber-50' 
+                  : 'text-gray-700 hover:text-[#ffaa00ff] hover:bg-amber-50'
+              }`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {t('blog')}
+            </Link>
+            <Link 
+              href="/links" 
+              className={`block px-3 py-2 rounded-md text-base font-medium ${
+                pathname === '/links' 
+                  ? 'text-[#ffaa00ff] bg-amber-50' 
+                  : 'text-gray-700 hover:text-[#ffaa00ff] hover:bg-amber-50'
+              }`}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              {t('links')}
             </Link>
             <Link 
               href="/about" 
               className={`block px-3 py-2 rounded-md text-base font-medium ${
                 pathname === '/about' 
-                  ? 'text-blue-600 bg-blue-50' 
-                  : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                  ? 'text-[#ffaa00ff] bg-amber-50' 
+                  : 'text-gray-700 hover:text-[#ffaa00ff] hover:bg-amber-50'
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
               {t('about')}
-            </Link>
-            <Link 
-              href="/contact" 
-              className={`block px-3 py-2 rounded-md text-base font-medium ${
-                pathname === '/contact' 
-                  ? 'text-blue-600 bg-blue-50' 
-                  : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
-              }`}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {t('contact')}
             </Link>
           </div>
         </div>

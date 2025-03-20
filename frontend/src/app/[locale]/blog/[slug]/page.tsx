@@ -5,188 +5,365 @@ import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import BlogPostCard from '../../../components/custom/BlogPostCard';
+import { useEffect, useState } from 'react';
+import { parseTagIds } from '@/lib/posts';
+import { formatDate } from '@/utils/formatDate';
+import { getDirectusImageUrl, ImagePresets } from '@/utils/imageUtils';
+import { Tag } from '@/lib/tags';
+
+interface Post {
+  slug?: string;
+  title?: string;
+  body?: string;
+  cover?: string;
+  tags?: number[];  // Now an array of tag IDs
+  tagNames?: string[]; // For convenience when enriched by the API
+  date_created?: string;
+  user_created?: string;
+}
+
+interface RelatedPost {
+  id: number;
+  title: string;
+  description: string;
+  categoryLabels: string[];
+  imageSrc: string;
+  link: string;
+  date?: string;
+}
 
 export default function BlogArticlePage() {
   const t = useTranslations('BlogPage');
   const params = useParams();
-  const slug = params.slug;
-
-  // This would typically come from an API or CMS
-  const article = {
-    id: slug,
-    title: 'How to Design Efficient PCB Layouts for Embedded Systems',
-    description: 'Learn the best practices for designing PCB layouts that optimize space, reduce interference, and improve overall system performance.',
-    content: `
-      <p>Printed Circuit Board (PCB) design is a critical aspect of embedded systems development. A well-designed PCB can significantly improve the performance, reliability, and manufacturability of your electronic devices.</p>
-      
-      <h2>Understanding the Basics</h2>
-      <p>Before diving into PCB layout design, it's essential to understand the basic principles that govern electronic circuits. These include:</p>
-      <ul>
-        <li>Signal integrity considerations</li>
-        <li>Power distribution requirements</li>
-        <li>Thermal management needs</li>
-        <li>Electromagnetic compatibility (EMC)</li>
-      </ul>
-      
-      <p>When designing PCBs for embedded systems, you need to consider the specific requirements of microcontrollers, sensors, and other components that make up your system.</p>
-      
-      <h2>Component Placement</h2>
-      <p>The placement of components on your PCB is perhaps the most crucial step in the design process. Proper component placement can:</p>
-      <ul>
-        <li>Minimize signal path lengths</li>
-        <li>Reduce electromagnetic interference</li>
-        <li>Improve thermal performance</li>
-        <li>Facilitate easier assembly and testing</li>
-      </ul>
-      
-      <p>Start by placing critical components such as microcontrollers, crystals, and high-speed interfaces. Then, arrange supporting components around them in a logical manner.</p>
-      
-      <h2>Routing Techniques</h2>
-      <p>After placing your components, the next step is to route the connections between them. Effective routing techniques include:</p>
-      <ul>
-        <li>Using appropriate trace widths based on current requirements</li>
-        <li>Maintaining consistent impedance for high-speed signals</li>
-        <li>Implementing proper ground planes</li>
-        <li>Minimizing vias in critical signal paths</li>
-      </ul>
-      
-      <p>Remember that the shortest path isn't always the best path. Sometimes, a slightly longer route that avoids potential interference sources is preferable.</p>
-      
-      <h2>Power Distribution</h2>
-      <p>Proper power distribution is essential for the reliable operation of your embedded system. Consider these practices:</p>
-      <ul>
-        <li>Use wide traces or copper pours for power connections</li>
-        <li>Place decoupling capacitors close to IC power pins</li>
-        <li>Implement star grounding where appropriate</li>
-        <li>Consider using dedicated power planes for complex designs</li>
-      </ul>
-      
-      <h2>Design for Manufacturability</h2>
-      <p>A well-designed PCB should not only function correctly but also be easy to manufacture. Design for manufacturability (DFM) considerations include:</p>
-      <ul>
-        <li>Adhering to your manufacturer's design rules</li>
-        <li>Using standard component packages when possible</li>
-        <li>Providing adequate clearance for assembly equipment</li>
-        <li>Including proper fiducial marks for automated assembly</li>
-      </ul>
-      
-      <h2>Conclusion</h2>
-      <p>Designing efficient PCB layouts for embedded systems requires a balance of electrical engineering principles, practical experience, and attention to detail. By following the best practices outlined in this article, you can create PCBs that not only meet your functional requirements but also are reliable, manufacturable, and cost-effective.</p>
-    `,
-    publishDate: 'April 15, 2023',
-    author: 'Manuel Quero',
-    authorTitle: 'Electronics Engineer',
-    authorImage: '/profile-picture.png',
-    featuredImage: '/placeholder.png',
-    categories: ['PCB Design', 'Embedded Systems'],
-    readTime: '8 min read'
+  const slug = params.slug as string;
+  
+  const [post, setPost] = useState<Post | null>(null);
+  const [tags, setTags] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  // Hardcoded author info
+  const author = {
+    name: 'Manuel Quero',
+    title: 'Electronics Engineer',
+    image: '/profile-picture.png',
   };
-
+  
   // Related articles
-  const relatedArticles = [
-    {
-      id: 1,
-      title: 'Choosing the Right Microcontroller for Your Project',
-      description: 'A comprehensive guide to selecting microcontrollers based on your project requirements and constraints.',
-      categories: ['Microcontrollers', 'Embedded Systems'],
-      categoryLabels: ['MICROCONTROLLERS', 'EMBEDDED SYSTEMS'],
-      imageSrc: '/placeholder.png',
-      link: '/blog/microcontroller-selection'
-    },
-    {
-      id: 2,
-      title: 'Power Management Techniques for Battery-Powered Devices',
-      description: 'Learn how to optimize power consumption in your embedded designs to extend battery life.',
-      categories: ['Power Management', 'Battery Devices'],
-      categoryLabels: ['POWER MANAGEMENT', 'BATTERY DEVICES'],
-      imageSrc: '/placeholder.png',
-      link: '/blog/power-management'
-    },
-    {
-      id: 3,
-      title: 'Debugging Common Issues in Embedded Firmware',
-      description: 'Practical approaches to identifying and resolving common problems in embedded firmware development.',
-      categories: ['Firmware', 'Debugging'],
-      categoryLabels: ['FIRMWARE', 'DEBUGGING'],
-      imageSrc: '/placeholder.png',
-      link: '/blog/firmware-debugging'
-    }
-  ];
+  const [relatedArticles, setRelatedArticles] = useState<RelatedPost[]>([]);
 
+  useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        setIsLoading(true);
+        
+        // Fetch all tags first
+        const tagsResponse = await fetch('/api/tags');
+        if (!tagsResponse.ok) {
+          throw new Error('Failed to fetch tags');
+        }
+        const tagsData = await tagsResponse.json();
+        
+        // Create a map of tags by ID for quick lookup
+        const tagsMap = new Map<number, Tag>();
+        tagsData.tags.forEach((tag: Tag) => {
+          tagsMap.set(tag.id, tag);
+        });
+        
+        // Fetch the post
+        const response = await fetch(`/api/post/${slug}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch post');
+        }
+        
+        const data = await response.json();
+        setPost(data.post);
+        
+        // Get tag names from post's tag IDs
+        if (data.post && data.post.tags) {
+          const tagIds = parseTagIds(data.post.tags);
+          const tagNames = tagIds.map(id => {
+            const tag = tagsMap.get(id);
+            return tag ? tag.name : '';
+          }).filter(Boolean);
+          
+          setTags(tagNames);
+        }
+        
+        // Fetch related posts
+        const postsResponse = await fetch('/api/posts');
+        if (postsResponse.ok) {
+          const postsData = await postsResponse.json();
+          
+          // Filter out current post and limit to 3 posts
+          const filteredPosts = postsData.posts
+            .filter((p: Post) => p.slug !== slug)
+            .slice(0, 3)
+            .map((p: Post) => {
+              // Get category labels either from enriched tagNames or convert from tag IDs
+              const categoryLabels = p.tagNames || 
+                (p.tags ? parseTagIds(p.tags).map(id => {
+                  const tag = tagsMap.get(id);
+                  return tag ? tag.name.toUpperCase() : '';
+                }).filter(Boolean) : []);
+              
+              return {
+                id: p.slug || '',
+                title: p.title || '',
+                description: p.body ? stripHtml(p.body).substring(0, 150) + '...' : '',
+                categoryLabels,
+                imageSrc: getDirectusImageUrl(p.cover, ImagePresets.thumbnail),
+                link: `/blog/${p.slug}`,
+                date: p.date_created ? formatDate(p.date_created) : undefined
+              };
+            });
+            
+          setRelatedArticles(filteredPosts);
+        }
+      } catch (err) {
+        console.error('Error fetching post data:', err);
+        setError('Failed to load post');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchPost();
+  }, [slug]);
+  
+  // Helper function to strip HTML tags that works safely in both client and server environments
+  const stripHtml = (html: string) => {
+    if (typeof window === 'undefined') {
+      // Server-side or during SSR
+      return html.replace(/<[^>]+>/g, '');
+    } else {
+      // Client-side with DOM available
+      const tmp = document.createElement('DIV');
+      tmp.innerHTML = html;
+      return tmp.textContent || tmp.innerText || '';
+    }
+  };
+  
+  if (isLoading) {
   return (
-    <div className="w-full py-12">
-      <div className="max-w-4xl w-full mx-auto">
-        {/* Article Header */}
-        <div className="mb-8">
-          <div className="flex gap-2 mb-4">
-            {article.categories.map((category, index) => (
-              <span 
-                key={index} 
-                className="text-xs font-semibold text-purple-600 bg-purple-100 px-2 py-1 rounded"
-              >
-                {category.toUpperCase()}
-              </span>
-            ))}
+      <div className="w-full py-6">
+        <div className="max-w-4xl w-full mx-auto px-4">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
+            <div className="h-4 bg-gray-200 rounded w-1/4 mb-8"></div>
+            <div className="h-64 bg-gray-200 rounded-lg mb-8"></div>
+            <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
+            <div className="h-4 bg-gray-200 rounded w-5/6 mb-8"></div>
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-4">{article.title}</h1>
-          <div className="flex items-center gap-4 text-sm text-gray-600">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-full overflow-hidden relative">
-                <Image 
-                  src={article.authorImage} 
-                  alt={article.author}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div>
-                <span className="font-medium text-black">{article.author}</span>
-                <span className="block text-xs">{article.authorTitle}</span>
               </div>
             </div>
-            <span>•</span>
-            <span>{article.publishDate}</span>
-            <span>•</span>
-            <span>{article.readTime}</span>
+    );
+  }
+  
+  if (error || !post) {
+    return (
+      <div className="w-full py-6">
+        <div className="max-w-4xl w-full mx-auto px-4">
+          <div className="text-center py-12">
+            <h1 className="text-2xl font-bold text-gray-800 mb-4">
+              {error || 'Post not found'}
+            </h1>
+            <Link 
+              href="/blog" 
+              className="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition-colors"
+            >
+              {t('backToBlog')}
+            </Link>
           </div>
         </div>
+      </div>
+    );
+  }
+  
+  // Format the date
+  const publishDate = post.date_created ? formatDate(post.date_created) : '';
+  
+  // Read time estimation (roughly 200 words per minute)
+  const wordCount = stripHtml(post.body || '').split(/\s+/).length;
+  const readTime = `${Math.max(1, Math.round(wordCount / 200))} min read`;
 
-        {/* Featured Image */}
-        <div className="w-full h-64 md:h-96 relative mb-8 rounded-lg overflow-hidden">
+  return (
+    <div className="w-full pb-6">
+      <div className="max-w-4xl w-full mx-auto px-4 text-center">
+        {/* Featured Image - Now at the top */}
+        <div className="w-full h-64 md:h-96 relative mb-8 rounded-b-lg overflow-hidden">
           <Image
-            src={article.featuredImage}
-            alt={article.title}
+            src={getDirectusImageUrl(post.cover, ImagePresets.featured)}
+            alt={post.title || ''}
             fill
+            sizes="(max-width: 768px) 100vw, 800px"
             className="object-cover"
+            priority
           />
         </div>
 
-        {/* Article Content */}
+        {/* Article Title */}
+        <h1 className="text-3xl md:text-4xl font-bold mb-6">{post.title}</h1>
+        
+        {/* Article Summary/Excerpt */}
+        <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
+          {stripHtml(post.body || '').substring(0, 200)}...
+        </p>
+        
+        {/* Author, Date and Read Time in a Row */}
+        <div className="flex items-center justify-center gap-4 text-sm text-gray-600 mb-6">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-full overflow-hidden relative">
+              <Image 
+                src={author.image} 
+                alt={author.name}
+                width={32}
+                height={32}
+                className="object-cover w-full h-full"
+              />
+            </div>
+            <div className="text-left">
+              <span className="font-medium text-black">{author.name}</span>
+              <span className="block text-xs">{author.title}</span>
+            </div>
+          </div>
+          <span>•</span>
+          <span>{publishDate}</span>
+          <span>•</span>
+          <span>{readTime}</span>
+        </div>
+        
+        {/* Tags at the Bottom */}
+        <div className="flex flex-wrap gap-2 justify-center mb-10">
+          {tags.map((tag, index) => (
+            <span 
+              key={index} 
+              className="text-xs font-semibold text-purple-600 bg-purple-100 px-2 py-1 rounded"
+            >
+              {tag.toUpperCase()}
+            </span>
+          ))}
+        </div>
+
+        {/* Article Content - Back to left alignment for readability */}
         <div 
-          className="prose prose-lg max-w-none mb-12"
-          dangerouslySetInnerHTML={{ __html: article.content }}
+          className="prose prose-lg max-w-none mb-12 text-left"
+          dangerouslySetInnerHTML={{ __html: post.body || '' }}
         />
 
         {/* Author Bio */}
-        <div className="bg-gray-100 p-6 rounded-lg mb-12">
+        <div className="bg-gray-100 p-6 rounded-lg mb-12 text-left">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full overflow-hidden relative">
               <Image 
-                src={article.authorImage} 
-                alt={article.author}
-                fill
-                className="object-cover"
+                  src={author.image} 
+                  alt={author.name}
+                  width={64}
+                  height={64}
+                  className="object-cover w-full h-full"
               />
             </div>
             <div>
-              <h3 className="font-bold text-lg">{article.author}</h3>
-              <p className="text-gray-600">{article.authorTitle}</p>
+                <h3 className="font-bold text-xl">{author.name}</h3>
+                <p className="text-gray-600">{author.title}</p>
+              </div>
+            </div>
+            
+            {/* Social Media Icons */}
+            <div className="flex space-x-6 items-center mt-4 md:mt-0">
+              <a 
+                href="https://www.instagram.com/mquerostudio" 
+                className="flex items-center hover:opacity-80"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+              >
+                <Image 
+                  src="/social-logos/instagram-logo.svg" 
+                  alt="Instagram" 
+                  width={40} 
+                  height={40} 
+                />
+              </a>
+              <a 
+                href="https://www.tiktok.com/@mquerostudio" 
+                className="flex items-center hover:opacity-80"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok"
+              >
+                <Image 
+                  src="/social-logos/tiktok-logo.svg" 
+                  alt="TikTok" 
+                  width={40} 
+                  height={40} 
+                />
+              </a>
+              <a 
+                href="https://x.com/mquerostudio" 
+                className="flex items-center hover:opacity-80"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="X"
+              >
+                <Image 
+                  src="/social-logos/x-logo-black.svg" 
+                  alt="X" 
+                  width={40} 
+                  height={40} 
+                />
+              </a>
+              <a 
+                href="https://www.reddit.com/user/mquerostudio" 
+                className="flex items-center hover:opacity-80"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Reddit"
+              >
+                <Image 
+                  src="/social-logos/reddit-logo.svg" 
+                  alt="Reddit" 
+                  width={40} 
+                  height={40} 
+                />
+              </a>
+              <a 
+                href="https://www.linkedin.com/in/manuelquero" 
+                className="flex items-center hover:opacity-80"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+              >
+                <Image 
+                  src="/social-logos/linkedin-logo.svg" 
+                  alt="LinkedIn" 
+                  width={40} 
+                  height={40} 
+                />
+              </a>
+              <a 
+                href="https://www.youtube.com/@MQuero." 
+                className="flex items-center hover:opacity-80"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+              >
+                <Image 
+                  src="/social-logos/youtube-logo.svg" 
+                  alt="YouTube" 
+                  width={40} 
+                  height={40} 
+                />
+              </a>
             </div>
           </div>
         </div>
 
         {/* Related Articles */}
-        <div className="mb-8">
+        {relatedArticles.length > 0 && (
+        <div className="mb-8 text-left">
           <h2 className="text-2xl font-bold mb-6">{t('relatedArticles')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {relatedArticles.map(post => (
@@ -197,10 +374,12 @@ export default function BlogArticlePage() {
                 categoryLabels={post.categoryLabels}
                 imageSrc={post.imageSrc}
                 link={post.link}
+                date={post.date}
               />
             ))}
           </div>
         </div>
+        )}
 
         {/* Back to Blog Button */}
         <div className="flex justify-center">
