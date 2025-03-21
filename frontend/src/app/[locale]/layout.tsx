@@ -6,6 +6,7 @@ import Footer from '../components/custom/Footer';
 import { Inter } from 'next/font/google';
 import '../globals.css';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { ThemeProvider } from '../components/ThemeProvider';
 
 const inter = Inter({ subsets: ['latin'], weight: ['400', '700'] });
 
@@ -44,19 +45,24 @@ export default async function LocaleLayout({
     notFound();
   }
 
+  // Fetch translations for client components
+  const messages = (await import(`../../../messages/${locale}.json`)).default;
+
   return (
     <html lang={locale} className="h-full">
       <head>
         <meta name="apple-mobile-web-app-title" content="MQuero" />
       </head>
-      <body className={`${inter.className} h-full bg-gray-50 flex flex-col min-h-screen`}>
-        <NextIntlClientProvider>
-          <Header />
-          <main className="w-full max-w-full mx-auto px-4 sm:px-6 lg:px-8 flex-grow">
-            {children}
-          </main>
-          <Footer />
-        </NextIntlClientProvider>
+      <body className={`${inter.className} h-full bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col min-h-screen transition-colors duration-200`}>
+        <ThemeProvider>
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <Header />
+            <main className="w-full max-w-full mx-auto px-4 sm:px-6 lg:px-8 flex-grow">
+              {children}
+            </main>
+            <Footer />
+          </NextIntlClientProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -6,6 +6,7 @@ import { useLocale, useTranslations } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import Image from 'next/image';
 import { useState } from 'react';
+import ThemeToggle from '../ThemeToggle';
 
 const Header = () => {
   const pathname = usePathname();
@@ -21,7 +22,7 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-md">
+    <header className="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
@@ -44,8 +45,8 @@ const Header = () => {
               href="/projects" 
               className={`px-3 py-2 text-md font-bold rounded-md ${
                 pathname === '/projects' 
-                  ? 'text-[#ffaa00ff] bg-amber-50' 
-                  : 'text-gray-700 hover:text-[#ffaa00ff] hover:bg-amber-50'
+                  ? 'text-[#ffaa00ff] bg-amber-50 dark:bg-amber-900/20' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-[#ffaa00ff] hover:bg-amber-50 dark:hover:bg-amber-900/20'
               } transition-colors duration-200`}
             >
               {t('projects')}
@@ -54,8 +55,8 @@ const Header = () => {
               href="/blog" 
               className={`px-3 py-2 text-md font-bold rounded-md ${
                 pathname === '/blog' 
-                  ? 'text-[#ffaa00ff] bg-amber-50' 
-                  : 'text-gray-700 hover:text-[#ffaa00ff] hover:bg-amber-50'
+                  ? 'text-[#ffaa00ff] bg-amber-50 dark:bg-amber-900/20' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-[#ffaa00ff] hover:bg-amber-50 dark:hover:bg-amber-900/20'
               } transition-colors duration-200`}
             >
               {t('blog')}
@@ -64,8 +65,8 @@ const Header = () => {
               href="/links" 
               className={`px-3 py-2 text-md font-bold rounded-md ${
                 pathname === '/links' 
-                  ? 'text-[#ffaa00ff] bg-amber-50' 
-                  : 'text-gray-700 hover:text-[#ffaa00ff] hover:bg-amber-50'
+                  ? 'text-[#ffaa00ff] bg-amber-50 dark:bg-amber-900/20' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-[#ffaa00ff] hover:bg-amber-50 dark:hover:bg-amber-900/20'
               } transition-colors duration-200`}
             >
               {t('links')}
@@ -74,8 +75,8 @@ const Header = () => {
               href="/about" 
               className={`px-3 py-2 text-md font-bold rounded-md ${
                 pathname === '/about' 
-                  ? 'text-[#ffaa00ff] bg-amber-50' 
-                  : 'text-gray-700 hover:text-[#ffaa00ff] hover:bg-amber-50'
+                  ? 'text-[#ffaa00ff] bg-amber-50 dark:bg-amber-900/20' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-[#ffaa00ff] hover:bg-amber-50 dark:hover:bg-amber-900/20'
               } transition-colors duration-200`}
             >
               {t('about')}
@@ -83,11 +84,14 @@ const Header = () => {
           </nav>
 
           <div className="flex items-center space-x-4">
+            {/* Theme Toggle */}
+            <ThemeToggle />
+            
             {/* Language Selector */}
             <div className="relative">
               <button 
                 onClick={() => setIsOpen(!isOpen)}
-                className="flex items-center space-x-1 px-3 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                className="flex items-center space-x-1 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
               >
                 <span>{locale.toUpperCase()}</span>
                 <svg 
@@ -102,11 +106,11 @@ const Header = () => {
               </button>
 
               {isOpen && (
-                <div className="absolute right-0 mt-2 w-28 bg-white border border-gray-300 rounded-md shadow-lg z-10">
+                <div className="absolute right-0 mt-2 w-28 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-lg z-10">
                   <button
                     onClick={() => handleLanguageChange('en')}
                     className={`block w-full text-left px-4 py-2 text-sm ${
-                      locale === 'en' ? 'font-medium text-[#ffaa00ff] bg-amber-50' : 'text-gray-700 hover:bg-gray-50'
+                      locale === 'en' ? 'font-medium text-[#ffaa00ff] bg-amber-50 dark:bg-amber-900/20' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                     }`}
                   >
                     English
@@ -114,7 +118,7 @@ const Header = () => {
                   <button
                     onClick={() => handleLanguageChange('es')}
                     className={`block w-full text-left px-4 py-2 text-sm ${
-                      locale === 'es' ? 'font-medium text-[#ffaa00ff] bg-amber-50' : 'text-gray-700 hover:bg-gray-50'
+                      locale === 'es' ? 'font-medium text-[#ffaa00ff] bg-amber-50 dark:bg-amber-900/20' : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                     }`}
                   >
                     Español
@@ -125,7 +129,7 @@ const Header = () => {
 
             {/* Mobile menu button */}
             <button 
-              className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-[#ffaa00ff] hover:bg-amber-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-700 dark:text-gray-300 hover:text-[#ffaa00ff] hover:bg-amber-50 dark:hover:bg-amber-900/20 focus:outline-none focus:ring-2 focus:ring-blue-500"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <span className="sr-only">Open main menu</span>
@@ -146,13 +150,13 @@ const Header = () => {
       {/* Mobile menu, show/hide based on menu state */}
       {mobileMenuOpen && (
         <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200 dark:border-gray-700">
             <Link 
               href="/projects" 
               className={`block px-3 py-2 rounded-md text-base font-medium ${
                 pathname === '/projects' 
-                  ? 'text-[#ffaa00ff] bg-amber-50' 
-                  : 'text-gray-700 hover:text-[#ffaa00ff] hover:bg-amber-50'
+                  ? 'text-[#ffaa00ff] bg-amber-50 dark:bg-amber-900/20' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-[#ffaa00ff] hover:bg-amber-50 dark:hover:bg-amber-900/20'
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -162,8 +166,8 @@ const Header = () => {
               href="/blog" 
               className={`block px-3 py-2 rounded-md text-base font-medium ${
                 pathname === '/blog' 
-                  ? 'text-[#ffaa00ff] bg-amber-50' 
-                  : 'text-gray-700 hover:text-[#ffaa00ff] hover:bg-amber-50'
+                  ? 'text-[#ffaa00ff] bg-amber-50 dark:bg-amber-900/20' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-[#ffaa00ff] hover:bg-amber-50 dark:hover:bg-amber-900/20'
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -173,8 +177,8 @@ const Header = () => {
               href="/links" 
               className={`block px-3 py-2 rounded-md text-base font-medium ${
                 pathname === '/links' 
-                  ? 'text-[#ffaa00ff] bg-amber-50' 
-                  : 'text-gray-700 hover:text-[#ffaa00ff] hover:bg-amber-50'
+                  ? 'text-[#ffaa00ff] bg-amber-50 dark:bg-amber-900/20' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-[#ffaa00ff] hover:bg-amber-50 dark:hover:bg-amber-900/20'
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >
@@ -184,8 +188,8 @@ const Header = () => {
               href="/about" 
               className={`block px-3 py-2 rounded-md text-base font-medium ${
                 pathname === '/about' 
-                  ? 'text-[#ffaa00ff] bg-amber-50' 
-                  : 'text-gray-700 hover:text-[#ffaa00ff] hover:bg-amber-50'
+                  ? 'text-[#ffaa00ff] bg-amber-50 dark:bg-amber-900/20' 
+                  : 'text-gray-700 dark:text-gray-300 hover:text-[#ffaa00ff] hover:bg-amber-50 dark:hover:bg-amber-900/20'
               }`}
               onClick={() => setMobileMenuOpen(false)}
             >

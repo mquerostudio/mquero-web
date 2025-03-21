@@ -8,7 +8,7 @@ const Footer = () => {
   const t = useTranslations('Common.footer');
 
   return (
-    <footer className="bg-neutral-900 w-full">
+    <footer className="bg-neutral-900 dark:bg-gray-950 w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           {/* Column 1: Location */}
@@ -29,16 +29,16 @@ const Footer = () => {
           <div className="flex flex-col items-center">
             <h3 className="text-lg font-medium text-white mb-4">{t('pages')}</h3>
             <nav className="flex flex-col space-y-3 items-center">
-              <Link href="/projects" className="text-base text-white hover:text-gray-300">
+              <Link href="/projects" className="text-base text-white hover:text-gray-300 transition-colors duration-200">
                 {t('projects')}
               </Link>
-              <Link href="/blog" className="text-base text-white hover:text-gray-300">
+              <Link href="/blog" className="text-base text-white hover:text-gray-300 transition-colors duration-200">
                 {t('blog')}
               </Link>
-              <Link href="/links" className="text-base text-white hover:text-gray-300">
+              <Link href="/links" className="text-base text-white hover:text-gray-300 transition-colors duration-200">
                 {t('links')}
               </Link>
-              <Link href="/about" className="text-base text-white hover:text-gray-300">
+              <Link href="/about" className="text-base text-white hover:text-gray-300 transition-colors duration-200">
                 {t('about')}
               </Link>
             </nav>
@@ -50,9 +50,10 @@ const Footer = () => {
             <div className="flex space-x-6 items-center">
               <a 
                 href="https://www.instagram.com/mquerostudio" 
-                className="flex items-center text-white hover:text-gray-300"
+                className="flex items-center text-white hover:text-gray-300 transition-colors duration-200"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Instagram"
               >
                 <Image 
                   src="/social-logos/instagram-logo.svg" 
@@ -63,9 +64,10 @@ const Footer = () => {
               </a>
               <a 
                 href="https://www.tiktok.com/@mquerostudio" 
-                className="flex items-center text-white hover:text-gray-300"
+                className="flex items-center text-white hover:text-gray-300 transition-colors duration-200"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="TikTok"
               >
                 <Image 
                   src="/social-logos/tiktok-logo.svg" 
@@ -76,9 +78,10 @@ const Footer = () => {
               </a>
               <a 
                 href="https://x.com/mquerostudio" 
-                className="flex items-center text-white hover:text-gray-300"
+                className="flex items-center text-white hover:text-gray-300 transition-colors duration-200"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="X"
               >
                 <Image 
                   src="/social-logos/x-logo.svg" 
@@ -89,9 +92,10 @@ const Footer = () => {
               </a>
               <a 
                 href="https://www.reddit.com/user/mquerostudio" 
-                className="flex items-center text-white hover:text-gray-300"
+                className="flex items-center text-white hover:text-gray-300 transition-colors duration-200"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Reddit"
               >
                 <Image 
                   src="/social-logos/reddit-logo.svg" 
@@ -102,9 +106,10 @@ const Footer = () => {
               </a>
               <a 
                 href="https://www.linkedin.com/in/manuelquero" 
-                className="flex items-center text-white hover:text-gray-300"
+                className="flex items-center text-white hover:text-gray-300 transition-colors duration-200"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="LinkedIn"
               >
                 <Image 
                   src="/social-logos/linkedin-logo.svg" 
@@ -115,9 +120,10 @@ const Footer = () => {
               </a>
               <a 
                 href="https://www.youtube.com/@MQuero." 
-                className="flex items-center text-white hover:text-gray-300"
+                className="flex items-center text-white hover:text-gray-300 transition-colors duration-200"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="YouTube"
               >
                 <Image 
                   src="/social-logos/youtube-logo.svg" 

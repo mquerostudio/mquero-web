@@ -3,6 +3,19 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --card-background: #f9f9f9;
+  --border-color: #e5e5e5;
+  --primary-color: #ffaa00;
+  --primary-hover: #e69900;
+}
+
+.dark {
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --card-background: #1a1a1a;
+  --border-color: #2a2a2a;
+  --primary-color: #ffaa00;
+  --primary-hover: #e69900;
 }
 
 @theme inline {
@@ -12,10 +25,13 @@
   --font-mono: var(--font-geist-mono);
 }
 
+/* For backwards compatibility with the system preference */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not(.light):not(.dark) {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --card-background: #1a1a1a;
+    --border-color: #2a2a2a;
   }
 }
 
@@ -23,4 +39,11 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Apply theme transitions */
+* {
+  transition-property: color, background-color, border-color;
+  transition-duration: 0.3s;
 }

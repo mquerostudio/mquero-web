@@ -19,5 +19,15 @@
     //   "binding": "NEXT_CACHE_WORKERS_KV",
     //   "id": "<BINDING_ID>"
     // }
-  ]
+  ],
+  // Add custom domains configuration
+  "routes": [
+    { "pattern": "mquero.com", "custom_domain": true },
+    { "pattern": "www.mquero.com", "custom_domain": true },
+    { "pattern": "mquero.es", "custom_domain": true },
+    { "pattern": "www.mquero.es", "custom_domain": true }
+  ],
+  "triggers": {
+    "crons": ["0 0 * * *"] // Run once a day at midnight UTC
+  }
 } 
