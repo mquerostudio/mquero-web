@@ -95,19 +95,37 @@ export default function HomePage() {
   // SVG Icons
   const schematicIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672 13.684 16.6m0 0-2.51 2.225.569-9.47 5.227 7.917-3.286-.672Zm-7.518-.267A8.25 8.25 0 1 1 20.25 10.5M8.288 14.212A5.25 5.25 0 1 1 17.25 10.5" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M5 12a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2M5 12a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-4a2 2 0 0 0-2-2m-2-4h.01M17 16h.01" />
     </svg>
   );
 
   const prototypeIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 17.25v-.228a4.5 4.5 0 0 0-.12-1.03l-2.268-9.64a3.375 3.375 0 0 0-3.285-2.602H7.923a3.375 3.375 0 0 0-3.285 2.602l-2.268 9.64a4.5 4.5 0 0 0-.12 1.03v.228m19.5 0a3 3 0 0 1-3 3H5.25a3 3 0 0 1-3-3m19.5 0a3 3 0 0 0-3-3H5.25a3 3 0 0 0-3 3m16.5 0h.008v.008h-.008v-.008Zm-3 0h.008v.008h-.008v-.008Z" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
     </svg>
   );
 
   const firmwareIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
+      <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
+    </svg>
+  );
+
+  const requirementsIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+    </svg>
+  );
+
+  const prototypingIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M21 7.5l-2.25-1.313M21 7.5v2.25m0-2.25l-2.25 1.313M3 7.5l2.25-1.313M3 7.5l2.25 1.313M3 7.5v2.25m9 3l2.25-1.313M12 12.75l-2.25-1.313M12 12.75V15m0 6.75l2.25-1.313M12 21.75V19.5m0 2.25l-2.25-1.313m0-16.875L12 2.25l2.25 1.313M21 14.25v2.25l-2.25 1.313m-13.5 0L3 16.5v-2.25" />
+    </svg>
+  );
+
+  const validationIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-10 h-10">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
     </svg>
   );
 
@@ -115,45 +133,45 @@ export default function HomePage() {
   const skills = [
     {
       id: 1,
-      title: "Schematics and PCB",
-      description: "Lorem ipsum dolor amet, consectetur adipiscing elit. Elementum non donec cursus turpis tristique magnis massa natoque ultrices magnis quis nascetur leo massa pellentesque.",
-      color: "bg-gray-500",
+      title: t('skill-1-title'),
+      description: t('skill-1-description'),
+      color: "bg-blue-500",
       icon: schematicIcon
     },
     {
       id: 2,
-      title: "Prototyping",
-      description: "Lorem ipsum dolor amet, consectetur adipiscing elit. Elementum non donec cursus turpis tristique magnis massa natoque ultrices magnis quis nascetur leo massa pellentesque.",
-      color: "bg-green-400",
+      title: t('skill-2-title'),
+      description: t('skill-2-description'),
+      color: "bg-orange-400",
       icon: prototypeIcon
     },
     {
       id: 3,
-      title: "Firmware",
-      description: "Lorem ipsum dolor amet, consectetur adipiscing elit. Elementum non donec cursus turpis tristique magnis massa natoque ultrices magnis quis nascetur leo massa pellentesque.",
-      color: "bg-red-300",
+      title: t('skill-3-title'),
+      description: t('skill-3-description'),
+      color: "bg-purple-500",
       icon: firmwareIcon
     },
     {
       id: 4,
-      title: "Schematics and PCB",
-      description: "Lorem ipsum dolor amet, consectetur adipiscing elit. Elementum non donec cursus turpis tristique magnis massa natoque ultrices magnis quis nascetur leo massa pellentesque.",
-      color: "bg-gray-500",
-      icon: schematicIcon
+      title: t('skill-4-title'),
+      description: t('skill-4-description'),
+      color: "bg-teal-500",
+      icon: requirementsIcon
     },
     {
       id: 5,
-      title: "Prototyping",
-      description: "Lorem ipsum dolor amet, consectetur adipiscing elit. Elementum non donec cursus turpis tristique magnis massa natoque ultrices magnis quis nascetur leo massa pellentesque.",
-      color: "bg-green-400",
-      icon: prototypeIcon
+      title: t('skill-5-title'),
+      description: t('skill-5-description'),
+      color: "bg-amber-500",
+      icon: prototypingIcon
     },
     {
       id: 6,
-      title: "Firmware",
-      description: "Lorem ipsum dolor amet, consectetur adipiscing elit. Elementum non donec cursus turpis tristique magnis massa natoque ultrices magnis quis nascetur leo massa pellentesque.",
-      color: "bg-red-300",
-      icon: firmwareIcon
+      title: t('skill-6-title'),
+      description: t('skill-6-description'),
+      color: "bg-rose-500",
+      icon: validationIcon
     }
   ];
 
@@ -212,7 +230,7 @@ export default function HomePage() {
               >
                 Retry
               </button>
-            </div>
+            </div>  
           ) : (
             <>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -237,7 +255,7 @@ export default function HomePage() {
               href="/projects"
               className="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition-colors"
             >
-              see all projects :)
+              {t('projects-see-all')}
             </Link>
           </div>
             </>
@@ -290,7 +308,7 @@ export default function HomePage() {
               href="/blog"
               className="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition-colors"
             >
-              read more articles :)
+              {t('blog-read')}
             </Link>
           </div>
             </>

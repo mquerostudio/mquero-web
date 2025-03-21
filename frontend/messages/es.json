@@ -1,68 +1,69 @@
 {
     "Common": {
         "navigation": {
-            "home": "Inicio",
-            "about": "Nosotros",
-            "contact": "Contacto"
-        },
-        "buttons": {
-            "readMore": "Leer Más",
-            "submit": "Enviar",
-            "send": "Enviar"
+            "projects": "proyectos",
+            "blog": "blog",
+            "links": "enlaces",
+            "about": "sobre mí"
         },
         "footer": {
-            "copyright": "© 2024 Tu Empresa. Todos los derechos reservados.",
-            "privacyPolicy": "Política de Privacidad",
-            "termsOfService": "Términos de Servicio"
+            "location": "Ubicación",
+            "basedInSpain": "Situado en España",
+            "pages": "Páginas",
+            "projects": "proyectos",
+            "blog": "blog",
+            "links": "enlaces",
+            "about": "sobre mí",
+            "followMe": "Sígueme"
         }
     },
     "HomePage": {
-        "title": "Bienvenido a Tu Sitio Web",
-        "subtitle": "Tu aplicación web moderna e internacionalizada",
-        "about": "Conoce más sobre nosotros",
-        "features": {
-            "title": "Nuestras Características",
-            "feature1": {
-                "title": "Característica 1",
-                "description": "Descripción de la característica 1"
-            },
-            "feature2": {
-                "title": "Característica 2",
-                "description": "Descripción de la característica 2"
-            },
-            "feature3": {
-                "title": "Característica 3",
-                "description": "Descripción de la característica 3"
-            }
-        }
+        "title": "¡Hola! Me llamo Manuel Quero y me dedico a diseñar y fabricar cosas",
+        "subtitle": "Autodidacta y apasionado por la electrónica, siempre estoy aprendiendo sobre PCBs, componentes electrónicos, diseño industrial y programación.",
+        "about": "conoce más sobre mí",
+        "projects": "proyectos",
+        "projects-see-all": "ver todos mis proyectos :)",
+        "blog": "artículos",
+        "blog-read": "leer más artículos",
+        "skills": "¿qué hago?",
+        "skill-1-description": "Hardware personalizado según las necesidades del proyecto. Diseño los esquemáticos y PCBs, tanto en KiCad como en Altium, y gestiono su fabricación.",
+        "skill-1-title": "Diseño de Hardware",
+        "skill-2-description": "Diseño piezas mecánicas para la fabricación de prototipos y piezas finales, usando Fusion o FreeCAD. Gran experiencia usando impresión 3D.",
+        "skill-2-title": "Diseño Mecánico",
+        "skill-3-description": "Programación de microcontroladores y sistemas embebidos. Especializado en C/C++ y programación de microcontroladores Espressif y STM32.",
+        "skill-3-title": "Programación",
+        "skill-4-title": "Requerimientos de proyecto",
+        "skill-4-description": "Estudio de los requerimientos del proyecto y desarrollo de un plan de trabajo. También asesoro en la elección de los componentes y materiales.",
+        "skill-5-title": "Prototipado de productos",
+        "skill-5-description": "Fabrico prototipos de productos para validar el diseño y las funcionalidades, integrando la parte mecánica, electrónica y software.",
+        "skill-6-title": "Validación de productos",
+        "skill-6-description": "Realizo pruebas de validación, tanto de hardware como de software, usando instrumentos de medida como osciloscopios, multímetros, etc."
+    },
+    "ProjectsPage": {
+        "title": "Proyectos",
+        "viewProject": "ver proyecto",
+        "relatedArticles": "artículos relacionados",
+        "backToProjects": "volver a todos los proyectos"
+    },
+    "BlogPage": {
+        "title": "Blog",
+        "readNow": "leer ahora",
+        "relatedArticles": "artículos relacionados",
+        "backToBlog": "volver a todos los artículos"
+    },
+    "LinksPage": {
+        "title": "Ingeniero y maker | fouder of kode.",
+        "subtitle": "Conecta conmigo en diversas plataformas y descubre mi proyectos."
     },
     "AboutPage": {
-        "title": "Sobre Nosotros",
-        "description": "Conoce más sobre nuestra empresa y misión",
-        "mission": {
-            "title": "Nuestra Misión",
-            "description": "Descripción de la misión de tu empresa"
-        },
-        "team": {
-            "title": "Nuestro Equipo",
-            "description": "Conoce a las personas detrás de nuestro éxito"
-        }
-    },
-    "ContactPage": {
-        "title": "Contáctanos",
-        "description": "Ponte en contacto con nuestro equipo",
-        "form": {
-            "name": "Nombre",
-            "email": "Correo Electrónico",
-            "message": "Mensaje",
-            "submit": "Enviar Mensaje",
-            "success": "¡Tu mensaje ha sido enviado con éxito!",
-            "error": "Hubo un error al enviar tu mensaje. Por favor, inténtalo de nuevo."
-        },
-        "info": {
-            "address": "Calle Nombre 123, Ciudad, País",
-            "phone": "+1 234 567 890",
-            "email": "info@tuempresa.com"
-        }
+        "title": "Sobre mí",
+        "aboutMe": "Quién soy",
+        "aboutMeDescription": "Soy ingeniero electrónico industrial y automático y me apasiona diseñar soluciones de hardware innovadoras y la programación. He pasado los últimos años trabajando en varios proyectos que combinan mi experiencia técnica con la resolución creativa de problemas.\nMi viaje en el diseño electróncio comenzó durante mis años universitarios donde, por la falta de conocimientos empecé a aprender por mi cuenta y desarrollé una base sólida en el diseño de circuitos, programación de microcontroladores, y la integración de sistemas a partir de hacer proyectos personales. Desde entonces, he ido mostrando por mis redes sociales los proyectos que voy haciendo y los artículos que escribo.\nEstoy especializado en diseño de PCB, desarrollo de firmware embebido y electrónica de bajo consumo. Domino varias plataformas de microcontroladores como AVR, ARM y ESP32, y tengo experiencia con herramientas de diseño como Altium Designer, KiCad y Eagle.\nCuando no estoy diseñando circuitos o escribiendo firmware, me gusta compartir mis conocimientos a través de entradas de blog, contribuyendo a proyectos de código abierto, y la exploración de nuevas tecnologías que pueden empujar los límites de lo que es posible en los sistemas embebidos.",
+        "skills": "Habilidades y experiencia",
+        "educationAndExperience": "Educación y experiencia",
+        "education": "Educación",
+        "experience": "Experiencia profesional",
+        "contactMe": "Contacta conmigo",
+        "contactDescription": "No dudes en contactar conmigo si tienes alguna pregunta o proyecto en mente, o simplemente quieres charlar."
     }
 }

@@ -102,7 +102,7 @@ export default function BlogPage() {
 
   return (
     <div className="w-full py-8">
-      <div className="max-w-6xl w-full mx-auto px-4">
+      <div className="max-w-6xl w-full mx-auto">
         <h1 className="text-4xl font-bold mb-8">{t('title')}</h1>
         
         {isLoading ? (

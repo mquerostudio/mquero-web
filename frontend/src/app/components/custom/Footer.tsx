@@ -14,7 +14,7 @@ const Footer = () => {
           {/* Column 1: Location */}
           <div className="flex flex-col items-center">
             <h3 className="text-lg font-medium text-white mb-4">{t('location')}</h3>
-            <p className="text-base text-white mb-4">{t('basedInSpain')}</p>
+            <p className="text-base text-white">{t('basedInSpain')}</p>
             <div className="w-24 h-24 relative">
               <Image 
                 src="/mq-logo.svg" 

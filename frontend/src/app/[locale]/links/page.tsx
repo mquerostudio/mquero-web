@@ -99,9 +99,9 @@ export default function LinksPage() {
 
   return (
     <div className="w-full py-12">
-      <div className="max-w-4xl w-full mx-auto">
+      <div className="max-w-3xl w-full mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-6">
           <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 relative">
             <Image 
               src="/profile-picture.png" 
@@ -111,10 +111,9 @@ export default function LinksPage() {
             />
           </div>
           <h1 className="text-3xl font-bold mb-2">Manuel Quero</h1>
-          <p className="text-gray-600 mb-4">Electronics & Embedded Systems Engineer</p>
+          <p className="text-gray-600 mb-2">{t('title')}</p>
           <p className="text-gray-700 max-w-lg mx-auto">
-            Connect with me on various platforms and check out my work in electronics design, 
-            embedded firmware, and more.
+            {t('subtitle')}
           </p>
         </div>
 

@@ -6,11 +6,6 @@
             "links": "links",
             "about": "about me"
         },
-        "buttons": {
-            "readMore": "Read More",
-            "submit": "Submit",
-            "send": "Send"
-        },
         "footer": {
             "location": "Location",
             "basedInSpain": "Based in Spain",
@@ -23,28 +18,42 @@
         }
     },
     "HomePage": {
-        "title": "Hello! I'm Manuel Quero and I specialize in design embedded electronics and firmware.",
-        "subtitle": "I hold a Bachelor's Degree in Industrial Electronics and Automation Engineering, with over 2 years of experience in designing embedded hardware and developing embedded firmware.",
+        "title": "Hello! I'm Manuel Quero and I design and manufacture things",
+        "subtitle": "Self-taught and passionate about electronics, I'm always learning about PCBs, electronic components, industrial design, and programming.",
         "about": "know more about me",
         "projects": "projects",
+        "projects-see-all": "see all my projects :)",
         "blog": "articles",
-        "skills": "what do I do?"
-    },
-    "BlogPage": {
-        "title": "Blog",
-        "readNow": "read now",
-        "relatedArticles": "Related Articles",
-        "backToBlog": "Back to all articles"
+        "blog-read": "read more articles",
+        "skills": "what do I do?",
+        "skill-1-description": "Custom hardware according to the project requirements. I design schematics and PCBs, both in KiCad and Altium, and manage their manufacturing.",
+        "skill-1-title": "Hardware Design",
+        "skill-2-description": "Design mechanical parts for the manufacture of prototypes and final pieces, using Fusion or FreeCAD. Great experience using 3D printing.",
+        "skill-2-title": "Mechanical Design",
+        "skill-3-description": "Programming microcontrollers and embedded systems. Specialized in C/C++ and programming of Espressif and STM32 microcontrollers.",
+        "skill-3-title": "Programming",
+        "skill-4-title": "Project Requirements",
+        "skill-4-description": "Study of the project requirements and development of a work plan. Also advise on the selection of components and materials.",
+        "skill-5-title": "Product Prototyping",
+        "skill-5-description": "I manufacture product prototypes to validate the design and functionalities, integrating the mechanical, electronic and software parts.",
+        "skill-6-title": "Product Validation",
+        "skill-6-description": "I perform validation tests, both hardware and software, using measurement instruments such as oscilloscopes, multimeters, etc."
     },
     "ProjectsPage": {
         "title": "Projects",
-        "viewProject": "View Project",
-        "relatedArticles": "Related Articles",
-        "backToProjects": "Back to all projects"
+        "viewProject": "view project",
+        "relatedArticles": "related articles",
+        "backToProjects": "back to all projects"
+    },    
+    "BlogPage": {
+        "title": "Blog",
+        "readNow": "read now",
+        "relatedArticles": "related articles",
+        "backToBlog": "back to all articles"
     },
     "LinksPage": {
-        "title": "Links",
-        "subtitle": "Connect with me on various platforms"
+        "title": "Ingeniero electrónico y de sistemas embebidos",
+        "subtitle": "Conecta conmigo en diversas plataformas y descubre mi proyectos."
     },
     "AboutPage": {
         "title": "About Me",
