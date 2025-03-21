@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:svgjs="http://svgjs.dev/svgjs" width="120" height="49"><svg viewBox="0 0 120 49" version="1.1" id="SvgjsSvg1039" sodipodi:docname="FotoPerfil.svg" inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)" width="120" height="49" inkscape:export-filename="MQ-SVG.svg" inkscape:export-xdpi="96" inkscape:export-ydpi="96" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview id="SvgjsSodipodi:namedview1038" pagecolor="#505050" bordercolor="#eeeeee" borderopacity="1" inkscape:showpageshadow="0" inkscape:pageopacity="0" inkscape:pagecheckerboard="0" inkscape:deskcolor="#505050" inkscape:zoom="6.5247376" inkscape:cx="57.473575" inkscape:cy="33.028148" inkscape:window-width="1920" inkscape:window-height="1009" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1" inkscape:current-layer="svg3"></sodipodi:namedview>
+  <defs id="SvgjsDefs1037">
+    <style id="SvgjsStyle1036">
+      .cls-1 {
+        fill: #4a4a49;
+        stroke: #fff;
+        stroke-miterlimit: 10;
+      }
+
+      .cls-2 {
+        fill: #f8b233;
+      }
+    </style>
+  </defs>
+  <g id="SvgjsG1035" data-name="Capa 2" style="display:none">
+    <rect class="cls-1" x="0.5" y="0.5" width="2000" height="2000" id="SvgjsRect1034"></rect>
+  </g>
+  <g id="SvgjsG1033" data-name="Capa 1" style="fill:#ffaa00;fill-opacity:1" inkscape:export-filename="MQ-SVG.svg" inkscape:export-xdpi="39.355251" inkscape:export-ydpi="39.355251" transform="matrix(0.07968387,0,0,0.07968387,-23.708304,-55.222517)">
+    <g id="SvgjsG1032" style="fill:#ffaa00;fill-opacity:1">
+      <path class="cls-2" d="m 729.94,693.04 c -31.19,0 -57.4,5.98 -78.63,17.94 -21.24,11.97 -41.13,31.93 -59.68,59.88 -30.38,-51.88 -73.79,-77.82 -130.24,-77.82 -47.58,0 -86.29,15.6 -116.13,46.77 C 315.42,771 300.5,811.18 300.5,860.37 v 396.77 H 464.21 V 899.08 c 0,-29.3 8.06,-43.95 24.19,-43.95 8.6,0 14.38,2.96 17.34,8.87 2.96,5.92 4.44,17.61 4.44,35.08 v 358.06 H 673.89 V 896.25 c 0,-27.42 8.06,-41.13 24.19,-41.13 8.6,0 14.31,2.9 17.14,8.67 2.82,5.78 4.23,17.54 4.23,35.28 v 358.06 H 883.16 V 874.47 c 0,-58.6 -13.18,-103.49 -39.52,-134.68 -26.35,-31.18 -64.25,-46.77 -113.71,-46.77 z" id="SvgjsPath1031" style="fill:#ffaa00;fill-opacity:1"></path>
+      <path class="cls-2" d="m 1238,693.04 c -70.7,0 -133.74,23.39 -189.11,70.16 -66.67,56.45 -100,128.9 -100,217.34 0,66.94 19.15,125.81 57.46,176.61 38.31,50.81 89.44,85.08 153.43,102.82 v 47.98 h 155.65 v -47.98 c 64.52,-18.01 114.78,-51.48 150.81,-100.4 40.05,-54.03 60.08,-115.19 60.08,-183.47 0,-68.28 -22.58,-131.05 -67.74,-184.27 -55.92,-65.85 -129.44,-98.79 -220.56,-98.79 z m 72.18,393.55 v -61.69 h -144.76 v 61.69 c -32.26,-26.61 -48.39,-61.69 -48.39,-105.24 0,-34.14 11.96,-63.71 35.89,-88.71 23.92,-25 52.28,-37.5 85.08,-37.5 32.8,0 60.75,12.5 84.68,37.5 23.92,25 35.89,54.57 35.89,88.71 0,42.48 -16.13,77.56 -48.39,105.24 z" id="SvgjsPath1030" style="fill:#ffaa00;fill-opacity:1"></path>
+      <path class="cls-2" d="m 1772.07,1105.14 c -18.95,-19.08 -41.6,-28.63 -67.94,-28.63 -26.34,0 -48.79,9.35 -67.34,28.02 -18.55,18.69 -27.82,41.47 -27.82,68.35 0,26.88 8.94,50.48 26.81,68.35 17.87,17.87 40.65,26.81 68.35,26.81 27.7,0 49.32,-9.21 68.15,-27.62 18.81,-18.41 28.23,-40.79 28.23,-67.14 0,-26.35 -9.48,-49.06 -28.43,-68.15 z" id="SvgjsPath1029" style="fill:#ffaa00;fill-opacity:1"></path>
+    </g>
+  </g>
+</svg><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+@media (prefers-color-scheme: dark) { :root { filter: none; } }
+</style></svg>

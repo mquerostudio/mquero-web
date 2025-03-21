@@ -14,6 +14,8 @@ export interface Project {
   user_updated?: string;
   date_created?: string;
   date_updated?: string;
+  linkRepo?: string;
+  gallery?: number[];
 }
 
 export interface ProjectPostRelation {
@@ -26,6 +28,12 @@ export interface ProjectTagRelation {
   id: number;
   projects_slug: string;
   tags_id: number;
+}
+
+export interface ProjectFileRelation {
+  id: number;
+  projects_slug: string;
+  directus_files_id: string;
 }
 
 /**
@@ -44,7 +52,7 @@ export async function getProjects(options?: ItemsQuery): Promise<Project[]> {
  */
 export async function getProjectBySlug(slug: string): Promise<Project | undefined> {
   const projects = await getProjects({
-    fields: ['slug', 'title', 'body', 'summary', 'cover', 'date_created', 'projects', 'tags', 'status', 'user_created'],
+    fields: ['slug', 'title', 'body', 'summary', 'cover', 'date_created', 'projects', 'tags', 'status', 'user_created', 'linkRepo', 'gallery'],
     filter: {
       _and: [
         { slug: { _eq: slug } },
@@ -73,11 +81,29 @@ export async function getProjectTagRelations(): Promise<ProjectTagRelation[]> {
 }
 
 /**
+ * Get project-file relationships
+ * @returns Promise<ProjectFileRelation[]> Array of project-file relations
+ */
+export async function getProjectFileRelations(): Promise<ProjectFileRelation[]> {
+  return directus.request(readItems('projects_files')) as unknown as ProjectFileRelation[];
+}
+
+/**
  * Get project-post relations by project slug
  * @param projectSlug The slug of the project
  * @returns Promise<ProjectPostRelation[]> Array of relations for the given project
  */
 export async function getRelationsByProjectSlug(projectSlug: string): Promise<ProjectPostRelation[]> {
   const relations = await getProjectPostRelations();
+  return relations.filter(relation => relation.projects_slug === projectSlug);
+}
+
+/**
+ * Get project-file relations by project slug
+ * @param projectSlug The slug of the project
+ * @returns Promise<ProjectFileRelation[]> Array of gallery image relations for the given project
+ */
+export async function getGalleryImagesByProjectSlug(projectSlug: string): Promise<ProjectFileRelation[]> {
+  const relations = await getProjectFileRelations();
   return relations.filter(relation => relation.projects_slug === projectSlug);
 } 

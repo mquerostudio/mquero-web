@@ -1,4 +1,22 @@
 {
+    "Metadata": {
+        "title": "MQuero",
+        "description": "Electronics engineer and maker | founder of kode.",
+        "home-title": "Home | MQuero",
+        "projects-title": "Projects",
+        "blog-title": "Blog",
+        "links-title": "Links",
+        "about-title": "About me"
+    },
+    "Manifest": {
+        "name": "MQuero",
+        "short_name": "Manuel Quero",
+        "description": "Electronics engineer and maker | founder of kode."
+    },
+    "NotFoundPage": {
+        "title": "Page not found",
+        "subtitle": "The page you are looking for does not exist. Please check the URL or return to the home page."
+    },
     "Common": {
         "navigation": {
             "projects": "projects",
@@ -30,7 +48,7 @@
         "skill-1-title": "Hardware Design",
         "skill-2-description": "Design mechanical parts for the manufacture of prototypes and final pieces, using Fusion or FreeCAD. Great experience using 3D printing.",
         "skill-2-title": "Mechanical Design",
-        "skill-3-description": "Programming microcontrollers and embedded systems. Specialized in C/C++ and programming of Espressif and STM32 microcontrollers.",
+        "skill-3-description": "I program microcontrollers and embedded systems. Specialized in C/C++ and programming of Espressif and STM32 microcontrollers.",
         "skill-3-title": "Programming",
         "skill-4-title": "Project Requirements",
         "skill-4-description": "Study of the project requirements and development of a work plan. Also advise on the selection of components and materials.",
@@ -43,39 +61,40 @@
         "title": "Projects",
         "viewProject": "view project",
         "relatedArticles": "related articles",
-        "backToProjects": "back to all projects"
-    },    
+        "backToProjects": "back to all projects",
+        "noProjectsFound": "Projects Not Found"
+    },
     "BlogPage": {
         "title": "Blog",
         "readNow": "read now",
-        "relatedArticles": "related articles",
-        "backToBlog": "back to all articles"
+        "relatedArticles": "all articles",
+        "backToBlog": "back to all articles",
+        "noPostsFound": "Posts Not Found"
     },
     "LinksPage": {
-        "title": "Ingeniero electrónico y de sistemas embebidos",
-        "subtitle": "Conecta conmigo en diversas plataformas y descubre mi proyectos."
+        "title": "Electronics engineer and maker | founder of kode.",
+        "subtitle": "Connect with me on various platforms and discover my projects."
     },
     "AboutPage": {
-        "title": "About Me",
-        "aboutMe": "Who I Am",
-        "skills": "Skills & Expertise",
-        "educationAndExperience": "Education & Experience",
+        "title": "About me",
+        "aboutMe": "Who I am",
+        "aboutMeDescription": "I'm an industrial and automation electronics engineer and I'm passionate about designing innovative hardware solutions and programming. I've spent the last years working on various projects that combine my technical experience with creative problem-solving.\nMy journey in electronics design started during my university years where, due to a lack of practical and modern teaching, I started learning on my own. Thus, I developed a solid foundation in circuit design, microcontroller programming, and system integration through personal projects. Since then, I've been showcasing my projects and articles on my social media with an educational purpose.\nCurrently, we have created kode, a startup with which we want to revolutionize the way people learn about hardware and software.",
+        "skills": "Skills and experience",
+        "educationAndExperience": "Education and experience",
         "education": "Education",
-        "experience": "Professional Experience",
-        "contactMe": "Get In Touch",
-        "contactDescription": "Have a project in mind or want to collaborate? Feel free to reach out using the form below.",
-        "formName": "Your Name",
-        "formEmail": "Your Email",
-        "formSubject": "Subject",
-        "formSelectSubject": "Select a subject",
-        "formSubjectProject": "Project Inquiry",
-        "formSubjectCollaboration": "Collaboration Opportunity",
-        "formSubjectQuestion": "Technical Question",
-        "formSubjectOther": "Other",
-        "formMessage": "Your Message",
-        "formSubmit": "Send Message",
-        "formSubmitting": "Sending...",
-        "messageSent": "Thank you! Your message has been sent successfully. I'll get back to you as soon as possible.",
-        "messageError": "There was an error sending your message. Please try again later."
+        "education-1-title": "Industrial and Automation Electronics Engineering",
+        "education-1-university": "Polytechnic University of Valencia",
+        "education-1-date": "2020-2024",
+        "experience": "Professional experience",
+        "experience-1-title": "Engineering Design Support",
+        "experience-1-company": "Celestica",
+        "experience-1-date": "2023-2024",
+        "experience-1-description": "Internship in the design department of Celestica, performing tasks of PCB validation and electronic design.",
+        "experience-2-title": "CO-CEO and founder of kode.",
+        "experience-2-company": "kode.",
+        "experience-2-date": "2024-present",
+        "experience-2-description": "In kode we design hardware to learn, build and make reality the ideas of people. Take a look at kode.diy",
+        "contactMe": "Contact me",
+        "contactDescription": "Don't hesitate to contact me if you have any questions or project in mind, or simply want to chat."
     }
 }

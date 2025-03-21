@@ -1,4 +1,22 @@
 {
+    "Metadata": {
+        "title": "MQuero",
+        "description": "Ingeniero electrónico y maker | fundador de kode.",
+        "home-title": "Home | MQuero",
+        "projects-title": "Projectos",
+        "blog-title": "Blog",
+        "links-title": "Enlaces",
+        "about-title": "Sobre mí"
+    },
+    "Manifest": {
+        "name": "MQuero",
+        "short_name": "Manuel Quero",
+        "description": "Ingeniero electrónico y maker | fundador de kode."
+    },
+    "NotFoundPage": {
+        "title": "Página no encontrada",
+        "subtitle": "La página que estás buscando no existe. Por favor, verifica la URL o regresa a la página de inicio."
+    },
     "Common": {
         "navigation": {
             "projects": "proyectos",
@@ -30,7 +48,7 @@
         "skill-1-title": "Diseño de Hardware",
         "skill-2-description": "Diseño piezas mecánicas para la fabricación de prototipos y piezas finales, usando Fusion o FreeCAD. Gran experiencia usando impresión 3D.",
         "skill-2-title": "Diseño Mecánico",
-        "skill-3-description": "Programación de microcontroladores y sistemas embebidos. Especializado en C/C++ y programación de microcontroladores Espressif y STM32.",
+        "skill-3-description": "Programo microcontroladores y sistemas embebidos. Especializado en C/C++ y programación de microcontroladores Espressif y STM32.",
         "skill-3-title": "Programación",
         "skill-4-title": "Requerimientos de proyecto",
         "skill-4-description": "Estudio de los requerimientos del proyecto y desarrollo de un plan de trabajo. También asesoro en la elección de los componentes y materiales.",
@@ -43,26 +61,39 @@
         "title": "Proyectos",
         "viewProject": "ver proyecto",
         "relatedArticles": "artículos relacionados",
-        "backToProjects": "volver a todos los proyectos"
+        "backToProjects": "volver a todos los proyectos",
+        "noProjectsFound": "Proyectos no encontrados"
     },
     "BlogPage": {
         "title": "Blog",
         "readNow": "leer ahora",
-        "relatedArticles": "artículos relacionados",
-        "backToBlog": "volver a todos los artículos"
+        "relatedArticles": "todos los artículos",
+        "backToBlog": "volver a todos los artículos",
+        "noPostsFound": "Artículos no encontrados"
     },
     "LinksPage": {
-        "title": "Ingeniero y maker | fouder of kode.",
+        "title": "Ingeniero electrónico y maker | fundador de kode.",
         "subtitle": "Conecta conmigo en diversas plataformas y descubre mi proyectos."
     },
     "AboutPage": {
         "title": "Sobre mí",
         "aboutMe": "Quién soy",
-        "aboutMeDescription": "Soy ingeniero electrónico industrial y automático y me apasiona diseñar soluciones de hardware innovadoras y la programación. He pasado los últimos años trabajando en varios proyectos que combinan mi experiencia técnica con la resolución creativa de problemas.\nMi viaje en el diseño electróncio comenzó durante mis años universitarios donde, por la falta de conocimientos empecé a aprender por mi cuenta y desarrollé una base sólida en el diseño de circuitos, programación de microcontroladores, y la integración de sistemas a partir de hacer proyectos personales. Desde entonces, he ido mostrando por mis redes sociales los proyectos que voy haciendo y los artículos que escribo.\nEstoy especializado en diseño de PCB, desarrollo de firmware embebido y electrónica de bajo consumo. Domino varias plataformas de microcontroladores como AVR, ARM y ESP32, y tengo experiencia con herramientas de diseño como Altium Designer, KiCad y Eagle.\nCuando no estoy diseñando circuitos o escribiendo firmware, me gusta compartir mis conocimientos a través de entradas de blog, contribuyendo a proyectos de código abierto, y la exploración de nuevas tecnologías que pueden empujar los límites de lo que es posible en los sistemas embebidos.",
+        "aboutMeDescription": "Soy ingeniero electrónico industrial y automático y me apasiona diseñar soluciones de hardware innovadoras y la programación. He pasado los últimos años trabajando en varios proyectos que combinan mi experiencia técnica con la resolución creativa de problemas.\nMi viaje en el diseño electrónico comenzó durante mis años universitarios donde, por la falta de enseñanzas prácticas y modernas, empecé a aprender por mi cuenta. Así, desarrollé una base sólida en el diseño de circuitos, programación de microcontroladores y la integración de sistemas a partir de hacer proyectos personales. Desde entonces, he ido mostrando por mis redes sociales los proyectos que voy haciendo y los artículos que escribo con un fin educativo.\nActualmente, hemos creado kode, una startup con la que queremos revolucionar la forma en la que las personas aprenden sobre hardware y software.",
         "skills": "Habilidades y experiencia",
         "educationAndExperience": "Educación y experiencia",
         "education": "Educación",
+        "education-1-title": "Ingeniería Electrónica Industrial y Automática",
+        "education-1-university": "Universidad Politécnica de Valencia",
+        "education-1-date": "2020-2024",
         "experience": "Experiencia profesional",
+        "experience-1-title": "Engineering Design Support",
+        "experience-1-company": "Celestica",
+        "experience-1-date": "2023-2024",
+        "experience-1-description": "Prácticas en el departamento de diseño de Celestica, realizando tareas de validación de PCBs y diseño electrónico.",
+        "experience-2-title": "CO-CEO y fundador de kode.",
+        "experience-2-company": "kode.",
+        "experience-2-date": "2024-presente",
+        "experience-2-description": "En kode diseñamos hardware para aprender, construir y hacer realidad las ideas de la gente. Echa un vistazo en kode.diy",
         "contactMe": "Contacta conmigo",
         "contactDescription": "No dudes en contactar conmigo si tienes alguna pregunta o proyecto en mente, o simplemente quieres charlar."
     }

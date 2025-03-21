@@ -29,13 +29,13 @@ const Footer = () => {
           <div className="flex flex-col items-center">
             <h3 className="text-lg font-medium text-white mb-4">{t('pages')}</h3>
             <nav className="flex flex-col space-y-3 items-center">
-              <Link href="/" className="text-base text-white hover:text-gray-300">
+              <Link href="/projects" className="text-base text-white hover:text-gray-300">
                 {t('projects')}
               </Link>
-              <Link href="/about" className="text-base text-white hover:text-gray-300">
+              <Link href="/blog" className="text-base text-white hover:text-gray-300">
                 {t('blog')}
               </Link>
-              <Link href="/contact" className="text-base text-white hover:text-gray-300">
+              <Link href="/links" className="text-base text-white hover:text-gray-300">
                 {t('links')}
               </Link>
               <Link href="/about" className="text-base text-white hover:text-gray-300">

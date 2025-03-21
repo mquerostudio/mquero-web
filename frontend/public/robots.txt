@@ -1,0 +1,16 @@
+# robots.txt file for https://www.mquero.com
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Set crawl delay
+Crawl-delay: 10
+
+# Disallow admin or private sections if they exist
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+
+# Sitemap location
+Sitemap: https://www.mquero.com/sitemap.xml 

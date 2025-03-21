@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <!-- Home Page -->
+    <url>
+        <loc>https://www.mquero.com/en</loc>
+        <lastmod>2023-12-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.mquero.com/en" />
+        <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es" />
+    </url>
+    <url>
+        <loc>https://www.mquero.com/es</loc>
+        <lastmod>2023-12-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.mquero.com/en" />
+        <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es" />
+    </url>
+
+    <!-- About Page -->
+    <url>
+        <loc>https://www.mquero.com/en/about</loc>
+        <lastmod>2023-12-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.mquero.com/en/about" />
+        <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es/about" />
+    </url>
+    <url>
+        <loc>https://www.mquero.com/es/about</loc>
+        <lastmod>2023-12-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.mquero.com/en/about" />
+        <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es/about" />
+    </url>
+
+    <!-- Projects Page -->
+    <url>
+        <loc>https://www.mquero.com/en/projects</loc>
+        <lastmod>2023-12-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.mquero.com/en/projects" />
+        <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es/projects" />
+    </url>
+    <url>
+        <loc>https://www.mquero.com/es/projects</loc>
+        <lastmod>2023-12-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.mquero.com/en/projects" />
+        <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es/projects" />
+    </url>
+
+    <!-- Contact Page -->
+    <url>
+        <loc>https://www.mquero.com/en/contact</loc>
+        <lastmod>2023-12-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.mquero.com/en/contact" />
+        <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es/contact" />
+    </url>
+    <url>
+        <loc>https://www.mquero.com/es/contact</loc>
+        <lastmod>2023-12-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.mquero.com/en/contact" />
+        <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es/contact" />
+    </url>
+</urlset> 
