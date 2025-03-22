@@ -6,9 +6,9 @@ export interface Tag {
   name: string;
 }
 
-export interface PostTagRelation {
+export interface ArticleTagRelation {
   id: number;
-  posts_slug: string;
+  articles_id: string;
   tags_id: number;
 }
 
@@ -22,11 +22,11 @@ export async function getTags(options?: ItemsQuery): Promise<Tag[]> {
 }
 
 /**
- * Get all post-tag relationships
- * @returns Promise<PostTagRelation[]> Array of post-tag relations
+ * Get all article-tag relationships
+ * @returns Promise<ArticleTagRelation[]> Array of article-tag relations
  */
-export async function getPostTagRelations(): Promise<PostTagRelation[]> {
-  return directus.request(readItems('posts_tags')) as unknown as PostTagRelation[];
+export async function getArticleTagRelations(): Promise<ArticleTagRelation[]> {
+  return directus.request(readItems('articles_tags')) as unknown as ArticleTagRelation[];
 }
 
 /**
@@ -52,28 +52,28 @@ export async function getTagNamesByIds(tagIds: number[], allTags?: Tag[]): Promi
 }
 
 /**
- * Get all tags for a specific post
- * @param postSlug The slug of the post
+ * Get all tags for a specific article
+ * @param articleId The ID of the article
  * @param allRelations Optional pre-fetched relations
  * @param allTags Optional pre-fetched tags
- * @returns Promise<Tag[]> Array of tags for the post
+ * @returns Promise<Tag[]> Array of tags for the article
  */
-export async function getTagsByPostSlug(
-  postSlug: string, 
-  allRelations?: PostTagRelation[],
+export async function getTagsByArticleId(
+  articleId: string, 
+  allRelations?: ArticleTagRelation[],
   allTags?: Tag[]
 ): Promise<Tag[]> {
   // Fetch relations if not provided
-  const relations = allRelations || await getPostTagRelations();
+  const relations = allRelations || await getArticleTagRelations();
   
-  // Filter relations for the specific post
-  const postTagIds = relations
-    .filter(relation => relation.posts_slug === postSlug)
+  // Filter relations for the specific article
+  const articleTagIds = relations
+    .filter(relation => relation.articles_id === articleId)
     .map(relation => relation.tags_id);
   
   // Fetch all tags if not provided
   const tags = allTags || await getTags();
   
-  // Return only the tags that match the post's tag IDs
-  return tags.filter(tag => postTagIds.includes(tag.id));
+  // Return only the tags that match the article's tag IDs
+  return tags.filter(tag => articleTagIds.includes(tag.id));
 } 

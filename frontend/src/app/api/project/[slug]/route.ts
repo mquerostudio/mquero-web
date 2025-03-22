@@ -1,19 +1,24 @@
 import { getProjectBySlug } from '@/lib/projects';
 import { NextResponse } from 'next/server';
 
+interface ProjectParams {
+  slug: string;
+}
+
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: Promise<ProjectParams> }
 ) {
   try {
-    // Properly await params before accessing properties
-    const slug = (await params).slug;
+    const { slug } = await params;
+    const { searchParams } = new URL(request.url);
+    const locale = searchParams.get('locale') || 'en';
     
     if (!slug) {
       return NextResponse.json({ error: 'Slug parameter is required' }, { status: 400 });
     }
     
-    const project = await getProjectBySlug(slug);
+    const project = await getProjectBySlug(slug, locale);
     
     if (!project) {
       return NextResponse.json({ error: 'Project not found' }, { status: 404 });

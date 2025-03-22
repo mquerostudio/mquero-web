@@ -1,33 +1,64 @@
 import { directus, type ItemsQuery } from "@/lib/directus";
-import { readItems } from "@directus/sdk";
+import { readItems, readItem } from "@directus/sdk";
 
-export interface Post {
-  slug?: string;
-  title?: string;
-  body?: string;
-  summary?: string;
-  cover?: string;
-  tags?: number[]; // Now an array of tag IDs
-  tagNames?: string[]; // Added for convenience when enriched
-  status?: string;
-  user_created?: string;
-  user_updated?: string;
-  date_created?: string;
-  date_updated?: string;
+export interface Article {
+  id: string;
+  status: string;
+  user_created: string;
+  date_created: string;
+  user_updated: string | null;
+  date_updated: string | null;
+  slug: string;
+  translations: number[];
+  tags: number[];
 }
 
-export async function getPosts(options?: ItemsQuery): Promise<Post[]> {
-  return directus.request(readItems('posts', options)) as unknown as Post[];
+export interface ArticleTranslation {
+  id: number;
+  articles_id: string;
+  languages_code: string;
+  cover_image: string;
+  summary: string;
+  content: string;
+  title: string;
+}
+
+export interface ArticleWithTranslation extends Article {
+  title?: string;
+  summary?: string;
+  content?: string;
+  cover_image?: string;
+  languages_code?: string;
 }
 
 /**
- * Get a single post by slug
- * @param slug Post slug
- * @returns Promise<Post | undefined> Single post or undefined if not found
+ * Get all articles
+ * @param options Query options including fields and filters
+ * @returns Promise<Article[]> Array of articles
  */
-export async function getPostBySlug(slug: string): Promise<Post | undefined> {
-  const posts = await getPosts({
-    fields: ['slug', 'title', 'body', 'summary', 'cover', 'date_created', 'tags', 'status', 'user_created'],
+export async function getArticles(options?: ItemsQuery): Promise<Article[]> {
+  return directus.request(readItems('articles', options)) as unknown as Article[];
+}
+
+/**
+ * Get article translations
+ * @param options Query options including fields and filters
+ * @returns Promise<ArticleTranslation[]> Array of article translations
+ */
+export async function getArticleTranslations(options?: ItemsQuery): Promise<ArticleTranslation[]> {
+  return directus.request(readItems('articles_translations', options)) as unknown as ArticleTranslation[];
+}
+
+/**
+ * Get a single article by slug with the specified language translation
+ * @param slug Article slug
+ * @param languageCode Language code (e.g., 'en', 'es')
+ * @returns Promise<ArticleWithTranslation | undefined> Article with translation or undefined if not found
+ */
+export async function getArticleBySlug(slug: string, languageCode: string): Promise<ArticleWithTranslation | undefined> {
+  // Fetch the article by slug
+  const articles = await getArticles({
+    fields: ['id', 'slug', 'status', 'date_created', 'translations', 'tags'],
     filter: {
       _and: [
         { slug: { _eq: slug } },
@@ -36,44 +67,96 @@ export async function getPostBySlug(slug: string): Promise<Post | undefined> {
     }
   });
   
-  return Array.isArray(posts) && posts.length > 0 ? posts[0] : undefined;
-}
-
-/**
- * Get all unique tags from all posts
- * @returns Promise<string[]> Array of unique tags
- */
-export async function getAllTags(): Promise<string[]> {
-  const posts = await getPosts({
-    fields: ['tags', 'status']
-  });
+  if (!Array.isArray(articles) || articles.length === 0) {
+    return undefined;
+  }
   
-  // Get only published posts
-  const publishedPosts = Array.isArray(posts) 
-    ? posts.filter(post => post.status === 'published')
-    : [];
+  const article = articles[0];
   
-  // Extract all tags from posts and create a unique list
-  const allTags = new Set<string>();
-  
-  publishedPosts.forEach(post => {
-    if (post.tags) {
-      try {
-        const tags = typeof post.tags === 'string' ? JSON.parse(post.tags) : post.tags;
-        if (Array.isArray(tags)) {
-          tags.forEach(tag => allTags.add(tag));
-        }
-      } catch (e) {
-        // Skip if tags cannot be parsed
-      }
+  // Fetch the translation for the requested language
+  const translations = await getArticleTranslations({
+    filter: {
+      _and: [
+        { articles_id: { _eq: article.id } },
+        { languages_code: { _eq: languageCode } }
+      ]
     }
   });
   
-  return Array.from(allTags).sort();
+  if (!Array.isArray(translations) || translations.length === 0) {
+    // If no translation found for requested language, return article without translation data
+    return article;
+  }
+  
+  const translation = translations[0];
+  
+  // Combine article and translation data
+  return {
+    ...article,
+    title: translation.title,
+    summary: translation.summary,
+    content: translation.content,
+    cover_image: translation.cover_image,
+    languages_code: translation.languages_code
+  };
 }
 
 /**
- * Parse tag IDs from a post
+ * Get all articles with translations for a specific language
+ * @param languageCode Language code (e.g., 'en', 'es')
+ * @returns Promise<ArticleWithTranslation[]> Array of articles with translations
+ */
+export async function getArticlesWithTranslations(languageCode: string): Promise<ArticleWithTranslation[]> {
+  // Fetch all published articles
+  const articles = await getArticles({
+    fields: ['id', 'slug', 'status', 'date_created', 'translations', 'tags'],
+    filter: {
+      status: { _eq: 'published' }
+    }
+  });
+  
+  if (!Array.isArray(articles) || articles.length === 0) {
+    return [];
+  }
+  
+  // Fetch all translations for the requested language
+  const translations = await getArticleTranslations({
+    filter: {
+      languages_code: { _eq: languageCode }
+    }
+  });
+  
+  if (!Array.isArray(translations) || translations.length === 0) {
+    return articles;
+  }
+  
+  // Create a map of translations by article ID for quick lookup
+  const translationMap = new Map<string, ArticleTranslation>();
+  translations.forEach(translation => {
+    translationMap.set(translation.articles_id, translation);
+  });
+  
+  // Combine articles with their translations
+  return articles.map(article => {
+    const translation = translationMap.get(article.id);
+    
+    if (!translation) {
+      return article;
+    }
+    
+    return {
+      ...article,
+      title: translation.title,
+      summary: translation.summary,
+      content: translation.content,
+      cover_image: translation.cover_image,
+      languages_code: translation.languages_code
+    };
+  });
+}
+
+/**
+ * Parse tag IDs from an article
  * @param tags Tags as number[] or string representation of number[]
  * @returns Array of tag IDs
  */

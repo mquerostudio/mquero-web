@@ -24,7 +24,7 @@ export interface DirectusImageOptions {
 export function getDirectusImageUrl(
   assetId?: string, 
   options?: DirectusImageOptions,
-  placeholderImage: string = '/placeholder-image.jpg'
+  placeholderImage: string = '/placeholder.png'
 ): string {
   if (!assetId) return placeholderImage;
   
@@ -65,6 +65,17 @@ export const ImagePresets = {
     height: 300,
     fit: 'cover' as const,
     quality: 80,
+    format: 'webp' as const
+  },
+  
+  /**
+   * For medium sized images in cards/lists
+   */
+  medium: {
+    width: 800,
+    height: 600,
+    fit: 'cover' as const,
+    quality: 85,
     format: 'webp' as const
   },
   

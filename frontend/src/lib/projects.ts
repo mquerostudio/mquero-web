@@ -2,20 +2,36 @@ import { directus, type ItemsQuery } from "@/lib/directus";
 import { readItems } from "@directus/sdk";
 
 export interface Project {
-  slug?: string;
+  id: string;
+  status: string;
+  user_created: string;
+  date_created: string;
+  user_updated: string | null;
+  date_updated: string | null;
+  slug: string;
+  gallery: string;
+  link_repo: string;
+  tags: number[];
+  translations: number[];
+  articles: number[];
+}
+
+export interface ProjectTranslation {
+  id: number;
+  projects_id: string;
+  languages_code: string;
+  title: string;
+  summary: string;
+  content: string;
+  cover_image: string;
+}
+
+export interface ProjectWithTranslation extends Project {
   title?: string;
-  body?: string;
   summary?: string;
-  cover?: string;
-  status?: string;
-  projects?: number[];
-  tags?: number[];
-  user_created?: string;
-  user_updated?: string;
-  date_created?: string;
-  date_updated?: string;
-  linkRepo?: string;
-  gallery?: number[];
+  content?: string;
+  cover_image?: string;
+  languages_code?: string;
 }
 
 export interface ProjectPostRelation {
@@ -26,7 +42,7 @@ export interface ProjectPostRelation {
 
 export interface ProjectTagRelation {
   id: number;
-  projects_slug: string;
+  projects_id: string;
   tags_id: number;
 }
 
@@ -36,8 +52,14 @@ export interface ProjectFileRelation {
   directus_files_id: string;
 }
 
+export interface ProjectArticleRelation {
+  id: number;
+  projects_id: string;
+  articles_id: string;
+}
+
 /**
- * Get all projects with optional query parameters
+ * Get all projects
  * @param options Query options including fields and filters
  * @returns Promise<Project[]> Array of projects
  */
@@ -46,13 +68,24 @@ export async function getProjects(options?: ItemsQuery): Promise<Project[]> {
 }
 
 /**
- * Get a single project by slug
- * @param slug Project slug
- * @returns Promise<Project | undefined> Single project or undefined if not found
+ * Get project translations
+ * @param options Query options including fields and filters
+ * @returns Promise<ProjectTranslation[]> Array of project translations
  */
-export async function getProjectBySlug(slug: string): Promise<Project | undefined> {
+export async function getProjectTranslations(options?: ItemsQuery): Promise<ProjectTranslation[]> {
+  return directus.request(readItems('projects_translations', options)) as unknown as ProjectTranslation[];
+}
+
+/**
+ * Get a single project by slug with the specified language translation
+ * @param slug Project slug
+ * @param languageCode Language code (e.g., 'en', 'es')
+ * @returns Promise<ProjectWithTranslation | undefined> Project with translation or undefined if not found
+ */
+export async function getProjectBySlug(slug: string, languageCode: string): Promise<ProjectWithTranslation | undefined> {
+  // Fetch the project by slug
   const projects = await getProjects({
-    fields: ['slug', 'title', 'body', 'summary', 'cover', 'date_created', 'projects', 'tags', 'status', 'user_created', 'linkRepo', 'gallery'],
+    fields: ['id', 'slug', 'status', 'date_created', 'gallery', 'link_repo', 'translations', 'tags', 'articles'],
     filter: {
       _and: [
         { slug: { _eq: slug } },
@@ -61,7 +94,92 @@ export async function getProjectBySlug(slug: string): Promise<Project | undefine
     }
   });
   
-  return Array.isArray(projects) && projects.length > 0 ? projects[0] : undefined;
+  if (!Array.isArray(projects) || projects.length === 0) {
+    return undefined;
+  }
+  
+  const project = projects[0];
+  
+  // Fetch the translation for the requested language
+  const translations = await getProjectTranslations({
+    filter: {
+      _and: [
+        { projects_id: { _eq: project.id } },
+        { languages_code: { _eq: languageCode } }
+      ]
+    }
+  });
+  
+  if (!Array.isArray(translations) || translations.length === 0) {
+    // If no translation found for requested language, return project without translation data
+    return project;
+  }
+  
+  const translation = translations[0];
+  
+  // Combine project and translation data
+  return {
+    ...project,
+    title: translation.title,
+    summary: translation.summary,
+    content: translation.content,
+    cover_image: translation.cover_image,
+    languages_code: translation.languages_code
+  };
+}
+
+/**
+ * Get all projects with translations for a specific language
+ * @param languageCode Language code (e.g., 'en', 'es')
+ * @returns Promise<ProjectWithTranslation[]> Array of projects with translations
+ */
+export async function getProjectsWithTranslations(languageCode: string): Promise<ProjectWithTranslation[]> {
+  // Fetch all published projects
+  const projects = await getProjects({
+    fields: ['id', 'slug', 'status', 'date_created', 'gallery', 'link_repo', 'translations', 'tags', 'articles'],
+    filter: {
+      status: { _eq: 'published' }
+    }
+  });
+  
+  if (!Array.isArray(projects) || projects.length === 0) {
+    return [];
+  }
+  
+  // Fetch all translations for the requested language
+  const translations = await getProjectTranslations({
+    filter: {
+      languages_code: { _eq: languageCode }
+    }
+  });
+  
+  if (!Array.isArray(translations) || translations.length === 0) {
+    return projects;
+  }
+  
+  // Create a map of translations by project ID for quick lookup
+  const translationMap = new Map<string, ProjectTranslation>();
+  translations.forEach(translation => {
+    translationMap.set(translation.projects_id, translation);
+  });
+  
+  // Combine projects with their translations
+  return projects.map(project => {
+    const translation = translationMap.get(project.id);
+    
+    if (!translation) {
+      return project;
+    }
+    
+    return {
+      ...project,
+      title: translation.title,
+      summary: translation.summary,
+      content: translation.content,
+      cover_image: translation.cover_image,
+      languages_code: translation.languages_code
+    };
+  });
 }
 
 /**
@@ -106,4 +224,12 @@ export async function getRelationsByProjectSlug(projectSlug: string): Promise<Pr
 export async function getGalleryImagesByProjectSlug(projectSlug: string): Promise<ProjectFileRelation[]> {
   const relations = await getProjectFileRelations();
   return relations.filter(relation => relation.projects_slug === projectSlug);
+}
+
+/**
+ * Get project-article relationships
+ * @returns Promise<ProjectArticleRelation[]> Array of project-article relations
+ */
+export async function getProjectArticleRelations(): Promise<ProjectArticleRelation[]> {
+  return directus.request(readItems('projects_articles')) as unknown as ProjectArticleRelation[];
 } 

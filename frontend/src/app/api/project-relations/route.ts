@@ -1,39 +1,37 @@
-import { getProjectPostRelations } from '@/lib/projects';
-import { getPosts } from '@/lib/posts';
+import { getProjectArticleRelations } from '@/lib/projects';
+import { getArticlesWithTranslations } from '@/lib/posts';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const projectSlug = searchParams.get('project');
+    const projectId = searchParams.get('project');
+    const locale = searchParams.get('locale') || 'en';
     
-    // Get all project-post relations
-    const relations = await getProjectPostRelations();
+    // Get all project-article relations
+    const relations = await getProjectArticleRelations();
     
-    // If a project slug is provided, filter by that project
-    const filteredRelations = projectSlug
-      ? relations.filter(relation => relation.projects_slug === projectSlug)
+    // If a project ID is provided, filter by that project
+    const filteredRelations = projectId
+      ? relations.filter(relation => relation.projects_id === projectId)
       : relations;
     
-    // If we need to return related posts, fetch them
-    if (projectSlug) {
-      // Get post slugs from relations
-      const postSlugs = filteredRelations.map(relation => relation.posts_slug);
+    // If we need to return related articles, fetch them
+    if (projectId) {
+      // Get article IDs from relations
+      const articleIds = filteredRelations.map(relation => relation.articles_id);
       
-      // Fetch those posts
-      const posts = await getPosts({
-        fields: ['slug', 'title', 'summary', 'cover', 'date_created', 'tags', 'status'],
-        filter: {
-          _and: [
-            { slug: { _in: postSlugs } },
-            { status: { _eq: 'published' } }
-          ]
-        }
-      });
+      // Fetch those articles with translations
+      const articles = await getArticlesWithTranslations(locale);
+      
+      // Filter to only include related articles
+      const relatedArticles = articles.filter(article => 
+        articleIds.includes(article.id)
+      );
       
       return NextResponse.json({ 
         relations: filteredRelations,
-        relatedPosts: posts
+        relatedArticles
       });
     }
     

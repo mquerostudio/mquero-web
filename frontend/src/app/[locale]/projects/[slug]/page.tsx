@@ -22,10 +22,10 @@ export async function generateMetadata({ params }: { params: Promise<Props['para
   
   // Fetch the project data to get the title
   try {
-    const project = await getProjectBySlug(slug);
+    const project = await getProjectBySlug(slug, locale);
     
     if (project?.title) {
-            return {
+      return {
         title: `${project.title}`,
       };
     }
@@ -41,7 +41,10 @@ export async function generateMetadata({ params }: { params: Promise<Props['para
 
 export default async function ProjectDetailPage({ params }: { params: Promise<Props['params']> }) {
   // Await the params object before accessing properties
-  const { slug } = await params;
+  const { slug, locale } = await params;
+  
+  // Set the locale for this request to enable static rendering
+  setRequestLocale(locale);
   
   // Pass the slug to the client component
   return <ProjectDetailClient slug={slug} />;

@@ -1,42 +1,46 @@
-import { getPostBySlug } from '@/lib/posts';
-import { getTags, getTagNamesByIds, getTagsByPostSlug } from '@/lib/tags';
+import { getArticleBySlug } from '@/lib/posts';
+import { getTags, getTagNamesByIds, getTagsByArticleId } from '@/lib/tags';
 import { NextResponse } from 'next/server';
+
+interface PostParams {
+  slug: string;
+}
 
 export async function GET(
   request: Request,
-  { params }: { params: Promise<{ slug: string }> }
+  { params }: { params: Promise<PostParams> }
 ) {
   try {
-    // Properly await params before accessing properties
-    const slug = (await params).slug;
+    const { slug } = await params;
+    const { searchParams } = new URL(request.url);
+    const locale = searchParams.get('locale') || 'en';
     
     if (!slug) {
       return NextResponse.json({ error: 'Slug parameter is required' }, { status: 400 });
     }
     
-    const post = await getPostBySlug(slug);
+    const article = await getArticleBySlug(slug, locale);
     
-    if (!post) {
-      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+    if (!article) {
+      return NextResponse.json({ error: 'Article not found' }, { status: 404 });
     }
     
-    // Fetch tag information if the post has tags
-    if (post.tags && Array.isArray(post.tags) && post.tags.length > 0) {
-      const tags = await getTags();
-      const tagNames = await getTagNamesByIds(post.tags, tags);
+    // Fetch tag information if the article has tags
+    if (article.tags && Array.isArray(article.tags) && article.tags.length > 0) {
+      const tags = await getTagsByArticleId(article.id);
       
-      // Add tag names to the post
+      // Add tag names to the article
       return NextResponse.json({ 
-        post: {
-          ...post,
-          tagNames
+        article: {
+          ...article,
+          tagNames: tags.map(tag => tag.name)
         } 
       });
     }
     
-    return NextResponse.json({ post });
+    return NextResponse.json({ article });
   } catch (error) {
-    console.error('Error fetching post:', error);
-    return NextResponse.json({ error: 'Failed to fetch post' }, { status: 500 });
+    console.error('Error fetching article:', error);
+    return NextResponse.json({ error: 'Failed to fetch article' }, { status: 500 });
   }
 } 

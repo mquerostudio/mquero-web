@@ -22,13 +22,13 @@ const Card = ({
   const { resolvedTheme } = useTheme();
 
   const CardContent = () => (
-    <div className={`${resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg overflow-hidden shadow-md ${resolvedTheme === 'dark' ? 'shadow-gray-900/30' : ''} h-full flex flex-col group transition-all duration-300`}>
+    <div className={`${resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg overflow-hidden shadow-md ${resolvedTheme === 'dark' ? 'shadow-gray-900/30' : ''} h-full flex flex-col group transition-all duration-500 hover:shadow-lg`}>
       <div className="h-64 relative overflow-hidden">
         <Image
           src={imageSrc}
           alt={imageAlt}
           fill
-          className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+          className="object-cover transition-transform duration-500 ease-in-out group-hover:scale-110 will-change-transform"
         />
       </div>
       <div className="p-6 flex-grow">

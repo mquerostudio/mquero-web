@@ -1,4 +1,4 @@
-import { getTags, getPostTagRelations } from '@/lib/tags';
+import { getTags, getArticleTagRelations } from '@/lib/tags';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
@@ -7,7 +7,7 @@ export async function GET(request: Request) {
     const action = searchParams.get('action');
     
     if (action === 'get-relations') {
-      const relations = await getPostTagRelations();
+      const relations = await getArticleTagRelations();
       return NextResponse.json({ relations });
     }
     

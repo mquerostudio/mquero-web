@@ -16,7 +16,7 @@ export default function HomePageClient() {
   const { resolvedTheme } = useTheme();
 
   const [projects, setProjects] = useState<any[]>([]);
-  const [blogPosts, setBlogPosts] = useState<any[]>([]);
+  const [articles, setArticles] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,12 +32,12 @@ export default function HomePageClient() {
         }
         const projectsData = await projectsResponse.json();
         
-        // Fetch blog posts
-        const postsResponse = await fetch('/api/posts');
-        if (!postsResponse.ok) {
-          throw new Error('Failed to fetch posts');
+        // Fetch articles
+        const articlesResponse = await fetch('/api/articles');
+        if (!articlesResponse.ok) {
+          throw new Error('Failed to fetch articles');
         }
-        const postsData = await postsResponse.json();
+        const articlesData = await articlesResponse.json();
         
         // Process and set projects (limit to 2 most recent)
         const processedProjects = projectsData.projects
@@ -46,30 +46,30 @@ export default function HomePageClient() {
             id: project.slug,
             title: project.title || '',
             description: project.summary || '',
-            imageSrc: getDirectusImageUrl(project.cover, ImagePresets.thumbnail),
+            imageSrc: project.cover_image ? getDirectusImageUrl(project.cover_image, ImagePresets.thumbnail) : '',
             link: `/projects/${project.slug}`
           }));
 
-        // Process and set blog posts (limit to 3 most recent)
-        const processedPosts = postsData.posts
+        // Process and set articles (limit to 3 most recent)
+        const processedArticles = articlesData.articles
           .slice(0, 3)
-          .map((post: any) => {
+          .map((article: any) => {
             // Strip HTML for description
-            const description = post.body 
-              ? stripHtml(post.body).substring(0, 120) + '...'
-              : post.summary || '';
+            const description = article.content 
+              ? stripHtml(article.content).substring(0, 120) + '...'
+              : article.summary || '';
               
             return {
-              id: post.slug,
-              title: post.title || '',
+              id: article.slug,
+              title: article.title || '',
               description,
-              imageSrc: getDirectusImageUrl(post.cover, ImagePresets.thumbnail),
-              link: `/blog/${post.slug}`
+              imageSrc: article.cover_image ? getDirectusImageUrl(article.cover_image, ImagePresets.thumbnail) : '',
+              link: `/blog/${article.slug}`
             };
           });
         
         setProjects(processedProjects);
-        setBlogPosts(processedPosts);
+        setArticles(processedArticles);
       } catch (err) {
         console.error('Error fetching data for homepage:', err);
         setError('Failed to load data');
@@ -289,8 +289,8 @@ export default function HomePageClient() {
           ) : (
             <>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {blogPosts.length > 0 ? (
-                  blogPosts.map(article => (
+                {articles.length > 0 ? (
+                  articles.map(article => (
               <Card
                 key={article.id}
                 title={article.title}

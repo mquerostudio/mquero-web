@@ -1,34 +1,34 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
-import BlogPostCard from '../../../components/custom/BlogPostCard';
+import BlogPostCard from '@/app/components/custom/BlogPostCard';
 import { useEffect, useState } from 'react';
-import { parseTagIds } from '@/lib/posts';
-import { formatDate } from '@/utils/formatDate';
 import { getDirectusImageUrl, ImagePresets } from '@/utils/imageUtils';
-import { Tag } from '@/lib/tags';
+import { formatDate } from '@/utils/formatDate';
 import { useTheme } from '@/app/components/ThemeProvider';
 
-interface Post {
-  slug?: string;
+interface Article {
+  id: string;
+  slug: string;
   title?: string;
-  body?: string;
-  cover?: string;
-  tags?: number[];  // Now an array of tag IDs
-  tagNames?: string[]; // For convenience when enriched by the API
+  content?: string; // This replaces body in the old model
+  summary?: string; // This replaces description in the old model
+  cover_image?: string; // This replaces cover in the old model
+  tags?: number[];
+  tagNames?: string[];
   date_created?: string;
   user_created?: string;
 }
 
-interface RelatedPost {
-  id: number;
+interface RelatedArticle {
+  id: string;
   title: string;
-  description: string;
-  categoryLabels: string[];
-  imageSrc: string;
-  link: string;
+  excerpt: string;
+  tags: string[];
+  coverImage: string;
+  slug: string;
   date?: string;
 }
 
@@ -38,10 +38,10 @@ interface BlogArticleClientProps {
 
 export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
   const t = useTranslations('BlogPage');
+  const locale = useLocale();
   const { resolvedTheme } = useTheme();
   
-  const [post, setPost] = useState<Post | null>(null);
-  const [tags, setTags] = useState<string[]>([]);
+  const [article, setArticle] = useState<Article | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   
@@ -53,88 +53,59 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
   };
   
   // Related articles
-  const [relatedArticles, setRelatedArticles] = useState<RelatedPost[]>([]);
+  const [relatedArticles, setRelatedArticles] = useState<RelatedArticle[]>([]);
 
   useEffect(() => {
-    const fetchPost = async () => {
+    const fetchArticle = async () => {
       try {
         setIsLoading(true);
         
-        // Fetch all tags first
-        const tagsResponse = await fetch('/api/tags');
-        if (!tagsResponse.ok) {
-          throw new Error('Failed to fetch tags');
-        }
-        const tagsData = await tagsResponse.json();
-        
-        // Create a map of tags by ID for quick lookup
-        const tagsMap = new Map<number, Tag>();
-        tagsData.tags.forEach((tag: Tag) => {
-          tagsMap.set(tag.id, tag);
-        });
-        
-        // Fetch the post
-        const response = await fetch(`/api/post/${slug}`);
+        // Fetch the article with the current locale
+        const response = await fetch(`/api/post/${slug}?locale=${locale}`);
         if (!response.ok) {
-          throw new Error('Failed to fetch post');
+          throw new Error('Failed to fetch article');
         }
         
         const data = await response.json();
-        setPost(data.post);
+        setArticle(data.article);
         
-        // Get tag names from post's tag IDs
-        if (data.post && data.post.tags) {
-          const tagIds = parseTagIds(data.post.tags);
-          const tagNames = tagIds.map(id => {
-            const tag = tagsMap.get(id);
-            return tag ? tag.name : '';
-          }).filter(Boolean);
+        // Fetch related articles
+        const articlesResponse = await fetch(`/api/articles?locale=${locale}`);
+        if (articlesResponse.ok) {
+          const articlesData = await articlesResponse.json();
           
-          setTags(tagNames);
-        }
-        
-        // Fetch related posts
-        const postsResponse = await fetch('/api/posts');
-        if (postsResponse.ok) {
-          const postsData = await postsResponse.json();
-          
-          // Filter out current post and limit to 3 posts
-          const filteredPosts = postsData.posts
-            .filter((p: Post) => p.slug !== slug)
+          // Filter out current article and limit to 3 articles
+          const related = articlesData.articles
+            .filter((relatedArticle: Article) => relatedArticle.slug !== slug)
             .slice(0, 3)
-            .map((p: Post) => {
-              // Get category labels either from enriched tagNames or convert from tag IDs
-              const categoryLabels = p.tagNames || 
-                (p.tags ? parseTagIds(p.tags).map(id => {
-                  const tag = tagsMap.get(id);
-                  return tag ? tag.name.toUpperCase() : '';
-                }).filter(Boolean) : []);
-              
-              return {
-                id: p.slug || '',
-                title: p.title || '',
-                description: p.body ? stripHtml(p.body).substring(0, 150) + '...' : '',
-                categoryLabels,
-                imageSrc: getDirectusImageUrl(p.cover, ImagePresets.thumbnail),
-                link: `/blog/${p.slug}`,
-                date: p.date_created ? formatDate(p.date_created) : undefined
-              };
-            });
+            .map((article: Article) => ({
+              id: article.slug || '',
+              title: article.title || '',
+              excerpt: article.summary || (article.content ? stripHtml(article.content).substring(0, 150) + '...' : ''),
+              tags: article.tagNames || [],
+              coverImage: article.cover_image ? getDirectusImageUrl(article.cover_image, ImagePresets.thumbnail) : '',
+              slug: article.slug || '',
+              date: article.date_created ? formatDate(article.date_created) : undefined
+            }));
             
-          setRelatedArticles(filteredPosts);
+          setRelatedArticles(related);
         }
+        
+        setError(null);
       } catch (err) {
-        console.error('Error fetching post data:', err);
-        setError('Failed to load post');
+        console.error('Error fetching article:', err);
+        setError('Failed to load article');
       } finally {
         setIsLoading(false);
       }
     };
     
-    fetchPost();
-  }, [slug]);
+    if (slug) {
+      fetchArticle();
+    }
+  }, [slug, locale]);
   
-  // Helper function to strip HTML tags that works safely in both client and server environments
+  // Helper function to strip HTML tags
   const stripHtml = (html: string) => {
     if (typeof window === 'undefined') {
       // Server-side or during SSR
@@ -149,28 +120,111 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
   
   if (isLoading) {
   return (
-      <div className="w-full py-6">
+      <div className="w-full pb-6">
         <div className="max-w-4xl w-full mx-auto px-4">
           <div className="animate-pulse">
-            <div className={`h-8 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-3/4 mb-4`}></div>
-            <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-1/4 mb-8`}></div>
-            <div className={`h-64 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded-lg mb-8`}></div>
-            <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full mb-2`}></div>
-            <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full mb-2`}></div>
-            <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-5/6 mb-8`}></div>
+            {/* Featured Image */}
+            <div className={`w-full h-64 md:h-96 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded-b-lg mb-8`}></div>
+            
+            {/* Article Title */}
+            <div className="text-center">
+              <div className={`h-10 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-3/4 mx-auto mb-6`}></div>
+              
+              {/* Article Summary */}
+              <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-2/3 mx-auto mb-2`}></div>
+              <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-1/2 mx-auto mb-6`}></div>
+              
+              {/* Author and Date */}
+              <div className="flex justify-center items-center gap-4 mb-6">
+                <div className="flex items-center gap-2">
+                  <div className={`w-8 h-8 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded-full`}></div>
+                  <div>
+                    <div className={`h-3 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-20 mb-1`}></div>
+                    <div className={`h-2 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-16`}></div>
+                  </div>
+                </div>
+                <div className={`h-3 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-16`}></div>
+                <div className={`h-3 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-16`}></div>
+              </div>
+              
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2 justify-center mb-10">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className={`h-6 w-16 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded`}></div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Article Content */}
+            <div className="space-y-4 mb-12 text-left">
+              <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full`}></div>
+              <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full`}></div>
+              <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-5/6`}></div>
+              <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full`}></div>
+              <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full`}></div>
+              <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-4/5`}></div>
+              <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full`}></div>
+              <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full`}></div>
+            </div>
+            
+            {/* Author Bio */}
+            <div className={`${resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'} p-6 rounded-lg mb-12`}>
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div className="flex items-center gap-4">
+                  <div className={`w-16 h-16 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'} rounded-full`}></div>
+                  <div>
+                    <div className={`h-6 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-24 mb-2`}></div>
+                    <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-32`}></div>
+                  </div>
+                </div>
+                <div className="flex space-x-4 mt-4 md:mt-0">
+                  {[1, 2, 3, 4, 5, 6].map((i) => (
+                    <div key={i} className={`w-10 h-10 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded-full`}></div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            
+            {/* Related Articles */}
+            <div className="mb-12">
+              <div className="text-left mb-6">
+                <div className={`h-8 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-1/4`}></div>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className={`${resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-gray-50'} rounded-lg overflow-hidden`}>
+                    <div className={`h-48 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
+                    <div className="p-4">
+                      <div className={`h-6 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-3/4 mb-2`}></div>
+                      <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full mb-4`}></div>
+                      <div className="flex gap-1 mb-2">
+                        {[1, 2].map((j) => (
+                          <div key={j} className={`h-6 w-16 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded`}></div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            
+            {/* Back to Blog Button */}
+            <div className="flex justify-center">
+              <div className={`h-10 w-32 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded-full`}></div>
+            </div>
           </div>
               </div>
             </div>
     );
   }
   
-  if (error || !post) {
+  if (error || !article) {
     return (
       <div className="w-full py-6">
         <div className="max-w-4xl w-full mx-auto px-4">
           <div className="text-center py-12">
             <h1 className={`text-2xl font-bold mb-4 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
-              {error || 'Post not found'}
+              {error || t('articleNotFound')}
             </h1>
             <Link 
               href="/blog" 
@@ -185,20 +239,20 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
   }
   
   // Format the date
-  const publishDate = post.date_created ? formatDate(post.date_created) : '';
+  const publishDate = article.date_created ? formatDate(article.date_created) : '';
   
   // Read time estimation (roughly 200 words per minute)
-  const wordCount = stripHtml(post.body || '').split(/\s+/).length;
+  const wordCount = stripHtml(article.content || '').split(/\s+/).length;
   const readTime = `${Math.max(1, Math.round(wordCount / 200))} min read`;
 
   return (
     <div className="w-full pb-6">
-      <div className="max-w-4xl w-full mx-auto px-4 text-center">
+      <div className="max-w-4xl w-full mx-auto text-center">
         {/* Featured Image - Now at the top */}
         <div className="w-full h-64 md:h-96 relative mb-8 rounded-b-lg overflow-hidden">
           <Image
-            src={getDirectusImageUrl(post.cover, ImagePresets.featured)}
-            alt={post.title || ''}
+            src={article.cover_image ? getDirectusImageUrl(article.cover_image, ImagePresets.featured) : ''}
+            alt={article.title || ''}
             fill
             sizes="(max-width: 768px) 100vw, 800px"
             className={`object-cover ${resolvedTheme === 'dark' ? 'brightness-90' : ''}`}
@@ -207,11 +261,11 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
         </div>
 
         {/* Article Title */}
-        <h1 className={`text-3xl md:text-4xl font-bold mb-6 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{post.title}</h1>
+        <h1 className={`text-3xl md:text-4xl font-bold mb-6 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{article.title}</h1>
         
         {/* Article Summary/Excerpt */}
         <p className={`mb-6 max-w-2xl mx-auto ${resolvedTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
-          {stripHtml(post.body || '').substring(0, 200)}...
+          {article.summary || (article.content ? stripHtml(article.content).substring(0, 200) + '...' : '')}
         </p>
         
         {/* Author, Date and Read Time in a Row */}
@@ -239,7 +293,7 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
         
         {/* Tags at the Bottom */}
         <div className="flex flex-wrap gap-2 justify-center mb-10">
-          {tags.map((tag, index) => (
+          {article.tagNames && article.tagNames.map((tag, index) => (
             <span 
               key={index} 
               className={`text-xs font-semibold px-2 py-1 rounded ${
@@ -256,7 +310,7 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
         {/* Article Content - Back to left alignment for readability */}
         <div 
           className={`prose prose-lg max-w-none mb-12 text-left ${resolvedTheme === 'dark' ? 'prose-invert' : ''}`}
-          dangerouslySetInnerHTML={{ __html: post.body || '' }}
+          dangerouslySetInnerHTML={{ __html: article.content || '' }}
         />
 
         {/* Author Bio */}
@@ -374,15 +428,15 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
         <div className="mb-8 text-left">
           <h2 className={`text-2xl font-bold mb-6 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{t('relatedArticles')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {relatedArticles.map(post => (
+              {relatedArticles.map(article => (
               <BlogPostCard
-                key={post.id}
-                title={post.title}
-                description={post.description}
-                categoryLabels={post.categoryLabels}
-                imageSrc={post.imageSrc}
-                link={post.link}
-                date={post.date}
+                  key={article.id}
+                  title={article.title}
+                  excerpt={article.excerpt}
+                  tags={article.tags}
+                  coverImage={article.coverImage}
+                  slug={article.slug}
+                  date={article.date}
               />
             ))}
           </div>

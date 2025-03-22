@@ -49,7 +49,7 @@ const Header = () => {
                 pathname === '/projects' 
                   ? 'text-[#ffaa00ff] ' + (resolvedTheme === 'dark' ? 'bg-amber-900/20' : 'bg-amber-50')
                   : (resolvedTheme === 'dark' ? 'text-gray-300 hover:bg-amber-900/20' : 'text-gray-700 hover:bg-amber-50') + ' hover:text-[#ffaa00ff]'
-              } transition-colors duration-200`}
+              } transition-colors duration-300`}
             >
               {t('projects')}
             </Link>
@@ -59,7 +59,7 @@ const Header = () => {
                 pathname === '/blog' 
                   ? 'text-[#ffaa00ff] ' + (resolvedTheme === 'dark' ? 'bg-amber-900/20' : 'bg-amber-50')
                   : (resolvedTheme === 'dark' ? 'text-gray-300 hover:bg-amber-900/20' : 'text-gray-700 hover:bg-amber-50') + ' hover:text-[#ffaa00ff]'
-              } transition-colors duration-200`}
+              } transition-colors duration-300`}
             >
               {t('blog')}
             </Link>
@@ -69,7 +69,7 @@ const Header = () => {
                 pathname === '/links' 
                   ? 'text-[#ffaa00ff] ' + (resolvedTheme === 'dark' ? 'bg-amber-900/20' : 'bg-amber-50')
                   : (resolvedTheme === 'dark' ? 'text-gray-300 hover:bg-amber-900/20' : 'text-gray-700 hover:bg-amber-50') + ' hover:text-[#ffaa00ff]'
-              } transition-colors duration-200`}
+              } transition-colors duration-300`}
             >
               {t('links')}
             </Link>
@@ -79,7 +79,7 @@ const Header = () => {
                 pathname === '/about' 
                   ? 'text-[#ffaa00ff] ' + (resolvedTheme === 'dark' ? 'bg-amber-900/20' : 'bg-amber-50')
                   : (resolvedTheme === 'dark' ? 'text-gray-300 hover:bg-amber-900/20' : 'text-gray-700 hover:bg-amber-50') + ' hover:text-[#ffaa00ff]'
-              } transition-colors duration-200`}
+              } transition-colors duration-300`}
             >
               {t('about')}
             </Link>

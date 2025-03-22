@@ -37,7 +37,7 @@
     },
     "HomePage": {
         "title": "Hello! I'm Manuel Quero and I design and manufacture things",
-        "subtitle": "Self-taught and passionate about electronics, I'm always learning about PCBs, electronic components, industrial design, and programming.",
+        "subtitle": "Self-taught and passionate about electronics, I'm always learning about PCBs, electronic components, industrial design and programming.",
         "about": "know more about me",
         "projects": "projects",
         "projects-see-all": "see all my projects :)",
@@ -63,14 +63,18 @@
         "relatedArticles": "related articles",
         "backToProjects": "back to all projects",
         "noProjectsFound": "Projects Not Found",
-        "projectNotFound": "Project Not Found"
+        "projectNotFound": "Project Not Found",
+        "date": "Date",
+        "gallery": "Gallery",
+        "repository": "Repository"
     },
     "BlogPage": {
         "title": "Blog",
         "readNow": "read now",
         "relatedArticles": "all articles",
         "backToBlog": "back to all articles",
-        "noPostsFound": "Posts Not Found"
+        "noPostsFound": "Posts Not Found",
+        "articleNotFound": "Article Not Found"
     },
     "LinksPage": {
         "title": "Electronics engineer and maker | founder of kode.",

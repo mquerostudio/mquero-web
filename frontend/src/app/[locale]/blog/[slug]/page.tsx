@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { getPostBySlug } from '@/lib/posts';
+import { getArticleBySlug } from '@/lib/posts';
 import BlogArticleClient from './BlogArticleClient';
 
 interface Props {
@@ -20,28 +20,31 @@ export async function generateMetadata({ params }: { params: Promise<Props['para
   // Get translations
   const t = await getTranslations('BlogPage');
   
-  // Fetch the post data to get the title
+  // Fetch the article data to get the title
   try {
-    const post = await getPostBySlug(slug);
+    const article = await getArticleBySlug(slug, locale);
     
-    if (post?.title) {
-              return {
-        title: `${post.title}`,
+    if (article?.title) {
+      return {
+        title: `${article.title}`,
       };
     }
   } catch (error) {
-    console.error(`Error fetching blog post for metadata: ${slug}`, error);
+    console.error(`Error fetching blog article for metadata: ${slug}`, error);
   }
   
-  // Fallback title if post not found
+  // Fallback title if article not found
   return {
-    title: `${t('postNotFound')} | MQuero`,
+    title: `${t('articleNotFound')} | MQuero`,
   };
 }
 
 export default async function BlogArticlePage({ params }: { params: Promise<Props['params']> }) {
   // Await the params object before accessing properties
-  const { slug } = await params;
+  const { slug, locale } = await params;
+  
+  // Set the locale for this request to enable static rendering
+  setRequestLocale(locale);
   
   // Pass the slug to the client component
   return <BlogArticleClient slug={slug} />;

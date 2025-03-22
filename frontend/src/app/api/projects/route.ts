@@ -1,32 +1,38 @@
-import { getProjects, getProjectPostRelations } from '@/lib/projects';
+import { getProjectsWithTranslations } from '@/lib/projects';
+import { getTags, getTagNamesByIds } from '@/lib/tags';
 import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const action = searchParams.get('action');
+    const locale = searchParams.get('locale') || 'en';
     
-    if (action === 'get-relations') {
-      const relations = await getProjectPostRelations();
-      return NextResponse.json({ relations });
-    }
-    
-    // Default: get projects
-    const projects = await getProjects({
-      fields: ['slug', 'title', 'body', 'summary', 'cover', 'date_created', 'projects', 'tags', 'status']
-    });
-
-    // Filter published projects
-    const publishedProjects = Array.isArray(projects) 
-      ? projects.filter(project => project.status === 'published')
-      : [];
+    // Fetch projects with translations for the current locale
+    const projects = await getProjectsWithTranslations(locale);
 
     // Sort projects by date (newest first)
-    const sortedProjects = [...publishedProjects].sort((a, b) => {
+    const sortedProjects = [...projects].sort((a, b) => {
       return new Date(b.date_created || '').getTime() - new Date(a.date_created || '').getTime();
     });
     
-    return NextResponse.json({ projects: sortedProjects });
+    // Fetch all tags for enriching the response with tag names
+    const allTags = await getTags();
+    
+    // Enrich projects with tag names
+    const enrichedProjects = await Promise.all(sortedProjects.map(async (project) => {
+      // Get tag IDs for this project
+      const tagIds = project.tags || [];
+      
+      // Convert tag IDs to tag names
+      const tagNames = await getTagNamesByIds(tagIds, allTags);
+      
+      return {
+        ...project,
+        tagNames
+      };
+    }));
+    
+    return NextResponse.json({ projects: enrichedProjects });
   } catch (error) {
     console.error('Error fetching projects:', error);
     return NextResponse.json({ error: 'Failed to fetch projects' }, { status: 500 });

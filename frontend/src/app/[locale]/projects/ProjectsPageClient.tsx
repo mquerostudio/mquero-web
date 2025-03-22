@@ -1,41 +1,39 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import Image from 'next/image';
 import BlogPostCard from '../../components/custom/BlogPostCard';
 import { getDirectusImageUrl, ImagePresets } from '@/utils/imageUtils';
 import { formatDate } from '@/utils/formatDate';
-import { Post, parseTagIds } from '@/lib/posts';
 import { Tag, getTags } from '@/lib/tags';
 import { useTheme } from '@/app/components/ThemeProvider';
 
 interface Project {
-  slug?: string;
+  id: string;
+  slug: string;
   title?: string;
   summary?: string;
-  body?: string;
-  cover?: string;
-  projects?: number[];
-  tags?: number[];
-  status?: string;
-  date_created?: string;
+  content?: string;
+  cover_image?: string;
+  date_created: string;
+  link_repo?: string;
+  tagNames?: string[];
 }
 
 interface RelatedArticle {
-  id: number;
-  title: string;
-  description: string;
-  imageSrc: string;
-  link: string;
-  categoryLabels: string[];
-  date?: string;
+  id: string;
+  slug: string;
+  title?: string;
+  summary?: string;
+  cover_image?: string;
+  date_created: string;
+  tagNames?: string[];
 }
 
 interface ProjectWithRelatedArticles extends Project {
   relatedArticles: RelatedArticle[];
-  tagNames?: string[];
 }
 
 interface ProjectPostRelation {
@@ -52,6 +50,7 @@ interface ProjectTagRelation {
 
 export default function ProjectsPageClient() {
   const t = useTranslations('ProjectsPage');
+  const locale = useLocale();
   const [projects, setProjects] = useState<ProjectWithRelatedArticles[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -62,114 +61,29 @@ export default function ProjectsPageClient() {
       try {
         setLoading(true);
         
-        // Fetch projects
-        const projectsResponse = await fetch('/api/projects');
+        // Fetch projects with the current locale
+        const projectsResponse = await fetch(`/api/projects?locale=${locale}`);
         if (!projectsResponse.ok) {
           throw new Error('Failed to fetch projects');
         }
         const projectsData = await projectsResponse.json();
         
-        // Fetch all project-post relations
-        const relationsResponse = await fetch('/api/project-relations');
-        if (!relationsResponse.ok) {
-          throw new Error('Failed to fetch project relations');
-        }
-        const relationsData = await relationsResponse.json();
-        
-        // Fetch all project-tag relations
-        const projectTagsResponse = await fetch('/api/project-tags');
-        if (!projectTagsResponse.ok) {
-          throw new Error('Failed to fetch project-tag relations');
-        }
-        const projectTagsData = await projectTagsResponse.json();
-        
-        // Fetch all tags
-        const tagsResponse = await fetch('/api/tags');
-        if (!tagsResponse.ok) {
-          throw new Error('Failed to fetch tags');
-        }
-        const tagsData = await tagsResponse.json();
-        
-        // Create a map of tags by ID for quick lookup
-        const tagsMap = new Map<number, Tag>();
-        tagsData.tags.forEach((tag: Tag) => {
-          tagsMap.set(tag.id, tag);
-        });
-        
-        // Create a map of project tags for quick lookup
-        const projectTagsMap = new Map<string, number[]>();
-        projectTagsData.relations.forEach((relation: ProjectTagRelation) => {
-          if (!projectTagsMap.has(relation.projects_slug)) {
-            projectTagsMap.set(relation.projects_slug, []);
-          }
-          projectTagsMap.get(relation.projects_slug)?.push(relation.tags_id);
-        });
-        
-        // Fetch all posts for related articles
-        const postsResponse = await fetch('/api/posts');
-        if (!postsResponse.ok) {
-          throw new Error('Failed to fetch posts');
-        }
-        const postsData = await postsResponse.json();
-        
-        // Create a map of posts by slug for easy lookup
-        const postsMap = new Map<string, Post>();
-        postsData.posts.forEach((post: Post) => {
-          if (post.slug) {
-            postsMap.set(post.slug, post);
-          }
-        });
-        
         // Process projects and add related articles
-        const processedProjects = projectsData.projects.map((project: Project) => {
-          // Find relations for this project
-          const projectRelations = relationsData.relations.filter(
-            (relation: ProjectPostRelation) => relation.projects_slug === project.slug
-          );
+        const processedProjects = await Promise.all(projectsData.projects.map(async (project: Project) => {
+          // Fetch related articles for this project
+          const relationsResponse = await fetch(`/api/project-relations?project=${project.id}&locale=${locale}`);
+          let relatedArticles: RelatedArticle[] = [];
           
-          // Get tag IDs directly from project or from relations
-          const tagIds = project.tags || projectTagsMap.get(project.slug || '') || [];
-          
-          // Get tag names
-          const tagNames = tagIds.map(id => {
-            const tag = tagsMap.get(id);
-            return tag ? tag.name : '';
-          }).filter(Boolean);
-          
-          // Get related posts using the relations
-          const relatedArticles = projectRelations.map((relation: ProjectPostRelation) => {
-            const post = postsMap.get(relation.posts_slug);
-            if (!post) return null;
-            
-            // Strip HTML from body for description
-            const description = post.body 
-              ? stripHtml(post.body).substring(0, 150) + '...'
-              : '';
-            
-            // Get tag names from tag IDs
-            const postTagIds = parseTagIds(post.tags);
-            const categoryLabels = postTagIds.map(id => {
-              const tag = tagsMap.get(id);
-              return tag ? tag.name.toUpperCase() : '';
-            }).filter(Boolean);
-            
-            return {
-              id: relation.id,
-              title: post.title || '',
-              description,
-              imageSrc: getDirectusImageUrl(post.cover, ImagePresets.thumbnail),
-              link: `/blog/${post.slug}`,
-              categoryLabels,
-              date: post.date_created ? formatDate(post.date_created) : undefined
-            };
-          }).filter(Boolean) as RelatedArticle[];
+          if (relationsResponse.ok) {
+            const relationsData = await relationsResponse.json();
+            relatedArticles = relationsData.relatedArticles || [];
+          }
           
           return {
             ...project,
-            relatedArticles,
-            tagNames
+            relatedArticles
           };
-        });
+        }));
         
         setProjects(processedProjects);
       } catch (err) {
@@ -181,7 +95,7 @@ export default function ProjectsPageClient() {
     };
     
     fetchProjectsData();
-  }, []);
+  }, [locale]);
   
   // Helper function to strip HTML tags
   const stripHtml = (html: string) => {
@@ -266,7 +180,7 @@ export default function ProjectsPageClient() {
               <div className="flex flex-col md:flex-row">
                 <div className="md:w-1/3 h-64 relative">
                   <Image
-                    src={getDirectusImageUrl(project.cover, ImagePresets.featured)}
+                    src={getDirectusImageUrl(project.cover_image, ImagePresets.featured)}
                     alt={project.title || ''}
                     fill
                     className="object-cover"
@@ -314,12 +228,12 @@ export default function ProjectsPageClient() {
                   {project.relatedArticles.map(article => (
                     <BlogPostCard
                       key={article.id}
-                      title={article.title}
-                      description={article.description}
-                      categoryLabels={article.categoryLabels}
-                      imageSrc={article.imageSrc}
-                      link={article.link}
-                      date={article.date}
+                      title={article.title || ''}
+                      excerpt={article.summary || ''}
+                      tags={article.tagNames || []}
+                      coverImage={article.cover_image ? getDirectusImageUrl(article.cover_image, ImagePresets.medium) : ''}
+                      slug={article.slug}
+                      date={article.date_created ? formatDate(article.date_created) : undefined}
                     />
                   ))}
                 </div>

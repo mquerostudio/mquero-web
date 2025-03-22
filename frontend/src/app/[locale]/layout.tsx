@@ -54,6 +54,7 @@ export default async function LocaleLayout({
       <head>
         <meta name="apple-mobile-web-app-title" content="MQuero" />
         <meta name="color-scheme" content="light dark" />
+        <link rel="manifest" href={`/${locale}/manifest.webmanifest`} />
       </head>
       <body className={`${inter.className} h-full flex flex-col min-h-screen`}>
         <ThemeProvider>

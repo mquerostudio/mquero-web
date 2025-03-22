@@ -1,24 +1,35 @@
 'use client';
 
 import { useState, useEffect, useMemo } from 'react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
-import { parseTagIds } from '@/lib/posts';
 import BlogPostCard from '@/app/components/custom/BlogPostCard';
 import { getDirectusImageUrl, ImagePresets } from '@/utils/imageUtils';
 import { Tag } from '@/lib/tags';
 import { useTheme } from '@/app/components/ThemeProvider';
 
+interface Article {
+  id: string;
+  slug: string;
+  title?: string;
+  summary?: string;
+  content?: string;
+  cover_image?: string;
+  date_created: string;
+  tagNames?: string[];
+}
+
 export default function BlogPageClient() {
   const t = useTranslations('BlogPage');
-  const [allPosts, setAllPosts] = useState<any[]>([]);
+  const locale = useLocale();
+  const [allArticles, setAllArticles] = useState<Article[]>([]);
   const [allTags, setAllTags] = useState<Tag[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { resolvedTheme } = useTheme();
 
-  // Fetch all posts and tags only once on component mount
+  // Fetch all articles and tags only once on component mount
   useEffect(() => {
     async function fetchData() {
       setIsLoading(true);
@@ -32,14 +43,14 @@ export default function BlogPageClient() {
         }
         const tagsData = await tagsResponse.json();
         
-        // Fetch posts from API
-        const postsResponse = await fetch('/api/posts');
-        if (!postsResponse.ok) {
-          throw new Error('Failed to fetch posts');
+        // Fetch articles from API with the current locale
+        const articlesResponse = await fetch(`/api/posts?locale=${locale}`);
+        if (!articlesResponse.ok) {
+          throw new Error('Failed to fetch articles');
         }
-        const postsData = await postsResponse.json();
+        const articlesData = await articlesResponse.json();
         
-        setAllPosts(postsData.posts || []);
+        setAllArticles(articlesData.articles || []);
         setAllTags(tagsData.tags || []);
       } catch (err) {
         console.error('Error fetching blog data:', err);
@@ -50,17 +61,17 @@ export default function BlogPageClient() {
     }
 
     fetchData();
-  }, []);
+  }, [locale]);
 
-  // Get the featured (latest) post
-  const featuredPost = useMemo(() => 
-    allPosts.length > 0 ? allPosts[0] : null
-  , [allPosts]);
+  // Get the featured (latest) article
+  const featuredArticle = useMemo(() => 
+    allArticles.length > 0 ? allArticles[0] : null
+  , [allArticles]);
   
-  // All other posts (excluding featured)
-  const remainingPosts = useMemo(() => 
-    allPosts.slice(1)
-  , [allPosts]);
+  // All other articles (excluding featured)
+  const remainingArticles = useMemo(() => 
+    allArticles.slice(1)
+  , [allArticles]);
 
   // Function to format date
   const formatDate = (dateString?: string) => {
@@ -73,33 +84,21 @@ export default function BlogPageClient() {
     }).format(date);
   };
 
-  // Function to get excerpt from body
-  const getExcerpt = (body?: string, maxLength = 160) => {
-    if (!body) return '';
+  // Function to get excerpt from content
+  const getExcerpt = (summary?: string, content?: string, maxLength = 160) => {
+    // Prefer summary if available
+    if (summary) return summary;
+    
+    // Fall back to content if summary is not available
+    if (!content) return '';
+    
     // Remove HTML tags and get plain text
-    const plainText = body.replace(/<[^>]+>/g, '');
+    const plainText = content.replace(/<[^>]+>/g, '');
+    
     // Truncate to maxLength and add ellipsis if needed
     return plainText.length > maxLength 
       ? plainText.substring(0, maxLength) + '...'
       : plainText;
-  };
-
-  // Get tag names for a post
-  const getTagNamesForPost = (post: any) => {
-    if (post.tagNames && Array.isArray(post.tagNames)) {
-      return post.tagNames;
-    }
-    
-    // If we don't have tagNames, we need to convert tag IDs to names
-    if (post.tags && Array.isArray(post.tags)) {
-      const tagIds = parseTagIds(post.tags);
-      return tagIds.map(id => {
-        const tag = allTags.find(t => t.id === id);
-        return tag ? tag.name : '';
-      }).filter(Boolean);
-    }
-    
-    return [];
   };
 
   return (
@@ -160,8 +159,8 @@ export default function BlogPageClient() {
               Try Again
             </button>
           </div>
-        ) : allPosts.length === 0 ? (
-          // No posts found state
+        ) : allArticles.length === 0 ? (
+          // No articles found state
           <div className="text-center py-16">
             <div className={`${resolvedTheme === 'dark' ? 'text-gray-500' : 'text-gray-400'} mb-4`}>
               <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -172,44 +171,52 @@ export default function BlogPageClient() {
           </div>
         ) : (
           <>
-            {/* Featured Post - Always show the most recent post */}
-            {featuredPost && (
+            {/* Featured Article - Always show the most recent article */}
+            {featuredArticle && (
               <div className="mb-16">
                 <div className={`rounded-lg shadow-lg ${resolvedTheme === 'dark' ? 'bg-gray-800 shadow-gray-900/30' : 'bg-white'} overflow-hidden`}>
                   <div className="md:flex">
                     <div className="md:w-1/2 relative h-64 md:h-auto">
-                      <Image
-                        src={getDirectusImageUrl(featuredPost.cover, ImagePresets.featured)}
-                        alt={featuredPost.title || ''}
-                        fill
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                        className={`object-cover w-full h-full ${resolvedTheme === 'dark' ? 'brightness-90' : ''}`}
-                      />
+                      {featuredArticle.cover_image && (
+                        <Image
+                          src={getDirectusImageUrl(featuredArticle.cover_image, ImagePresets.featured)}
+                          alt={featuredArticle.title || ''}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          className={`object-cover w-full h-full ${resolvedTheme === 'dark' ? 'brightness-90' : ''}`}
+                        />
+                      )}
                     </div>
                     <div className="p-6 md:w-1/2">
                       <div className="mb-4">
                         <span className={`text-sm ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'}`}>
-                          {formatDate(featuredPost.date_created)}
+                          {formatDate(featuredArticle.date_created)}
                         </span>
-                        <div className="flex gap-2 flex-wrap mt-2">
-                          {getTagNamesForPost(featuredPost).map((tagName: string, i: number) => (
-                            <span 
-                              key={i}
-                              className={`text-xs font-semibold px-2 py-1 rounded ${
-                                resolvedTheme === 'dark' 
-                                  ? 'text-purple-400 bg-purple-900/30' 
-                                  : 'text-purple-600 bg-purple-100'
-                              }`}
-                            >
-                              {tagName}
-                            </span>
-                          ))}
-                        </div>
+                        {featuredArticle.tagNames && featuredArticle.tagNames.length > 0 && (
+                          <div className="flex gap-2 flex-wrap mt-2">
+                            {featuredArticle.tagNames.map((tagName: string, i: number) => (
+                              <span 
+                                key={i}
+                                className={`text-xs font-semibold px-2 py-1 rounded ${
+                                  resolvedTheme === 'dark' 
+                                    ? 'text-purple-400 bg-purple-900/30' 
+                                    : 'text-purple-600 bg-purple-100'
+                                }`}
+                              >
+                                {tagName}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                      <h2 className={`text-3xl font-bold mb-4 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{featuredPost.title}</h2>
-                      <p className={`mb-6 ${resolvedTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>{getExcerpt(featuredPost.body)}</p>
+                      <h2 className={`text-3xl font-bold mb-4 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                        {featuredArticle.title}
+                      </h2>
+                      <p className={`mb-6 ${resolvedTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+                        {getExcerpt(featuredArticle.summary, featuredArticle.content)}
+                      </p>
                       <Link 
-                        href={`/blog/${featuredPost.slug}`}
+                        href={`/blog/${featuredArticle.slug}`}
                         className={`inline-flex items-center gap-2 px-4 py-2 ${
                           resolvedTheme === 'dark' 
                             ? 'bg-gray-700 hover:bg-[#ffaa00]' 
@@ -238,8 +245,8 @@ export default function BlogPageClient() {
               </div>
             )}
             
-            {/* All Other Posts in a 3-column grid */}
-            {remainingPosts.length > 0 && (
+            {/* All Other Articles in a 3-column grid */}
+            {remainingArticles.length > 0 && (
               <div>
                 {/* Section title */}
                 <div className="mb-8">
@@ -248,24 +255,19 @@ export default function BlogPageClient() {
                   </h2>
                 </div>
                 
-                {/* Grid of posts */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {remainingPosts.map(post => {
-                    const tagNames = getTagNamesForPost(post);
-                    
-                    return (
-                      <div key={post.slug} className="group relative">
-                        <BlogPostCard
-                          title={post.title || ''}
-                          description={getExcerpt(post.body, 120)}
-                          categoryLabels={tagNames.map((tag: string) => tag.toUpperCase())}
-                          imageSrc={getDirectusImageUrl(post.cover, ImagePresets.thumbnail)}
-                          link={`/blog/${post.slug}`}
-                          date={formatDate(post.date_created)}
-                        />
-                      </div>
-                    );
-                  })}
+                {/* Articles grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                  {remainingArticles.map((article) => (
+                    <BlogPostCard 
+                      key={article.id} 
+                      title={article.title || 'Untitled'} 
+                      excerpt={getExcerpt(article.summary, article.content)}
+                      slug={article.slug}
+                      coverImage={article.cover_image ? getDirectusImageUrl(article.cover_image, ImagePresets.medium) : ''}
+                      date={formatDate(article.date_created)}
+                      tags={article.tagNames || []}
+                    />
+                  ))}
                 </div>
               </div>
             )}

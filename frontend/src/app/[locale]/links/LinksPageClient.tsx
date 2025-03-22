@@ -167,7 +167,7 @@ function LinkCard({ link, featured = false, resolvedTheme }: { link: LinkItem, f
   return (
     <LinkComponent
       {...linkProps}
-      className={`block rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${
+      className={`block rounded-xl overflow-hidden transition-all duration-500 ease-in-out will-change-transform hover:scale-105 hover:shadow-lg ${
         featured ? 'h-40' : 'h-32'
       } ${resolvedTheme === 'dark' ? 'shadow-gray-900/30' : 'shadow-gray-200/60'}`}
     >

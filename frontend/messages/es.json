@@ -63,14 +63,18 @@
         "relatedArticles": "artículos relacionados",
         "backToProjects": "volver a todos los proyectos",
         "noProjectsFound": "Proyectos no encontrados",
-        "projectNotFound": "Proyecto no encontrado"
+        "projectNotFound": "Proyecto no encontrado",
+        "date": "Fecha",
+        "gallery": "Galería",
+        "repository": "Repositorio"
     },
     "BlogPage": {
         "title": "Blog",
         "readNow": "leer ahora",
         "relatedArticles": "todos los artículos",
         "backToBlog": "volver a todos los artículos",
-        "noPostsFound": "Artículos no encontrados"
+        "noPostsFound": "Artículos no encontrados",
+        "articleNotFound": "Artículo no encontrado"
     },
     "LinksPage": {
         "title": "Ingeniero electrónico y maker | fundador de kode.",
