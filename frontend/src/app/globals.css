@@ -47,3 +47,19 @@ body {
   transition-property: color, background-color, border-color;
   transition-duration: 0.3s;
 }
+
+/* Force dark mode text colors to be bright for better contrast */
+.dark h1, 
+.dark h2, 
+.dark h3, 
+.dark h4, 
+.dark h5, 
+.dark h6 {
+  color: white !important;
+}
+
+.dark .prose {
+  color: var(--foreground);
+}
+
+

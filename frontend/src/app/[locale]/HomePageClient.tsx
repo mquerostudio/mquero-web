@@ -8,10 +8,12 @@ import Card from '../components/custom/Card';
 import SkillCard from '../components/custom/SkillCard';
 import { getDirectusImageUrl, ImagePresets } from '@/utils/imageUtils';
 import { formatDate } from '@/utils/formatDate';
+import { useTheme } from '../components/ThemeProvider';
 
 export default function HomePageClient() {
   const t = useTranslations('HomePage');
   const commonT = useTranslations('Common');
+  const { resolvedTheme } = useTheme();
 
   const [projects, setProjects] = useState<any[]>([]);
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
@@ -179,24 +181,24 @@ export default function HomePageClient() {
     <div className="space-y-12 py-12 w-full">
       {/* Hero Section */}
       <section className="w-full">
-        <div className="max-w-6xl w-full flex flex-col lg:flex-row justify-between items-center mx-auto space-y-4 lg:space-y-0 lg:space-x-6 h-auto border-4 border-gray-300 rounded-3xl p-4 sm:p-8 bg-white">
+        <div className={`max-w-6xl w-full flex flex-col lg:flex-row justify-between items-center mx-auto space-y-4 lg:space-y-0 lg:space-x-6 h-auto border-4 ${resolvedTheme === 'dark' ? 'border-gray-700 bg-gray-800' : 'border-gray-300 bg-white'} rounded-3xl p-4 sm:p-8 transition-colors duration-300`}>
           <div className="sm:rounded-[80px] rounded-[40px] overflow-hidden h-auto w-48 sm:h-auto sm:w-80 flex-shrink-0">
             <Image
               src="/profile-picture.png"
               alt="Profile Picture"
               width={384}
               height={384}
-              className="w-full h-full object-cover rounded-xl"
+              className={`w-full h-full object-cover rounded-xl ${resolvedTheme === 'dark' ? 'brightness-90' : ''}`}
               priority
             />
           </div>
 
           <div className="flex flex-col items-center justify-center flex-1 text-center gap-4">
-            <h1 className="text-2xl sm:text-4xl font-bold">{t('title')}</h1>
-            <p className="text-base sm:text-xl">{t('subtitle')}</p>
+            <h1 className={`text-2xl sm:text-4xl font-bold ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{t('title')}</h1>
+            <p className={`text-base sm:text-xl ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-800'}`}>{t('subtitle')}</p>
             <Link
               href="/about"
-              className="text-base sm:text-xl font-medium bg-gray-800 text-white hover:bg-[#ffaa00ff] hover:text-black px-6 py-3 rounded-md transition-colors duration-200"
+              className={`text-base sm:text-xl font-medium ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-800'} text-white hover:bg-[#ffaa00ff] hover:text-black px-6 py-3 rounded-md transition-colors duration-200`}
             >
               {t('about')}
             </Link>
@@ -207,26 +209,26 @@ export default function HomePageClient() {
       {/* Projects Section */}
       <section className="w-full">
         <div className="max-w-6xl w-full mx-auto">
-          <h2 className="text-3xl font-bold mb-6">{t('projects')}</h2>
+          <h2 className={`text-3xl font-bold mb-6 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{t('projects')}</h2>
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {[1, 2].map((item) => (
-                <div key={item} className="animate-pulse bg-white rounded-lg overflow-hidden shadow-md">
-                  <div className="h-48 bg-gray-200"></div>
+                <div key={item} className={`animate-pulse ${resolvedTheme === 'dark' ? 'bg-gray-800 shadow-gray-900/30' : 'bg-white'} rounded-lg overflow-hidden shadow-md`}>
+                  <div className={`h-48 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
                   <div className="p-4">
-                    <div className="h-6 bg-gray-200 rounded w-3/4 mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-full mb-1"></div>
-                    <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                    <div className={`h-6 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-3/4 mb-2`}></div>
+                    <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full mb-1`}></div>
+                    <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-5/6`}></div>
                   </div>
                 </div>
               ))}
             </div>
           ) : error ? (
-            <div className="bg-red-50 p-6 rounded-lg text-center">
-              <p className="text-red-600">{error}</p>
+            <div className={`${resolvedTheme === 'dark' ? 'bg-red-900/20' : 'bg-red-50'} p-6 rounded-lg text-center`}>
+              <p className={`${resolvedTheme === 'dark' ? 'text-red-400' : 'text-red-600'}`}>{error}</p>
               <button 
                 onClick={() => window.location.reload()}
-                className="mt-4 bg-black text-white px-4 py-2 rounded hover:bg-gray-800 transition-colors"
+                className={`mt-4 ${resolvedTheme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-black hover:bg-gray-800'} text-white px-4 py-2 rounded transition-colors`}
               >
                 Retry
               </button>
@@ -245,7 +247,7 @@ export default function HomePageClient() {
               />
                   ))
                 ) : (
-                  <p className="col-span-2 text-center text-gray-500 py-8">No projects found</p>
+                  <p className={`col-span-2 text-center ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'} py-8`}>No projects found</p>
                 )}
           </div>
 
@@ -253,7 +255,7 @@ export default function HomePageClient() {
           <div className="mt-8 flex justify-center">
             <Link
               href="/projects"
-              className="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition-colors"
+              className={`${resolvedTheme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-black hover:bg-gray-800'} text-white px-6 py-2 rounded-full transition-colors`}
             >
               {t('projects-see-all')}
             </Link>
@@ -266,23 +268,23 @@ export default function HomePageClient() {
       {/* Blog Articles Section */}
       <section className="w-full">
         <div className="max-w-6xl w-full mx-auto">
-          <h2 className="text-3xl font-bold mb-6">{t('blog')}</h2>
+          <h2 className={`text-3xl font-bold mb-6 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{t('blog')}</h2>
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {[1, 2, 3].map((item) => (
-                <div key={item} className="animate-pulse bg-white rounded-lg overflow-hidden shadow-md">
-                  <div className="h-40 bg-gray-200"></div>
+                <div key={item} className={`animate-pulse ${resolvedTheme === 'dark' ? 'bg-gray-800 shadow-gray-900/30' : 'bg-white'} rounded-lg overflow-hidden shadow-md`}>
+                  <div className={`h-40 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'}`}></div>
                   <div className="p-4">
-                    <div className="h-6 bg-gray-200 rounded w-3/4 mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-full mb-1"></div>
-                    <div className="h-4 bg-gray-200 rounded w-5/6"></div>
+                    <div className={`h-6 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-3/4 mb-2`}></div>
+                    <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full mb-1`}></div>
+                    <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-5/6`}></div>
                   </div>
                 </div>
               ))}
             </div>
           ) : error ? (
-            <div className="bg-red-50 p-6 rounded-lg text-center">
-              <p className="text-red-600">{error}</p>
+            <div className={`${resolvedTheme === 'dark' ? 'bg-red-900/20' : 'bg-red-50'} p-6 rounded-lg text-center`}>
+              <p className={`${resolvedTheme === 'dark' ? 'text-red-400' : 'text-red-600'}`}>{error}</p>
             </div>
           ) : (
             <>
@@ -298,7 +300,7 @@ export default function HomePageClient() {
               />
                   ))
                 ) : (
-                  <p className="col-span-3 text-center text-gray-500 py-8">No blog posts found</p>
+                  <p className={`col-span-3 text-center ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-500'} py-8`}>No blog posts found</p>
                 )}
           </div>
 
@@ -306,7 +308,7 @@ export default function HomePageClient() {
           <div className="mt-8 flex justify-center">
             <Link
               href="/blog"
-              className="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition-colors"
+              className={`${resolvedTheme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-black hover:bg-gray-800'} text-white px-6 py-2 rounded-full transition-colors`}
             >
               {t('blog-read')}
             </Link>
@@ -319,7 +321,7 @@ export default function HomePageClient() {
       {/* Skills Section */}
       <section className="w-full">
         <div className="max-w-6xl w-full mx-auto">
-          <h2 className="text-3xl font-bold mb-6">{t('skills')}</h2>
+          <h2 className={`text-3xl font-bold mb-6 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{t('skills')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {skills.map(skill => (
               <SkillCard

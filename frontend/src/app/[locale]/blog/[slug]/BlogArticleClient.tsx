@@ -9,6 +9,7 @@ import { parseTagIds } from '@/lib/posts';
 import { formatDate } from '@/utils/formatDate';
 import { getDirectusImageUrl, ImagePresets } from '@/utils/imageUtils';
 import { Tag } from '@/lib/tags';
+import { useTheme } from '@/app/components/ThemeProvider';
 
 interface Post {
   slug?: string;
@@ -37,6 +38,7 @@ interface BlogArticleClientProps {
 
 export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
   const t = useTranslations('BlogPage');
+  const { resolvedTheme } = useTheme();
   
   const [post, setPost] = useState<Post | null>(null);
   const [tags, setTags] = useState<string[]>([]);
@@ -150,12 +152,12 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
       <div className="w-full py-6">
         <div className="max-w-4xl w-full mx-auto px-4">
           <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
-            <div className="h-4 bg-gray-200 rounded w-1/4 mb-8"></div>
-            <div className="h-64 bg-gray-200 rounded-lg mb-8"></div>
-            <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-            <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-            <div className="h-4 bg-gray-200 rounded w-5/6 mb-8"></div>
+            <div className={`h-8 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-3/4 mb-4`}></div>
+            <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-1/4 mb-8`}></div>
+            <div className={`h-64 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded-lg mb-8`}></div>
+            <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full mb-2`}></div>
+            <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full mb-2`}></div>
+            <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-5/6 mb-8`}></div>
           </div>
               </div>
             </div>
@@ -167,12 +169,12 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
       <div className="w-full py-6">
         <div className="max-w-4xl w-full mx-auto px-4">
           <div className="text-center py-12">
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            <h1 className={`text-2xl font-bold mb-4 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-800'}`}>
               {error || 'Post not found'}
             </h1>
             <Link 
               href="/blog" 
-              className="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition-colors"
+              className={`${resolvedTheme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-black hover:bg-gray-800'} text-white px-6 py-2 rounded-full transition-colors`}
             >
               {t('backToBlog')}
             </Link>
@@ -199,21 +201,21 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
             alt={post.title || ''}
             fill
             sizes="(max-width: 768px) 100vw, 800px"
-            className="object-cover"
+            className={`object-cover ${resolvedTheme === 'dark' ? 'brightness-90' : ''}`}
             priority
           />
         </div>
 
         {/* Article Title */}
-        <h1 className="text-3xl md:text-4xl font-bold mb-6">{post.title}</h1>
+        <h1 className={`text-3xl md:text-4xl font-bold mb-6 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{post.title}</h1>
         
         {/* Article Summary/Excerpt */}
-        <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
+        <p className={`mb-6 max-w-2xl mx-auto ${resolvedTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
           {stripHtml(post.body || '').substring(0, 200)}...
         </p>
         
         {/* Author, Date and Read Time in a Row */}
-        <div className="flex items-center justify-center gap-4 text-sm text-gray-600 mb-6">
+        <div className={`flex items-center justify-center gap-4 text-sm ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'} mb-6`}>
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full overflow-hidden relative">
               <Image 
@@ -221,11 +223,11 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
                 alt={author.name}
                 width={32}
                 height={32}
-                className="object-cover w-full h-full"
+                className={`object-cover w-full h-full ${resolvedTheme === 'dark' ? 'brightness-90' : ''}`}
               />
             </div>
             <div className="text-left">
-              <span className="font-medium text-black">{author.name}</span>
+              <span className={`font-medium ${resolvedTheme === 'dark' ? 'text-white' : 'text-black'}`}>{author.name}</span>
               <span className="block text-xs">{author.title}</span>
             </div>
           </div>
@@ -240,7 +242,11 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
           {tags.map((tag, index) => (
             <span 
               key={index} 
-              className="text-xs font-semibold text-purple-600 bg-purple-100 px-2 py-1 rounded"
+              className={`text-xs font-semibold px-2 py-1 rounded ${
+                resolvedTheme === 'dark' 
+                  ? 'text-purple-400 bg-purple-900/30' 
+                  : 'text-purple-600 bg-purple-100'
+              }`}
             >
               {tag.toUpperCase()}
             </span>
@@ -249,12 +255,12 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
 
         {/* Article Content - Back to left alignment for readability */}
         <div 
-          className="prose prose-lg max-w-none mb-12 text-left"
+          className={`prose prose-lg max-w-none mb-12 text-left ${resolvedTheme === 'dark' ? 'prose-invert' : ''}`}
           dangerouslySetInnerHTML={{ __html: post.body || '' }}
         />
 
         {/* Author Bio */}
-        <div className="bg-gray-100 p-6 rounded-lg mb-12 text-left">
+        <div className={`${resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'} p-6 rounded-lg mb-12 text-left`}>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 rounded-full overflow-hidden relative">
@@ -263,12 +269,12 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
                   alt={author.name}
                   width={64}
                   height={64}
-                  className="object-cover w-full h-full"
+                  className={`object-cover w-full h-full ${resolvedTheme === 'dark' ? 'brightness-90' : ''}`}
               />
             </div>
             <div>
-                <h3 className="font-bold text-xl">{author.name}</h3>
-                <p className="text-gray-600">{author.title}</p>
+                <h3 className={`font-bold text-xl ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{author.name}</h3>
+                <p className={`${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{author.title}</p>
               </div>
             </div>
             
@@ -314,6 +320,7 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
                   alt="X" 
                   width={40} 
                   height={40} 
+                  className={resolvedTheme === 'dark' ? 'filter invert' : ''}
                 />
               </a>
               <a 
@@ -365,7 +372,7 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
         {/* Related Articles */}
         {relatedArticles.length > 0 && (
         <div className="mb-8 text-left">
-          <h2 className="text-2xl font-bold mb-6">{t('relatedArticles')}</h2>
+          <h2 className={`text-2xl font-bold mb-6 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{t('relatedArticles')}</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {relatedArticles.map(post => (
               <BlogPostCard
@@ -386,7 +393,7 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
         <div className="flex justify-center">
           <Link 
             href="/blog" 
-            className="bg-black text-white px-6 py-2 rounded-full hover:bg-gray-800 transition-colors"
+            className={`${resolvedTheme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-black hover:bg-gray-800'} text-white px-6 py-2 rounded-full transition-colors`}
           >
             {t('backToBlog')}
           </Link>

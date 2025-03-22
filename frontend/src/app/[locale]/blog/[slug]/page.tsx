@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<Props['para
     const post = await getPostBySlug(slug);
     
     if (post?.title) {
-      return {
+              return {
         title: `${post.title}`,
       };
     }

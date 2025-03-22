@@ -55,21 +55,39 @@
         <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es/projects" />
     </url>
 
-    <!-- Contact Page -->
+    <!-- Blog Page -->
     <url>
-        <loc>https://www.mquero.com/en/contact</loc>
+        <loc>https://www.mquero.com/en/blog</loc>
         <lastmod>2023-12-01</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://www.mquero.com/en/contact" />
-        <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es/contact" />
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.mquero.com/en/blog" />
+        <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es/blog" />
     </url>
     <url>
-        <loc>https://www.mquero.com/es/contact</loc>
+        <loc>https://www.mquero.com/es/blog</loc>
         <lastmod>2023-12-01</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-        <xhtml:link rel="alternate" hreflang="en" href="https://www.mquero.com/en/contact" />
-        <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es/contact" />
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.mquero.com/en/blog" />
+        <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es/blog" />
+    </url>
+
+    <!-- Links Page -->
+    <url>
+        <loc>https://www.mquero.com/en/links</loc>
+        <lastmod>2023-12-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.mquero.com/en/links" />
+        <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es/links" />
+    </url>
+    <url>
+        <loc>https://www.mquero.com/es/links</loc>
+        <lastmod>2023-12-01</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="en" href="https://www.mquero.com/en/links" />
+        <xhtml:link rel="alternate" hreflang="es" href="https://www.mquero.com/es/links" />
     </url>
 </urlset> 

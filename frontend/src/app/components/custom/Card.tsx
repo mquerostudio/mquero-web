@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
+import { useTheme } from '../ThemeProvider';
 
 interface CardProps {
   title: string;
@@ -18,8 +19,10 @@ const Card = ({
   imageAlt = 'Project image',
   link
 }: CardProps) => {
+  const { resolvedTheme } = useTheme();
+
   const CardContent = () => (
-    <div className="bg-white rounded-lg overflow-hidden shadow-md h-full flex flex-col group">
+    <div className={`${resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-white'} rounded-lg overflow-hidden shadow-md ${resolvedTheme === 'dark' ? 'shadow-gray-900/30' : ''} h-full flex flex-col group transition-all duration-300`}>
       <div className="h-64 relative overflow-hidden">
         <Image
           src={imageSrc}
@@ -29,8 +32,8 @@ const Card = ({
         />
       </div>
       <div className="p-6 flex-grow">
-        <h3 className="text-xl font-bold mb-2">{title}</h3>
-        <p className="text-gray-700">{description}</p>
+        <h3 className={`text-xl font-bold mb-2 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>{title}</h3>
+        <p className={`${resolvedTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>{description}</p>
       </div>
     </div>
   );

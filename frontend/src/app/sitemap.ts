@@ -50,13 +50,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const { locales } = routing
   const baseUrl = 'https://www.mquero.com'
   
-  // Define static pages
+  // Define static pages - updated to include only pages that actually exist
   const staticPages = [
     '',          // Home page
     'about',
     'projects',  // Projects listing page
-    'articles',  // Articles listing page
-    'contact'
+    'blog',      // Blog page (was incorrectly listed as 'articles')
+    'links'      // Links page (was missing)
   ]
   
   // Generate sitemap entries for static pages
@@ -105,10 +105,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   )
   
-  // Generate sitemap entries for articles
+  // Generate sitemap entries for blog articles - updated path from 'articles' to 'blog'
   const articleSitemapEntries = articles.flatMap((article: Article) => 
     locales.map(locale => ({
-      url: `${baseUrl}/${locale}/articles/${article.slug}`,
+      url: `${baseUrl}/${locale}/blog/${article.slug}`,
       lastModified: new Date(article.date_updated || article.date_created),
       changeFrequency: 'weekly' as 'weekly',
       priority: 0.7,
@@ -116,7 +116,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         languages: Object.fromEntries(
           locales.map(altLocale => [
             altLocale,
-            `${baseUrl}/${altLocale}/articles/${article.slug}`
+            `${baseUrl}/${altLocale}/blog/${article.slug}`
           ])
         )
       }

@@ -5,6 +5,7 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { Link } from '@/i18n/navigation';
 import { getDirectusImageUrl, ImagePresets } from '@/utils/imageUtils';
+import { useTheme } from '@/app/components/ThemeProvider';
 
 interface LinkItem {
   id: number;
@@ -22,6 +23,7 @@ export default function LinksPageClient() {
   const [links, setLinks] = useState<LinkItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { resolvedTheme } = useTheme();
 
   useEffect(() => {
     const fetchLinks = async () => {
@@ -56,23 +58,23 @@ export default function LinksPageClient() {
         <div className="max-w-4xl w-full mx-auto">
           {/* Header */}
           <div className="text-center mb-12">
-            <div className="w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 bg-gray-200 animate-pulse"></div>
-            <div className="h-8 bg-gray-200 rounded w-48 mx-auto mb-2 animate-pulse"></div>
-            <div className="h-4 bg-gray-200 rounded w-64 mx-auto mb-4 animate-pulse"></div>
-            <div className="h-16 bg-gray-200 rounded max-w-lg mx-auto animate-pulse"></div>
+            <div className={`w-24 h-24 rounded-full overflow-hidden mx-auto mb-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} animate-pulse`}></div>
+            <div className={`h-8 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-48 mx-auto mb-2 animate-pulse`}></div>
+            <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-64 mx-auto mb-4 animate-pulse`}></div>
+            <div className={`h-16 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded max-w-lg mx-auto animate-pulse`}></div>
           </div>
 
           {/* Featured Links (skeleton) */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             {[1, 2].map((_, index) => (
-              <div key={index} className="h-40 bg-gray-200 rounded-xl animate-pulse"></div>
+              <div key={index} className={`h-40 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded-xl animate-pulse`}></div>
             ))}
           </div>
 
           {/* Regular Links Grid (skeleton) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {[1, 2, 3, 4, 5, 6].map((_, index) => (
-              <div key={index} className="h-32 bg-gray-200 rounded-xl animate-pulse"></div>
+              <div key={index} className={`h-32 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded-xl animate-pulse`}></div>
             ))}
           </div>
         </div>
@@ -84,11 +86,11 @@ export default function LinksPageClient() {
     return (
       <div className="w-full py-12">
         <div className="max-w-4xl w-full mx-auto text-center">
-          <h1 className="text-2xl font-bold mb-4">Error</h1>
-          <p className="text-red-500 mb-4">{error}</p>
+          <h1 className={`text-2xl font-bold mb-4 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Error</h1>
+          <p className={`${resolvedTheme === 'dark' ? 'text-red-400' : 'text-red-500'} mb-4`}>{error}</p>
           <button 
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-black text-white rounded hover:bg-gray-800"
+            className={`px-4 py-2 ${resolvedTheme === 'dark' ? 'bg-gray-700 hover:bg-gray-600' : 'bg-black hover:bg-gray-800'} text-white rounded transition-colors`}
           >
             Try Again
           </button>
@@ -107,14 +109,11 @@ export default function LinksPageClient() {
               src="/profile-picture.png" 
               alt="Profile Picture" 
               fill
-              className="object-cover"
+              className={`object-cover ${resolvedTheme === 'dark' ? 'brightness-90' : ''}`}
             />
           </div>
-          <h1 className="text-3xl font-bold mb-2">Manuel Quero</h1>
-          <p className="text-gray-600 mb-2">{t('title')}</p>
-          <p className="text-gray-700 max-w-lg mx-auto">
-            {t('subtitle')}
-          </p>
+          <h1 className={`text-3xl font-bold mb-2 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Manuel Quero</h1>
+          <p className={`mb-2 ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>{t('title')}</p>
         </div>
 
         {/* Featured Links (larger) */}
@@ -125,6 +124,7 @@ export default function LinksPageClient() {
                 key={link.id} 
                 link={link} 
                 featured={true}
+                resolvedTheme={resolvedTheme}
               />
             ))}
           </div>
@@ -136,6 +136,7 @@ export default function LinksPageClient() {
             <LinkCard 
               key={link.id} 
               link={link} 
+              resolvedTheme={resolvedTheme}
             />
           ))}
         </div>
@@ -145,7 +146,7 @@ export default function LinksPageClient() {
 }
 
 // Link Card Component
-function LinkCard({ link, featured = false }: { link: LinkItem, featured?: boolean }) {
+function LinkCard({ link, featured = false, resolvedTheme }: { link: LinkItem, featured?: boolean, resolvedTheme: string }) {
   const isExternalLink = link.url.startsWith('http') || link.url.startsWith('mailto');
   
   const LinkComponent = isExternalLink ? 'a' : Link;
@@ -168,7 +169,7 @@ function LinkCard({ link, featured = false }: { link: LinkItem, featured?: boole
       {...linkProps}
       className={`block rounded-xl overflow-hidden transition-all duration-300 transform hover:scale-105 hover:shadow-lg ${
         featured ? 'h-40' : 'h-32'
-      }`}
+      } ${resolvedTheme === 'dark' ? 'shadow-gray-900/30' : 'shadow-gray-200/60'}`}
     >
       <div className={`w-full h-full text-white p-6 flex flex-col`} style={colorStyle}>
         <div className="flex items-center mb-2">

@@ -62,7 +62,8 @@
         "viewProject": "view project",
         "relatedArticles": "related articles",
         "backToProjects": "back to all projects",
-        "noProjectsFound": "Projects Not Found"
+        "noProjectsFound": "Projects Not Found",
+        "projectNotFound": "Project Not Found"
     },
     "BlogPage": {
         "title": "Blog",

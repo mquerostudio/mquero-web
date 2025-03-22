@@ -7,11 +7,13 @@ type Theme = 'light' | 'dark' | 'system';
 interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  resolvedTheme: 'light' | 'dark';
 }
 
 const ThemeContext = createContext<ThemeContextType>({
   theme: 'system',
   setTheme: () => null,
+  resolvedTheme: 'light'
 });
 
 export function useTheme() {
@@ -24,6 +26,7 @@ interface ThemeProviderProps {
 
 export function ThemeProvider({ children }: ThemeProviderProps) {
   const [theme, setTheme] = useState<Theme>('system');
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
   const [mounted, setMounted] = useState(false);
 
   // Initialize theme from localStorage or default to system
@@ -51,6 +54,10 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
 
     root.classList.remove('light', 'dark');
     root.classList.add(isDark ? 'dark' : 'light');
+    setResolvedTheme(isDark ? 'dark' : 'light');
+    
+    // Force a repaint to apply transitions properly
+    document.body.style.color = document.body.style.color;
     
     localStorage.setItem('theme', theme);
   }, [theme, mounted]);
@@ -69,6 +76,10 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
         
         root.classList.remove('light', 'dark');
         root.classList.add(isDark ? 'dark' : 'light');
+        setResolvedTheme(isDark ? 'dark' : 'light');
+        
+        // Force a repaint to apply transitions properly
+        document.body.style.color = document.body.style.color;
       }
     };
     
@@ -80,6 +91,7 @@ export function ThemeProvider({ children }: ThemeProviderProps) {
   const value = {
     theme,
     setTheme,
+    resolvedTheme
   };
 
   // During SSR and initial client render before hydration, return children directly

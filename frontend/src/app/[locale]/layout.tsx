@@ -7,6 +7,7 @@ import { Inter } from 'next/font/google';
 import '../globals.css';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { ThemeProvider } from '../components/ThemeProvider';
+import ThemeWrapper from '../components/ThemeWrapper';
 
 const inter = Inter({ subsets: ['latin'], weight: ['400', '700'] });
 
@@ -52,16 +53,19 @@ export default async function LocaleLayout({
     <html lang={locale} className="h-full">
       <head>
         <meta name="apple-mobile-web-app-title" content="MQuero" />
+        <meta name="color-scheme" content="light dark" />
       </head>
-      <body className={`${inter.className} h-full bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col min-h-screen transition-colors duration-200`}>
+      <body className={`${inter.className} h-full flex flex-col min-h-screen`}>
         <ThemeProvider>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            <Header />
-            <main className="w-full max-w-full mx-auto px-4 sm:px-6 lg:px-8 flex-grow">
-              {children}
-            </main>
-            <Footer />
-          </NextIntlClientProvider>
+          <ThemeWrapper>
+            <NextIntlClientProvider locale={locale} messages={messages}>
+              <Header />
+              <main className="w-full max-w-full mx-auto px-4 sm:px-6 lg:px-8 flex-grow">
+                {children}
+              </main>
+              <Footer />
+            </NextIntlClientProvider>
+          </ThemeWrapper>
         </ThemeProvider>
       </body>
     </html>

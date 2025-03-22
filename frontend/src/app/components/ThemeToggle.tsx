@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useTheme } from './ThemeProvider';
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   
   // Close the dropdown when clicking outside
@@ -27,7 +27,11 @@ export default function ThemeToggle() {
           e.stopPropagation();
           setIsOpen(!isOpen);
         }}
-        className="flex items-center space-x-1 px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-700 rounded-md hover:bg-gray-50 dark:hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        className={`flex items-center space-x-1 px-3 py-2 text-sm font-medium ${
+          resolvedTheme === 'dark'
+            ? 'text-gray-300 border-gray-700 hover:bg-gray-800'
+            : 'text-gray-700 border-gray-300 hover:bg-gray-50'
+        } border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors`}
         aria-label="Theme toggle"
       >
         {theme === 'light' && (
@@ -48,7 +52,11 @@ export default function ThemeToggle() {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-md shadow-lg z-10">
+        <div className={`absolute right-0 mt-2 w-40 ${
+          resolvedTheme === 'dark' 
+            ? 'bg-gray-800 border-gray-700' 
+            : 'bg-white border-gray-300'
+        } border rounded-md shadow-lg z-10`}>
           <button
             onClick={() => {
               setTheme('light');
@@ -56,8 +64,8 @@ export default function ThemeToggle() {
             }}
             className={`flex items-center w-full text-left px-4 py-2 text-sm ${
               theme === 'light' 
-                ? 'font-medium text-[#ffaa00ff] bg-amber-50 dark:bg-amber-900/20' 
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                ? 'font-medium text-[#ffaa00ff] ' + (resolvedTheme === 'dark' ? 'bg-amber-900/20' : 'bg-amber-50')
+                : (resolvedTheme === 'dark' ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-50')
             }`}
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-2">
@@ -72,8 +80,8 @@ export default function ThemeToggle() {
             }}
             className={`flex items-center w-full text-left px-4 py-2 text-sm ${
               theme === 'dark' 
-                ? 'font-medium text-[#ffaa00ff] bg-amber-50 dark:bg-amber-900/20' 
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                ? 'font-medium text-[#ffaa00ff] ' + (resolvedTheme === 'dark' ? 'bg-amber-900/20' : 'bg-amber-50')
+                : (resolvedTheme === 'dark' ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-50')
             }`}
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-2">
@@ -88,8 +96,8 @@ export default function ThemeToggle() {
             }}
             className={`flex items-center w-full text-left px-4 py-2 text-sm ${
               theme === 'system' 
-                ? 'font-medium text-[#ffaa00ff] bg-amber-50 dark:bg-amber-900/20' 
-                : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                ? 'font-medium text-[#ffaa00ff] ' + (resolvedTheme === 'dark' ? 'bg-amber-900/20' : 'bg-amber-50')
+                : (resolvedTheme === 'dark' ? 'text-gray-300 hover:bg-gray-700' : 'text-gray-700 hover:bg-gray-50')
             }`}
           >
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 mr-2">
