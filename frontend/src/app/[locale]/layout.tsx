@@ -8,6 +8,8 @@ import '../globals.css';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { ThemeProvider } from '../components/ThemeProvider';
 import ThemeWrapper from '../components/ThemeWrapper';
+import { CBraceStyling } from '../components/CBraceStyling';
+import { CodeBlockEnhancer } from '../components/CodeBlockEnhancer';
 
 const inter = Inter({ subsets: ['latin'], weight: ['400', '700'] });
 
@@ -65,6 +67,8 @@ export default async function LocaleLayout({
                 {children}
               </main>
               <Footer />
+              <CBraceStyling />
+              <CodeBlockEnhancer />
             </NextIntlClientProvider>
           </ThemeWrapper>
         </ThemeProvider>

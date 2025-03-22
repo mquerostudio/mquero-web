@@ -54,10 +54,12 @@ export default function HomePageClient() {
         const processedArticles = articlesData.articles
           .slice(0, 3)
           .map((article: any) => {
-            // Strip HTML for description
-            const description = article.content 
-              ? stripHtml(article.content).substring(0, 120) + '...'
-              : article.summary || '';
+            // Use summary directly if available, otherwise create a snippet from content
+            const description = article.summary 
+              ? article.summary
+              : article.content 
+                ? stripHtml(article.content).substring(0, 120) + '...'
+                : '';
               
             return {
               id: article.slug,

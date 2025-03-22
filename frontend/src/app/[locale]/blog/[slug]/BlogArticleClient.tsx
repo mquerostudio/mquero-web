@@ -8,6 +8,9 @@ import { useEffect, useState } from 'react';
 import { getDirectusImageUrl, ImagePresets } from '@/utils/imageUtils';
 import { formatDate } from '@/utils/formatDate';
 import { useTheme } from '@/app/components/ThemeProvider';
+import { markdownToHtml } from '@/utils/markdownToHtml';
+import { useRouter } from 'next/navigation';
+import hljs from 'highlight.js';
 
 interface Article {
   id: string;
@@ -37,13 +40,32 @@ interface BlogArticleClientProps {
 }
 
 export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
-  const t = useTranslations('BlogPage');
+  const t = useTranslations('BlogArticleClient');
   const locale = useLocale();
   const { resolvedTheme } = useTheme();
+  const router = useRouter();
   
   const [article, setArticle] = useState<Article | null>(null);
+  const [relatedArticles, setRelatedArticles] = useState<RelatedArticle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [htmlContent, setHtmlContent] = useState<string>('');
+  
+  // Apply syntax highlighting to code blocks after the component mounts or content changes
+  useEffect(() => {
+    if (htmlContent && typeof window !== 'undefined') {
+      // Wait for the DOM to update
+      setTimeout(() => {
+        // Find all code blocks and apply syntax highlighting
+        document.querySelectorAll('pre code').forEach((el) => {
+          const language = el.getAttribute('data-language');
+          if (language && hljs.getLanguage(language)) {
+            hljs.highlightElement(el as HTMLElement);
+          }
+        });
+      }, 0);
+    }
+  }, [htmlContent]);
   
   // Hardcoded author info
   const author = {
@@ -51,59 +73,6 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
     title: 'Electronics Engineer',
     image: '/profile-picture.png',
   };
-  
-  // Related articles
-  const [relatedArticles, setRelatedArticles] = useState<RelatedArticle[]>([]);
-
-  useEffect(() => {
-    const fetchArticle = async () => {
-      try {
-        setIsLoading(true);
-        
-        // Fetch the article with the current locale
-        const response = await fetch(`/api/post/${slug}?locale=${locale}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch article');
-        }
-        
-        const data = await response.json();
-        setArticle(data.article);
-        
-        // Fetch related articles
-        const articlesResponse = await fetch(`/api/articles?locale=${locale}`);
-        if (articlesResponse.ok) {
-          const articlesData = await articlesResponse.json();
-          
-          // Filter out current article and limit to 3 articles
-          const related = articlesData.articles
-            .filter((relatedArticle: Article) => relatedArticle.slug !== slug)
-            .slice(0, 3)
-            .map((article: Article) => ({
-              id: article.slug || '',
-              title: article.title || '',
-              excerpt: article.summary || (article.content ? stripHtml(article.content).substring(0, 150) + '...' : ''),
-              tags: article.tagNames || [],
-              coverImage: article.cover_image ? getDirectusImageUrl(article.cover_image, ImagePresets.thumbnail) : '',
-              slug: article.slug || '',
-              date: article.date_created ? formatDate(article.date_created) : undefined
-            }));
-            
-          setRelatedArticles(related);
-        }
-        
-        setError(null);
-      } catch (err) {
-        console.error('Error fetching article:', err);
-        setError('Failed to load article');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    if (slug) {
-      fetchArticle();
-    }
-  }, [slug, locale]);
   
   // Helper function to strip HTML tags
   const stripHtml = (html: string) => {
@@ -117,6 +86,118 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
       return tmp.textContent || tmp.innerText || '';
     }
   };
+
+  // Function to fetch related articles
+  const fetchRelatedArticles = async (articleId: string, tagIds: number[]) => {
+    try {
+      // Fetch all articles
+      const articlesResponse = await fetch(`/api/articles?locale=${locale}`);
+      if (articlesResponse.ok) {
+        const articlesData = await articlesResponse.json();
+        
+        // Filter out current article and find related ones
+        const related = articlesData.articles
+          .filter((relatedArticle: Article) => relatedArticle.id !== articleId)
+          .slice(0, 3)
+          .map((article: Article) => ({
+            id: article.slug || '',
+            title: article.title || '',
+            excerpt: article.summary || (article.content ? stripHtml(article.content).substring(0, 150) + '...' : ''),
+            tags: article.tagNames || [],
+            coverImage: article.cover_image ? getDirectusImageUrl(article.cover_image, ImagePresets.thumbnail) : '',
+            slug: article.slug || '',
+            date: article.date_created ? formatDate(article.date_created) : undefined
+          }));
+          
+        setRelatedArticles(related);
+      }
+    } catch (err) {
+      console.error('Error fetching related articles:', err);
+      // Don't set an error for the whole page if just related articles fail
+    }
+  };
+
+  useEffect(() => {
+    const fetchArticle = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/post/${slug}?locale=${locale}`);
+        
+        if (!response.ok) {
+          if (response.status === 404) {
+            setError(t('articleNotFound'));
+          } else {
+            throw new Error('Failed to fetch article');
+          }
+          return;
+        }
+        
+        const { data } = await response.json();
+        
+        if (!data) {
+          setError(t('articleNotFound'));
+          return;
+        }
+        
+        setArticle(data);
+        
+        // Convert markdown to HTML and process Directus image links
+        if (data.content) {
+          // First, replace Directus image URLs with fully qualified URLs
+          // While preserving alt text (captions) in markdown format: ![Caption text](image-url)
+          let processedContent = data.content.replace(
+            /!\[(.*?)\]\((https:\/\/tardis\.mquero\.com\/assets\/[^)]+)\)/g,
+            (match: string, altText: string, imageUrl: string) => {
+              // Keep the alt text as is to preserve captions
+              return `![${altText}](${imageUrl})`;
+            }
+          );
+          
+          try {
+            const html = await markdownToHtml(processedContent);
+            
+            // Make sure code blocks are rendered correctly
+            if (typeof window !== 'undefined') {
+              // We're on the client, we can process the HTML properly
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(html, 'text/html');
+              
+              // Process each code block with highlight.js
+              doc.querySelectorAll('pre code').forEach((codeElement) => {
+                const language = codeElement.getAttribute('data-language');
+                if (language) {
+                  // Ensure the code has correct class
+                  codeElement.className = `hljs language-${language}`;
+                }
+              });
+              
+              // Get the processed HTML
+              setHtmlContent(doc.body.innerHTML);
+            } else {
+              // We're on the server, just use the original HTML
+              setHtmlContent(html);
+            }
+          } catch (err) {
+            console.error('Error processing markdown:', err);
+            // Fallback to just displaying the plain content if markdown processing fails
+            setHtmlContent(`<div>${processedContent}</div>`);
+          }
+        }
+        
+        // Fetch related articles if available
+        if (data.tags && data.tags.length > 0) {
+          fetchRelatedArticles(data.id, data.tags);
+        }
+      } catch (err) {
+        console.error('Error fetching article:', err);
+        setError('Failed to load article');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchArticle();
+  }, [slug, locale, t]);
   
   if (isLoading) {
   return (
@@ -309,8 +390,8 @@ export default function BlogArticleClient({ slug }: BlogArticleClientProps) {
 
         {/* Article Content - Back to left alignment for readability */}
         <div 
-          className={`prose prose-lg max-w-none mb-12 text-left ${resolvedTheme === 'dark' ? 'prose-invert' : ''}`}
-          dangerouslySetInnerHTML={{ __html: article.content || '' }}
+          className={`prose prose-lg max-w-none mb-12 text-left ${resolvedTheme === 'dark' ? 'prose-invert' : ''} prose-img:rounded-lg prose-img:mx-auto prose-p:my-5 prose-table:table-auto prose-ul:list-disc prose-ol:list-decimal`}
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
         />
 
         {/* Author Bio */}

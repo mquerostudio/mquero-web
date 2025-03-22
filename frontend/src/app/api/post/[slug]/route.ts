@@ -29,16 +29,17 @@ export async function GET(
     if (article.tags && Array.isArray(article.tags) && article.tags.length > 0) {
       const tags = await getTagsByArticleId(article.id);
       
-      // Add tag names to the article
+      // Add tag names to the article and return as data property
       return NextResponse.json({ 
-        article: {
+        data: {
           ...article,
           tagNames: tags.map(tag => tag.name)
         } 
       });
     }
     
-    return NextResponse.json({ article });
+    // Return the article as data property
+    return NextResponse.json({ data: article });
   } catch (error) {
     console.error('Error fetching article:', error);
     return NextResponse.json({ error: 'Failed to fetch article' }, { status: 500 });

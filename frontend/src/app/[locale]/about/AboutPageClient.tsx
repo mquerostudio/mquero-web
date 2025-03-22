@@ -99,7 +99,7 @@ export default function AboutPageClient() {
               {t('contactDescription')}
             </p>
 
-            <div className="flex flex-col md:flex-row gap-64 justify-center">
+            <div className="flex flex-col md:flex-row md:gap-64 justify-center">
               <div className="mb-8">
                 <h3 className={`text-xl font-semibold mb-2 ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Email</h3>
                 <a

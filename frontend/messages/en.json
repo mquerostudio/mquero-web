@@ -76,6 +76,11 @@
         "noPostsFound": "Posts Not Found",
         "articleNotFound": "Article Not Found"
     },
+    "BlogArticleClient": {
+        "backToBlog": "back to all articles",
+        "articleNotFound": "Article Not Found",
+        "relatedArticles": "related articles"
+    },
     "LinksPage": {
         "title": "Electronics engineer and maker | founder of kode.",
         "subtitle": "Connect with me on various platforms and discover my projects."

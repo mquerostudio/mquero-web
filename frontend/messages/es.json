@@ -73,12 +73,17 @@
         "readNow": "leer ahora",
         "relatedArticles": "todos los artículos",
         "backToBlog": "volver a todos los artículos",
-        "noPostsFound": "Artículos no encontrados",
-        "articleNotFound": "Artículo no encontrado"
+        "noPostsFound": "No Se Encontraron Publicaciones",
+        "articleNotFound": "Artículo No Encontrado"
+    },
+    "BlogArticleClient": {
+        "backToBlog": "volver a todos los artículos",
+        "articleNotFound": "Artículo No Encontrado",
+        "relatedArticles": "artículos relacionados"
     },
     "LinksPage": {
         "title": "Ingeniero electrónico y maker | fundador de kode.",
-        "subtitle": "Conecta conmigo en diversas plataformas y descubre mi proyectos."
+        "subtitle": "Conéctate conmigo en varias plataformas y descubre mis proyectos."
     },
     "AboutPage": {
         "title": "Sobre mí",

@@ -7,6 +7,14 @@
   --border-color: #e5e5e5;
   --primary-color: #ffaa00;
   --primary-hover: #e69900;
+  --code-bg: #f6f8fa; /* GitHub-like code background */
+  --code-text: #24292e; /* GitHub-like code text */
+  --code-border: #e1e4e8; /* GitHub-like code border */
+  --inline-code-color: #d73a49; /* Red for inline code */
+  --blockquote-border: #e5e7eb; /* Light gray for blockquote border */
+  --table-border: #e5e7eb; /* Table borders */
+  --table-header-bg: #f6f8fa; /* Table header background */
+  --table-alt-bg: #fcfcfc; /* Table alternating row background */
 }
 
 .dark {
@@ -16,6 +24,8 @@
   --border-color: #2a2a2a;
   --primary-color: #ffaa00;
   --primary-hover: #e69900;
+  --blockquote-border: #4b5563; /* Darker blockquote border for dark mode */
+  /* We don't change code colors in dark mode to maintain consistency */
 }
 
 @theme inline {
@@ -42,8 +52,8 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Apply theme transitions */
-* {
+/* Apply theme transitions only to specific elements that need them */
+.theme-transition {
   transition-property: color, background-color, border-color;
   transition-duration: 0.3s;
 }
@@ -55,11 +65,354 @@ body {
 .dark h4, 
 .dark h5, 
 .dark h6 {
-  color: white !important;
+  color: white;
 }
 
 .dark .prose {
   color: var(--foreground);
+}
+
+/* Import highlight.js themes for light and dark mode */
+@import 'highlight.js/styles/github.css';
+
+/* Custom code block styling */
+.prose {
+  /* Headers */
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+  
+  h1 {
+    font-size: 2.25em;
+  }
+  
+  h2 {
+    font-size: 1.875em;
+  }
+  
+  h3 {
+    font-size: 1.5em;
+  }
+  
+  /* Paragraphs */
+  p {
+    margin-top: 1.25em;
+    margin-bottom: 1.25em;
+  }
+  
+  /* Links */
+  a {
+    color: #ffaa00;
+    text-decoration: underline;
+  }
+  
+  /* Lists - Enhanced styling */
+  ul, ol {
+    padding-left: 1.5em;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    list-style-position: outside;
+  }
+  
+  ul {
+    list-style-type: disc;
+  }
+  
+  ul ul {
+    list-style-type: circle;
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+  }
+  
+  ul ul ul {
+    list-style-type: square;
+  }
+  
+  ol {
+    list-style-type: decimal;
+  }
+  
+  ol ol {
+    list-style-type: lower-alpha;
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+  }
+  
+  ol ol ol {
+    list-style-type: lower-roman;
+  }
+  
+  li {
+    margin-bottom: 0.5em;
+    padding-left: 0.25em;
+  }
+  
+  li::marker {
+    color: #6b7280;
+    font-weight: 400;
+  }
+  
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5em 0;
+    overflow-x: auto;
+    display: block;
+  }
+  
+  table thead {
+    background-color: var(--table-header-bg);
+  }
+  
+  table th {
+    padding: 0.75em 1em;
+    border: 1px solid var(--table-border);
+    font-weight: 600;
+    text-align: left;
+  }
+  
+  table td {
+    padding: 0.75em 1em;
+    border: 1px solid var(--table-border);
+  }
+  
+  table tr:nth-child(even) {
+    background-color: var(--table-alt-bg);
+  }
+  
+  /* Code blocks - now consistent across themes */
+  pre {
+    background-color: var(--code-bg);
+    padding: 1.5em; 
+    border-radius: 0.5em;
+    overflow-x: auto;
+    margin: 1.5em 0;
+    position: relative;
+    border: 1px solid var(--code-border);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  
+  /* Add language tag to code blocks */
+  pre code[data-language]::before {
+    content: attr(data-language);
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #6a737d;
+    font-size: 0.75em;
+    background-color: rgba(246, 248, 250, 0.8);
+    padding: 0.25em 0.5em;
+    border-radius: 0 0.5em 0 0.25em;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  
+  code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.9em;
+    padding: 0.2em 0.4em;
+    border-radius: 0.25em;
+    background-color: transparent;
+    color: var(--code-text);
+  }
+  
+  /* Special styling for code inside pre tag (code blocks) */
+  pre code {
+    background-color: transparent;
+    padding: 0;
+    color: var(--code-text);
+  }
+  
+  /* Force code block colors for syntax highlighting (always light mode style) */
+  pre code.hljs {
+    display: block;
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 0;
+    overflow-x: auto;
+  }
+  
+  /* Syntax highlighting colors - consistent across themes */
+  .hljs-comment, .hljs-quote { color: #6a737d; }
+  .hljs-keyword, .hljs-selector-tag { color: #0000ff; }
+  .hljs-string, .hljs-attribute, .hljs-addition { color: #032f62; }
+  .hljs-number, .hljs-literal { color: #005cc5; }
+  .hljs-type, .hljs-built_in { color: #6f42c1; }
+  .hljs-function { color: #6f42c1; }
+  .hljs-title.function_ { color: #6f42c1; }
+  .hljs-variable, .hljs-template-variable { color: #24292e; }
+  .hljs-tag, .hljs-name, .hljs-selector-id, .hljs-selector-class { color: #22863a; }
+  .hljs-section, .hljs-title { color: #6f42c1; }
+  .hljs-meta { color: #5c6370; }
+  .hljs-meta-string { color: #032f62; }
+  
+  /* Inline code - remains theme-aware */
+  p code, li code {
+    color: var(--inline-code-color);
+    background-color: rgba(175, 184, 193, 0.2);
+    padding: 0.2em 0.4em;
+    border-radius: 0.25em;
+    font-size: 0.85em;
+    white-space: nowrap;
+  }
+  
+  /* Images */
+  img {
+    max-width: 80%;
+    height: auto;
+    border-radius: 0.5em;
+    margin: 1.5em auto 0.5em;
+    display: block;
+  }
+  
+  /* Simplified image and caption structure */
+  figure {
+    margin: 2em auto;
+    max-width: 80%;
+    display: table;
+  }
+  
+  figure img {
+    margin: 0 auto;
+    max-width: 100%;
+    display: block;
+  }
+  
+  figcaption {
+    display: table-caption;
+    caption-side: bottom;
+    text-align: center;
+    font-style: italic;
+    color: #6b7280;
+    font-size: 0.875em;
+    margin-top: 0.5em;
+    width: 100%;
+  }
+  
+  /* Blockquotes - enhanced */
+  blockquote {
+    border-left: 4px solid var(--blockquote-border);
+    padding: 0.5em 0 0.5em 1em;
+    margin: 1.5em 0;
+    color: #6b7280;
+    font-style: italic;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0.02);
+    border-radius: 0 0.25em 0.25em 0;
+  }
+  
+  blockquote p {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+  }
+  
+  /* Text formatting */
+  strong, b {
+    font-weight: 700;
+  }
+  
+  em, i {
+    font-style: italic;
+  }
+  
+  /* Strikethrough */
+  del, s {
+    text-decoration: line-through;
+  }
+  
+  /* C language styling - consistent across themes */
+  .language-c {
+    color: #24292e;
+    
+    .hljs-keyword, .hljs-title.keyword { color: #0000ff; }
+    .hljs-meta { color: #9B2C2C; }
+    .hljs-string { color: #032f62; }
+    .hljs-title.function_ { color: #6f42c1; }
+    .hljs-type { color: #d73a49; }
+    .hljs-number { color: #005cc5; }
+    .hljs-comment { color: #6a737d; }
+  }
+}
+
+/* Dark mode adjustments - now code blocks remain light */
+.dark .prose {
+  /* Leave code blocks with light background */
+  
+  /* Only apply dark mode to non-code elements */
+  p code, li code {
+    background-color: rgba(99, 110, 123, 0.4);
+  }
+  
+  figcaption {
+    color: #9ca3af;
+  }
+  
+  blockquote {
+    color: #9ca3af;
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+  
+  li::marker {
+    color: #9ca3af;
+  }
+  
+  table thead {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  table tr:nth-child(even) {
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+}
+
+/* Code block controls - consistent with light theme */
+.code-block-controls {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  z-index: 50;
+  background-color: rgba(246, 248, 250, 0.9);
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.code-lang-indicator {
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-left: 0.75rem;
+  margin-right: 0;
+  text-transform: uppercase;
+  color: #0366d6;
+  display: flex;
+  align-items: center;
+  line-height: 1;
+  padding-top: 1px;
+  letter-spacing: 0.5px;
+}
+
+.copy-code-button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #6a737d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.copy-code-button:hover {
+  color: #0366d6;
+  background: rgba(0, 0, 0, 0.05);
 }
 
 

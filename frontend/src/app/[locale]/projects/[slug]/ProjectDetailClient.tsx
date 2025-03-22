@@ -8,6 +8,9 @@ import BlogPostCard from '../../../components/custom/BlogPostCard';
 import { getDirectusImageUrl, ImagePresets } from '@/utils/imageUtils';
 import { formatDate } from '@/utils/formatDate';
 import { useTheme } from '@/app/components/ThemeProvider';
+import { CodeBlockEnhancer } from '@/app/components/CodeBlockEnhancer';
+import { markdownToHtml } from '@/utils/markdownToHtml';
+import hljs from 'highlight.js';
 
 interface Project {
   id: string;
@@ -52,6 +55,7 @@ export default function ProjectDetailClient({ slug }: ProjectDetailClientProps) 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [tagNames, setTagNames] = useState<string[]>([]);
+  const [htmlContent, setHtmlContent] = useState<string>('');
 
   // Hardcoded author info
   const author = {
@@ -63,6 +67,24 @@ export default function ProjectDetailClient({ slug }: ProjectDetailClientProps) 
   // Gallery modal state
   const [showGalleryModal, setShowGalleryModal] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Apply syntax highlighting to code blocks after the component mounts or content changes
+  useEffect(() => {
+    if (htmlContent && typeof window !== 'undefined') {
+      // Wait for the DOM to update
+      setTimeout(() => {
+        // Find all code blocks and apply syntax highlighting
+        document.querySelectorAll('pre code').forEach((el) => {
+          // Check if it has a language class
+          const language = el.getAttribute('data-language') || 
+                          el.className.match(/language-(\w+)/)?.[1];
+          if (language && hljs.getLanguage(language)) {
+            hljs.highlightElement(el as HTMLElement);
+          }
+        });
+      }, 0);
+    }
+  }, [htmlContent]);
 
   useEffect(() => {
     const fetchProjectData = async () => {
@@ -80,6 +102,28 @@ export default function ProjectDetailClient({ slug }: ProjectDetailClientProps) 
         // The tags should already be included in the project data
         if (projectData.project.tagNames) {
           setTagNames(projectData.project.tagNames);
+        }
+
+        // Process markdown content if available
+        if (projectData.project.content) {
+          // First, process any Directus image URLs
+          let processedContent = projectData.project.content.replace(
+            /!\[(.*?)\]\((https:\/\/tardis\.mquero\.com\/assets\/[^)]+)\)/g,
+            (match: string, altText: string, imageUrl: string) => {
+              // Keep the alt text as is to preserve captions
+              return `![${altText}](${imageUrl})`;
+            }
+          );
+
+          try {
+            // Convert markdown to HTML
+            const html = await markdownToHtml(processedContent);
+            setHtmlContent(html);
+          } catch (err) {
+            console.error('Error processing markdown:', err);
+            // Fallback to just displaying the content if markdown processing fails
+            setHtmlContent(`<div>${processedContent}</div>`);
+          }
         }
 
         // Fetch gallery images if there's a gallery
@@ -120,7 +164,7 @@ export default function ProjectDetailClient({ slug }: ProjectDetailClientProps) 
     }
   }, [slug, locale]);
 
-  // Helper function to strip HTML tags
+  // Helper function to strip HTML tags (for summary if needed)
   const stripHtml = (html?: string) => {
     if (!html) return '';
 
@@ -186,12 +230,38 @@ export default function ProjectDetailClient({ slug }: ProjectDetailClientProps) 
               ))}
             </div>
 
-            {/* Project content */}
-            <div className="space-y-4 mb-12">
+            {/* Project content with code block skeleton */}
+            <div className="space-y-6 mb-12">
               <div className={`h-6 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full`}></div>
               <div className={`h-6 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-5/6`}></div>
+              
+              {/* Code block skeleton */}
+              <div className={`${resolvedTheme === 'dark' ? 'bg-gray-800' : 'bg-gray-100'} rounded-lg p-4 relative`}>
+                <div className="absolute top-2 right-2 flex items-center">
+                  <div className={`w-4 h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'} rounded mr-2`}></div>
+                  <div className={`w-12 h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'} rounded`}></div>
+                </div>
+                <div className="mt-6">
+                  <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'} rounded w-full mb-2`}></div>
+                  <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'} rounded w-4/5 mb-2`}></div>
+                  <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'} rounded w-3/4 mb-2`}></div>
+                  <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'} rounded w-4/5`}></div>
+                </div>
+              </div>
+              
               <div className={`h-6 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-full`}></div>
               <div className={`h-6 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-200'} rounded w-3/4`}></div>
+              
+              {/* Callout skeleton */}
+              <div className={`${resolvedTheme === 'dark' ? 'bg-blue-900/30' : 'bg-blue-50'} border-l-4 ${resolvedTheme === 'dark' ? 'border-blue-500' : 'border-blue-500'} rounded-md p-4`}>
+                <div className="flex">
+                  <div className={`w-6 h-6 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'} rounded-full mr-3`}></div>
+                  <div className="flex-1">
+                    <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'} rounded w-full mb-2`}></div>
+                    <div className={`h-4 ${resolvedTheme === 'dark' ? 'bg-gray-700' : 'bg-gray-300'} rounded w-5/6`}></div>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Gallery section */}
@@ -288,6 +358,8 @@ export default function ProjectDetailClient({ slug }: ProjectDetailClientProps) 
 
   return (
     <div className="w-full py-12">
+      <CodeBlockEnhancer />
+      
       <div className="max-w-4xl w-full mx-auto">
         {/* Project Header */}
         <div className="mb-8">
@@ -356,14 +428,14 @@ export default function ProjectDetailClient({ slug }: ProjectDetailClientProps) 
           )}
         </div>
 
-        {/* Project Content */}
+        {/* Project Content with enhanced code blocks */}
         <div
           className={`prose prose-lg max-w-none mb-12 ${
             resolvedTheme === 'dark' 
               ? 'prose-invert prose-headings:text-white prose-a:text-cyan-400' 
               : 'prose-headings:text-gray-900 prose-a:text-cyan-600'
-          } prose-img:rounded-lg`}
-          dangerouslySetInnerHTML={{ __html: project.content || '' }}
+          } prose-img:rounded-lg prose-img:mx-auto prose-p:my-5 prose-pre:p-0 prose-pre:bg-transparent prose-table:table-auto prose-ul:list-disc prose-ol:list-decimal`}
+          dangerouslySetInnerHTML={{ __html: htmlContent || project.content || '' }}
         />
 
         {/* Gallery */}
